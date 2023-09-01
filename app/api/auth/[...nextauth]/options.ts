@@ -3,16 +3,6 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/db";
 
-interface User {
-  id: String;
-  name: String;
-  imageUrl: String;
-  email: String;
-  password: String | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export const options: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -39,6 +29,7 @@ export const options: NextAuthOptions = {
         const user = await prisma.users.findFirst({
           where: { email: credentials?.email },
         });
+
         if (
           credentials?.email === user?.email &&
           credentials?.password === user?.password
