@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import ThemeToggleButton from "@/components/ui/ThemeToggleButton";
+import { signOut } from "next-auth/react";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       />
       <h1 className=" text-3xl font-bold">Blabstr</h1>
       <ThemeToggleButton />
+      <button onClick={() => signOut()}>signOut</button>
     </main>
   );
 }

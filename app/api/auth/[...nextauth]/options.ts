@@ -1,6 +1,17 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { prisma } from "@/lib/db";
+
+interface User {
+  id: String;
+  name: String;
+  imageUrl: String;
+  email: String;
+  password: String;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export const options: NextAuthOptions = {
   providers: [
@@ -11,10 +22,10 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: {
-          label: "Username:",
+        email: {
+          label: "email:",
           type: "text",
-          placeholder: "your-cool-username",
+          placeholder: "your-cool-email",
         },
         password: {
           label: "Password:",
@@ -25,12 +36,14 @@ export const options: NextAuthOptions = {
       async authorize(credentials) {
         // This is where you need to retrieve user data
         // to verify with credentials
-        // Docs: https://next-auth.js.org/configuration/providers/credentials
-        const user = { id: "42", name: "Dave", password: "nextauth" };
+        const user = await prisma.users.findFirst({
+          where: { email: credentials?.email },
+        });
+        console.log(credentials?.email, credentials?.password);
 
         if (
-          credentials?.username === user.name &&
-          credentials?.password === user.password
+          credentials?.email === user?.email &&
+          credentials?.password === user?.password
         ) {
           return user;
         } else {
@@ -39,4 +52,5 @@ export const options: NextAuthOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
 };
