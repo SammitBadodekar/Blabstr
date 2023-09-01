@@ -15,7 +15,7 @@ export const PUT = async (req: any) => {
         imageUrl:
           user?.image ||
           "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
-        password: user?.password,
+        password: user?.password || process.env.NEXTAUTH_SECRET,
         email: user?.email,
       },
     });

@@ -8,7 +8,7 @@ interface User {
   name: String;
   imageUrl: String;
   email: String;
-  password?: String;
+  password: String | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,8 +39,6 @@ export const options: NextAuthOptions = {
         const user = await prisma.users.findFirst({
           where: { email: credentials?.email },
         });
-        console.log(credentials?.email, credentials?.password);
-
         if (
           credentials?.email === user?.email &&
           credentials?.password === user?.password
