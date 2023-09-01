@@ -8,7 +8,7 @@ interface User {
   name: String;
   imageUrl: String;
   email: String;
-  password: String;
+  password?: String;
   createdAt: Date;
   updatedAt: Date;
 }
