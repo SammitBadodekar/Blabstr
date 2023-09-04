@@ -6,7 +6,7 @@ const ThemeToggleButton = () => {
   const { theme, setTheme } = useTheme();
   return (
     <Toggle
-      className={`rounded-lg border-2 border-lightGray px-4 hover:bg-lightGray dark:hover:bg-slate-700`}
+      className={`w-full rounded-lg border-2  border-lightGray hover:bg-lightGray dark:hover:bg-slate-700`}
       onClick={() => {
         if (theme === "dark") setTheme("light");
         if (theme === "light") setTheme("dark");
@@ -15,11 +15,13 @@ const ThemeToggleButton = () => {
       {theme === "light" && (
         <ButtonInterior>
           <BsFillMoonStarsFill />
+          <p className=" hidden lg:inline">Dark</p>
         </ButtonInterior>
       )}
       {theme === "dark" && (
         <ButtonInterior>
           <BsFillSunFill />
+          <p className=" hidden lg:inline">Light</p>
         </ButtonInterior>
       )}
     </Toggle>
@@ -29,6 +31,6 @@ export default ThemeToggleButton;
 
 const ButtonInterior = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className=" flex items-center gap-2 font-semibold">{children}</div>
+    <div className=" -mx-1 flex  items-center gap-2 text-xs">{children}</div>
   );
 };

@@ -42,7 +42,7 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
         redirect: false,
       });
       console.log(user);
-      if (!user?.url) toast.error("Invalid Credentials");
+      if (!user?.url) toast.error("Email or password is incorrect");
     } else if (
       formType === "signup" &&
       userInput.name &&
