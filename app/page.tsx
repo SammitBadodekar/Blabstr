@@ -20,11 +20,11 @@ export default function Home() {
   }, [session?.user]);
 
   return (
-    <main className=" flex h-screen w-screen flex-col items-center justify-center gap-8 dark:bg-darkTheme">
+    <main className=" flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-hidden dark:bg-darkTheme">
       <Image
         src="/_6dd78af8-728b-43b4-9083-9b6eb8bb0017-removebg-preview.svg"
-        width={500}
-        height={500}
+        width={300}
+        height={300}
         alt="logo"
       />
       <h1 className=" text-3xl font-bold">Blabstr</h1>
