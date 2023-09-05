@@ -20,7 +20,7 @@ module.exports = {
         darkTheme: "#14171A",
         darkTransparent: "#14171a6e",
         lightTheme: "#F5F8FA",
-        lightTransparent: "#e2e2e297",
+        lightTransparent: "#f5f8fabe",
         darkGray: "#657786",
         extraDarkGray: "#36393F",
         lightGray: "#AAB8C2",

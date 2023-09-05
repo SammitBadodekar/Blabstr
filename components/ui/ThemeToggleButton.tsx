@@ -31,6 +31,8 @@ export default ThemeToggleButton;
 
 const ButtonInterior = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className=" -mx-1 flex  items-center gap-2 text-xs">{children}</div>
+    <div className=" -mx-1 flex  items-center gap-2 p-2 text-xs">
+      {children}
+    </div>
   );
 };
