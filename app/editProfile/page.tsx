@@ -41,7 +41,7 @@ const inputClassnames = "rounded-lg dark:bg-darkTheme border-2 p-2 bg-lightTheme
         axios.put("/api/users/update",updatedUser)
       }}>
         <input type="text" placeholder="username" className={inputClassnames} value={updatedUser?.name} onChange={(e)=> setUpdatedUser((prev)=> ({...prev,name: e.target.value}))}/>
-        <textarea name="about" id="" cols="30" rows="5" placeholder=" about you" className={inputClassnames} value={updatedUser?.about} onChange={(e)=> setUpdatedUser((prev)=> ({...prev,about: e.target.value}))}></textarea>
+        <textarea name="about" id="" cols={30} rows={5} placeholder=" about you" className={inputClassnames} value={updatedUser?.about} onChange={(e)=> setUpdatedUser((prev)=> ({...prev,about: e.target.value}))}></textarea>
         <button type="submit" className=" p-2 border-2 rounded-lg bg-slate-300 dark:text-darkTheme">Save</button>
       </form>
       
