@@ -8,6 +8,7 @@ export const userState = atom({
     id: "",
     imageUrl: "",
     name: "",
+    about:"",
     password: "",
     updatedAt: "",
   },

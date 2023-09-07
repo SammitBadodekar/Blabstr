@@ -22,9 +22,20 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
   const { data: session } = useSession();
   console.log(session?.user);
 
+  const pushUser = async () => {
+    try {
+      const response = await axios.put("/api/users/signup", session?.user);
+      console.log(response.data === "Created New Account");
+      if (response.data === "Created New Account") {
+        router.push("/editProfile");
+      }
+    } catch (error) {
+      router.push("/home");
+    }
+  };
+
   if (session?.user) {
-    axios.put("/api/users/signup", session.user);
-    router.push("/");
+    pushUser();
   }
 
   const mutation = useMutation(() => {

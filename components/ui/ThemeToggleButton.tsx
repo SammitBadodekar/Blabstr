@@ -1,38 +1,32 @@
 import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
 import { useTheme } from "next-themes";
-import { Toggle } from "@/components/ui/toggle";
 
 const ThemeToggleButton = () => {
   const { theme, setTheme } = useTheme();
-  return (
-    <Toggle
-      className={`w-full rounded-lg border-2  border-lightGray hover:bg-lightGray dark:hover:bg-slate-700`}
-      onClick={() => {
-        if (theme === "dark") setTheme("light");
-        if (theme === "light") setTheme("dark");
-      }}
-    >
-      {theme === "light" && (
-        <ButtonInterior>
-          <BsFillMoonStarsFill />
-          <p className=" hidden lg:inline">Dark</p>
-        </ButtonInterior>
-      )}
-      {theme === "dark" && (
-        <ButtonInterior>
-          <BsFillSunFill />
-          <p className=" hidden lg:inline">Light</p>
-        </ButtonInterior>
-      )}
-    </Toggle>
-  );
+  if (theme)
+    return (
+      <div className="flex items-center justify-start gap-2 text-xl  text-slate-500 dark:text-slate-200">
+        <div
+          className="relative  flex gap-4 rounded-full bg-slate-300 p-2 text-sm text-darkTheme dark:bg-slate-800 dark:text-slate-300"
+          onClick={() => {
+            if (theme === "dark") {
+              setTheme("light");
+            } else setTheme("dark");
+          }}
+        >
+          <button>
+            <BsFillSunFill />
+          </button>
+          <button>
+            <BsFillMoonStarsFill />
+          </button>
+          <div
+            className={`absolute top-1 h-6 w-6 rounded-full bg-blue-950 duration-300 ease-out dark:bg-yellow-300 ${
+              theme === "dark" ? " translate-x-6" : " -translate-x-1"
+            }`}
+          ></div>
+        </div>
+      </div>
+    );
 };
 export default ThemeToggleButton;
-
-const ButtonInterior = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className=" -mx-1 flex  items-center gap-2 p-2 text-xs">
-      {children}
-    </div>
-  );
-};

@@ -6,7 +6,7 @@ import Post from "@/components/ui/post";
 
 export default function Home() {
   return (
-    <div className=" w-full ">
+    <div className=" page w-full">
       <div className="sticky top-0 hidden w-full bg-lightTransparent p-2 text-center font-bold backdrop-blur-sm dark:bg-darkTransparent sm:block">
         Home
       </div>
@@ -14,7 +14,7 @@ export default function Home() {
         <Logo text={true} />
       </div>
       <MakePost />
-      {Array(30).fill(<Post />)}
+      {/*  {Array(30).fill(<Post />)} */}
     </div>
   );
 }

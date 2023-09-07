@@ -19,7 +19,7 @@ export const PUT = async (req: any) => {
         email: user?.email,
       },
     });
-    return new NextResponse(JSON.stringify(createUser));
+    return new NextResponse(JSON.stringify("Created New Account"));
   } else {
     return new NextResponse(null, { status: 409 });
   }

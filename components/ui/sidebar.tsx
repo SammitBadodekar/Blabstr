@@ -13,7 +13,6 @@ import ProfileImage from "./profileImage";
 
 const Sidebar = () => {
   const [user, setUser] = useRecoilState(userState);
-  console.log(user.imageUrl);
 
   return (
     <aside className="col-start-1 hidden h-screen flex-col items-center gap-4 overflow-x-hidden overflow-y-scroll border-r-2 border-lightGray px-4 py-8 text-xl font-bold dark:border-slate-800 sm:col-end-3 sm:flex sm:gap-8 md:col-end-3 md:w-full lg:col-end-3 lg:items-start">
@@ -33,15 +32,17 @@ const Sidebar = () => {
       <NavLinks text="Communities" URL="/">
         <BsPeople />
       </NavLinks>
-      <NavLinks text="Profile" URL="/profile">
-        <ProfileImage src={user.imageUrl} size={50} />
-      </NavLinks>
+      {user?.imageUrl && (
+        <NavLinks text="Profile" URL="/editProfile">
+          <ProfileImage src={user?.imageUrl} size={40} />
+        </NavLinks>
+      )}
 
-      <div className=" grid w-full gap-4">
+      <div className=" grid w-full   gap-4">
         <ThemeToggleButton />
         <Link
           href="/post"
-          className=" flex w-full items-center justify-center gap-2 rounded-full bg-darkGray p-1 text-xs text-lightTheme dark:bg-extraLightGray dark:text-darkTheme"
+          className=" flex w-full items-center justify-center gap-2 rounded-full bg-darkGray p-2 text-xs text-lightTheme dark:bg-extraLightGray dark:text-darkTheme"
         >
           <p className=" text-xl font-bold">+</p>
           <p className="hidden  font-medium lg:inline">Post</p>

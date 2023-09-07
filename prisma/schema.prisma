@@ -14,6 +14,7 @@ model Users {
   imageUrl String @db.Text
   email String @db.Text
   password String?
+  about String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
