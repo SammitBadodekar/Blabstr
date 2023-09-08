@@ -12,9 +12,11 @@ model Users {
   id String @id @default(uuid())
   name String
   imageUrl String @db.Text
+  bgImage String? @db.Text
   email String @db.Text
   password String?
   about String?
+  tag String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

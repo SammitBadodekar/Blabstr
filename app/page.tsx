@@ -7,14 +7,14 @@ import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     console.log(session?.user);
-    if (!session?.user) {
+    if (!session?.user && status === "unauthenticated") {
       router.push("/signin");
     }
-    if (session?.user) {
+    if (session?.user && status === "authenticated") {
       router.push("/home");
     }
   }, [session?.user]);

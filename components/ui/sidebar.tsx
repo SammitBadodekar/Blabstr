@@ -15,7 +15,7 @@ const Sidebar = () => {
   const [user, setUser] = useRecoilState(userState);
 
   return (
-    <aside className="col-start-1 hidden h-screen flex-col items-center gap-4 overflow-x-hidden overflow-y-scroll border-r-2 border-lightGray px-4 py-8 text-xl font-bold dark:border-slate-800 sm:col-end-3 sm:flex sm:gap-8 md:col-end-3 md:w-full lg:col-end-3 lg:items-start">
+    <aside className="col-start-1 hidden h-screen flex-col items-center gap-4 overflow-x-hidden overflow-y-scroll border-r-2 border-lightGray px-4 py-8 text-xl font-bold dark:border-slate-800 sm:col-end-3 sm:flex sm:gap-6 md:col-end-3 md:w-full lg:col-end-3 lg:items-start">
       <Logo text={false} />
       <NavLinks text="Home" URL="/home">
         <BiHomeCircle />
@@ -33,7 +33,7 @@ const Sidebar = () => {
         <BsPeople />
       </NavLinks>
       {user?.imageUrl && (
-        <NavLinks text="Profile" URL="/editProfile">
+        <NavLinks text="Profile" URL="/profile">
           <ProfileImage src={user?.imageUrl} size={40} />
         </NavLinks>
       )}
@@ -78,9 +78,9 @@ const NavLinks = ({
       href={URL}
       className={` ${
         active === text.toLocaleLowerCase()
-          ? "  text-base font-extrabold"
-          : " text-xs font-medium"
-      } flex items-center gap-2`}
+          ? "  text-lg font-extrabold"
+          : " text-sm font-normal"
+      } flex items-center gap-2 duration-300 ease-out `}
     >
       {children}
       <p className=" hidden lg:inline">{text}</p>

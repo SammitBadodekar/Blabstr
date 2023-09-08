@@ -85,3 +85,24 @@
   background: #657786;
   border-radius: 2px;
 }
+
+@media screen and (min-width: 600px) {
+  .page {
+    min-width: 24rem;
+  }
+}
+@media screen and (min-width: 768px) {
+  .page {
+    min-width: 17rem;
+  }
+}
+@media screen and (min-width: 800px) {
+  .page {
+    min-width: 20rem;
+  }
+}
+@media screen and (min-width: 1080px) {
+  .page {
+    min-width: 25rem;
+  }
+}

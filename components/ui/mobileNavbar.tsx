@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 const MobileNavbar = () => {
   return (
-    <div className=" sticky bottom-0 flex items-center justify-around gap-2 bg-lightTheme p-3 dark:bg-darkTheme sm:hidden">
+    <div className="flex items-center justify-around gap-2 bg-lightTheme p-3 dark:bg-darkTheme sm:hidden">
       <Link
         href="/home"
         className=" flex flex-col items-center justify-center gap-2"
