@@ -47,7 +47,7 @@ const RenderPages = ({ children }: { children: React.ReactNode }) => {
       <div className=" items-center justify-center md:flex md:w-full ">
         <div className=" grid w-fit grid-cols-1 sm:grid-cols-12 ">
           <Sidebar />
-          <main className=" page h-screen w-screen overflow-y-scroll sm:col-start-3 sm:col-end-13 sm:w-full md:col-start-3 md:col-end-9 lg:col-start-3 lg:col-end-9">
+          <main className=" page h-screen w-screen overflow-y-scroll pb-20 sm:col-start-3 sm:col-end-13 sm:w-full sm:pb-0 md:col-start-3 md:col-end-9 lg:col-start-3 lg:col-end-9">
             {children}
             <MobileNavbar />
           </main>

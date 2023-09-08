@@ -1,22 +1,23 @@
-"use client";
-
 import ThemeToggleButton from "./ThemeToggleButton";
 import { BiHomeCircle, BiSearchAlt, BiBell, BiLogOut } from "react-icons/bi";
 import { BsChatDots, BsPeople } from "react-icons/bs";
 import Link from "next/link";
-import Logo from "./logo";
+
 import { signOut } from "next-auth/react";
-import { usePathname } from "next/navigation";
+
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 import ProfileImage from "./profileImage";
 
-const Sidebar = () => {
+const MobileMenu = () => {
   const [user, setUser] = useRecoilState(userState);
-
   return (
-    <aside className="col-start-1 hidden h-screen flex-col items-center gap-4 overflow-x-hidden overflow-y-scroll border-r-2 border-lightGray bg-lightTheme px-4 py-8 text-xl font-bold dark:border-slate-800 dark:bg-darkTheme sm:col-end-3 sm:flex sm:gap-6 md:col-end-3 md:w-full lg:col-end-3 lg:items-start">
-      <Logo text={false} />
+    <div className=" flex h-screen w-full flex-col gap-4 bg-lightTheme p-4 dark:bg-darkTheme">
+      {user?.imageUrl && (
+        <NavLinks text="Profile" URL="/profile">
+          <ProfileImage src={user?.imageUrl} size={40} />
+        </NavLinks>
+      )}
       <NavLinks text="Home" URL="/home">
         <BiHomeCircle />
       </NavLinks>
@@ -32,11 +33,6 @@ const Sidebar = () => {
       <NavLinks text="Communities" URL="/">
         <BsPeople />
       </NavLinks>
-      {user?.imageUrl && (
-        <NavLinks text="Profile" URL="/profile">
-          <ProfileImage src={user?.imageUrl} size={40} />
-        </NavLinks>
-      )}
 
       <div className=" grid w-full   gap-4">
         <ThemeToggleButton />
@@ -49,17 +45,15 @@ const Sidebar = () => {
         </Link>
       </div>
 
-      <button
-        className=" mt-auto flex items-center gap-2"
-        onClick={() => signOut()}
-      >
+      <button className=" flex items-center gap-2" onClick={() => signOut()}>
         <BiLogOut />
-        <p className=" hidden text-xs font-medium lg:inline">SignOut</p>
+        <p>SignOut</p>
       </button>
-    </aside>
+    </div>
   );
 };
-export default Sidebar;
+
+export default MobileMenu;
 
 export const NavLinks = ({
   children,
@@ -70,20 +64,10 @@ export const NavLinks = ({
   URL: string;
   text: string;
 }) => {
-  const pathname = usePathname();
-  const active = pathname.split("/")[1];
-
   return (
-    <Link
-      href={URL}
-      className={` ${
-        active === text.toLocaleLowerCase()
-          ? " text-3xl font-extrabold sm:text-lg"
-          : " text-lg font-normal sm:text-sm"
-      } flex items-center gap-2 duration-300 ease-out `}
-    >
+    <Link href={URL} className=" flex items-center gap-3 text-lg">
       {children}
-      <p className=" hidden lg:inline">{text}</p>
+      <p>{text}</p>
     </Link>
   );
 };

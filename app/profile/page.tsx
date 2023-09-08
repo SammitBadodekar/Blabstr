@@ -15,22 +15,26 @@ import EditProfile from "@/components/edit-profile";
 const Page = () => {
   const [user, setUser] = useRecoilState(userState);
 
-  const inputClassnames =
-    "rounded-lg dark:bg-darkTheme border-2 p-2 bg-lightTheme";
+  console.log(user?.bgImage);
 
   return (
     <div className=" relative flex w-full flex-col gap-4">
       <EditProfile />
-      <Image
-        src={
-          user.bgImage ||
-          "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?cs=srgb&dl=pexels-francesco-ungaro-281260.jpg&fm=jpg"
-        }
-        width={100}
-        height={50}
-        alt="bg-image"
-        className=" -z-20  h-24 w-full object-cover "
-      />
+      {user.bgImage ? (
+        <Image
+          src={
+            user?.bgImage ||
+            "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?cs=srgb&dl=pexels-francesco-ungaro-281260.jpg&fm=jpg"
+          }
+          width={100}
+          height={50}
+          alt=""
+          className=" -z-20  h-24 w-full object-cover "
+        />
+      ) : (
+        <div className=" h-24 w-full bg-blue-400"></div>
+      )}
+
       <div className=" mx-4 -mt-16 w-fit rounded-full bg-lightTheme  dark:bg-darkTheme">
         <ProfileImage src={user?.imageUrl} size={120} />
       </div>

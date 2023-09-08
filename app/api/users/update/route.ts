@@ -13,6 +13,7 @@ export const PUT = async (req: any) => {
         name: user?.name,
         imageUrl: user?.imageUrl,
         about: user?.about,
+        bgImage: user?.bgImage,
       },
     });
   } catch (error) {}

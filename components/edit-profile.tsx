@@ -37,7 +37,7 @@ const EditProfile = () => {
         <AlertDialogTrigger className=" rounded-lg border-2 border-lightGray p-2 ">
           Edit Profile
         </AlertDialogTrigger>
-        <AlertDialogContent className=" overflow-y-scroll bg-slate-300 dark:bg-slate-700 sm:h-80 lg:h-96">
+        <AlertDialogContent className=" h-full overflow-y-scroll  bg-slate-300 dark:bg-slate-700 sm:h-80 lg:h-96">
           <AlertDialogHeader>
             <AlertDialogTitle className=" text-center text-2xl font-bold">
               Edit Profile
