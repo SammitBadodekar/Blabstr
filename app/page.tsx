@@ -11,13 +11,13 @@ export default function Home() {
 
   useEffect(() => {
     console.log(session?.user);
-    if (!session?.user && status === "unauthenticated") {
+    if (status === "unauthenticated") {
       router.push("/signin");
     }
-    if (session?.user && status === "authenticated") {
+    if (status === "authenticated") {
       router.push("/home");
     }
-  }, [session?.user]);
+  }, [status]);
 
   return (
     <main className=" flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-hidden dark:bg-darkTheme">
