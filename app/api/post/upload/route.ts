@@ -8,6 +8,8 @@ export const POST = async (req: any) => {
     await prisma.posts.create({
       data: {
         text: body.post.text,
+        image: body.post.image,
+        video: body.post.video,
         UserEmail: body.email,
         type: "text",
       },
