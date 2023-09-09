@@ -1,3 +1,5 @@
+"use client";
+
 import { AiOutlineVideoCamera } from "react-icons/ai";
 import { BsImages } from "react-icons/bs";
 import { Button } from "./button";
