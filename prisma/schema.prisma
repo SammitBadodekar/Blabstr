@@ -13,19 +13,48 @@ model Users {
   name String
   imageUrl String @db.Text
   bgImage String? @db.Text
-  email String @db.Text
+  email String @unique
   password String?
   about String?
   tag String?
+  posts Posts[] @relation("posts")
+  savedPosts Posts[]  @relation("savedposts")
+  likedPosts Posts[] @relation("likedposts")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Posts {
-  id String @id @default(uuid())
-  userEmail String @db.Text
+  id String @id @default(uuid()) 
   type String
   text String?
   image String? @db.Text
   video String? @db.Text
+  likes Int?
+  saves Int?
+  user    Users    @relation("posts",fields: [UserEmail], references: [email])
+  UserEmail   String
+  savedby  Users?    @relation("savedposts",fields: [savedbyEmail], references: [email])
+  savedbyEmail String?
+  likedby  Users?    @relation("likedposts",fields: [likedbyEmail], references: [email])
+  likedbyEmail String?
+  comments Comments[]
+  @@index([ UserEmail], name: "post_id_index")
+  @@index([ savedbyEmail], name: "savedpost_id_index")
+  @@index([ likedbyEmail], name: "likedpost_id_index")
+}
+
+model Comments{
+  id String @id @default(uuid())
+  post Posts  @relation(fields: [postId], references: [id])
+  postId String 
+  @@index([postId], name: "post_id_index")
+  replies Replies[]
+}
+
+model Replies{
+  id String @id @default(uuid())
+  comment Comments  @relation(fields: [commentId], references: [id])
+ commentId String 
+ @@index([commentId], name: "post_id_index")
 }

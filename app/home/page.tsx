@@ -2,7 +2,7 @@
 
 import MakePost from "@/components/ui/makePost";
 import Logo from "@/components/ui/logo";
-import Post from "@/components/ui/post";
+
 import ProfileImage from "@/components/ui/profileImage";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
@@ -10,6 +10,7 @@ import { NavLinks } from "@/components/ui/sidebar";
 import { BiBell } from "react-icons/bi";
 import { useState, useRef, useEffect } from "react";
 import MobileMenu from "@/components/ui/mobileMenu";
+import DisplayPost from "@/components/displayPost";
 
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
@@ -61,7 +62,7 @@ export default function Home() {
         ></div>
       </div>
       <MakePost />
-      {Array(30).fill(<Post />)}
+      <DisplayPost />
     </div>
   );
 }
