@@ -14,9 +14,6 @@ import EditProfile from "@/components/edit-profile";
 
 const Page = () => {
   const [user, setUser] = useRecoilState(userState);
-
-  console.log(user?.bgImage);
-
   return (
     <div className=" relative flex w-full flex-col gap-4">
       <EditProfile />

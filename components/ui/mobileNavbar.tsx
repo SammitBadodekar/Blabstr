@@ -20,10 +20,10 @@ const MobileNavbar = () => {
       >
         <p className=" font-bold">+</p>
       </Link>
-      <NavLinks text="Chats" URL="/">
+      <NavLinks text="Chats" URL="/chats">
         <BsChatDots />
       </NavLinks>
-      <NavLinks text="Communities" URL="/">
+      <NavLinks text="Communities" URL="/communities">
         <BsPeople />
       </NavLinks>
     </div>

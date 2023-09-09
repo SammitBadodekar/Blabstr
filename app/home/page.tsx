@@ -43,7 +43,7 @@ export default function Home() {
         </div>
 
         <Logo text={true} />
-        <NavLinks text="Notifications" URL="/">
+        <NavLinks text="Notifications" URL="/notifications">
           <BiBell />
         </NavLinks>
         <div

@@ -22,13 +22,13 @@ const MobileMenu = () => {
       <NavLinks text="Explore" URL="/explore">
         <BiSearchAlt />
       </NavLinks>
-      <NavLinks text="Notifications" URL="/">
+      <NavLinks text="Notifications" URL="/notifications">
         <BiBell />
       </NavLinks>
-      <NavLinks text="Chats" URL="/">
+      <NavLinks text="Chats" URL="/chats">
         <BsChatDots />
       </NavLinks>
-      <NavLinks text="Communities" URL="/">
+      <NavLinks text="Communities" URL="/communities">
         <BsPeople />
       </NavLinks>
 

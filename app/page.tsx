@@ -7,10 +7,9 @@ import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   useEffect(() => {
-    console.log(session?.user);
     if (status === "unauthenticated") {
       router.push("/signin");
     }
@@ -26,6 +25,7 @@ export default function Home() {
         width={300}
         height={300}
         alt="logo"
+        className=" animate-pulse"
       />
       <h1 className=" text-3xl font-bold">Blabstr</h1>
     </main>

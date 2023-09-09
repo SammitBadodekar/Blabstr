@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
+import { LiaSpinnerSolid } from "react-icons/lia";
 import { toast } from "react-hot-toast";
 import { useMutation } from "react-query";
 import axios from "axios";
@@ -20,12 +21,15 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
 
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(session?.user);
 
   const pushUser = async () => {
+    toast(() => (
+      <span className=" animate-spin">
+        <LiaSpinnerSolid />
+      </span>
+    ));
     try {
       const response = await axios.put("/api/users/signup", session?.user);
-      console.log(response.data === "Created New Account");
       if (response.data === "Created New Account") {
         router.push("/home");
       }
@@ -52,7 +56,6 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
         password,
         redirect: false,
       });
-      console.log(user);
       if (!user?.url) toast.error("Email or password is incorrect");
     } else if (
       formType === "signup" &&
@@ -67,8 +70,6 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
         toast.success("Successfully created account");
         router.push("/signin");
       }
-
-      console.log(mutation.data);
     } else toast.error("Fill all details");
   };
   return (
@@ -123,7 +124,7 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
             ? "Loading..."
             : formType === "signup"
             ? "Create Account"
-            : "Signin"}
+            : "Sign in"}
         </button>
       </form>
       <p className=" -my-3 text-xl font-semibold">or</p>
@@ -132,7 +133,7 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
         onClick={() => signIn("google")}
       >
         <FcGoogle />
-        {formType === "signup" ? "SignUp" : "Signin"} with Google
+        {formType === "signup" ? "Sign Up" : "Sign in"} with Google
       </button>
       <p>
         {formType === "signup"
@@ -143,7 +144,7 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
           href={formType === "signup" ? "/signin" : "/signup"}
           className="text-blue-500 underline dark:text-blue-300"
         >
-          {formType === "signup" ? "Signin" : "signup"}
+          {formType === "signup" ? "Sign in" : "sign up"}
         </Link>
       </p>
     </div>

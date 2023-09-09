@@ -1,0 +1,9 @@
+const Page = () => {
+  return (
+    <div className=" flex h-screen items-center justify-center ">
+      No Notifications
+    </div>
+  );
+};
+
+export default Page;

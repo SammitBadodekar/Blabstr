@@ -21,3 +21,11 @@ model Users {
   updatedAt DateTime @updatedAt
 }
 
+model Posts {
+  id String @id @default(uuid())
+  userEmail String @db.Text
+  type String
+  text String?
+  image String? @db.Text
+  video String? @db.Text
+}
