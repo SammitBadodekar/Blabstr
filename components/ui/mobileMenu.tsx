@@ -12,15 +12,13 @@ import ProfileImage from "./profileImage";
 const MobileMenu = () => {
   const [user, setUser] = useRecoilState(userState);
   return (
-    <div className=" flex h-screen w-full flex-col gap-4 bg-lightTheme p-4 dark:bg-darkTheme">
+    <div className=" flex h-screen w-full flex-col gap-6 overflow-y-scroll bg-lightTheme p-4 px-8 dark:bg-darkTheme">
       {user?.imageUrl && (
         <NavLinks text="Profile" URL="/profile">
           <ProfileImage src={user?.imageUrl} size={40} />
         </NavLinks>
       )}
-      <NavLinks text="Home" URL="/home">
-        <BiHomeCircle />
-      </NavLinks>
+
       <NavLinks text="Explore" URL="/explore">
         <BiSearchAlt />
       </NavLinks>
@@ -41,7 +39,7 @@ const MobileMenu = () => {
           className=" flex w-full items-center justify-center gap-2 rounded-full bg-darkGray p-2 text-xs text-lightTheme dark:bg-extraLightGray dark:text-darkTheme"
         >
           <p className=" text-xl font-bold">+</p>
-          <p className="hidden  font-medium lg:inline">Post</p>
+          <p className="font-medium ">Post</p>
         </Link>
       </div>
 
@@ -65,7 +63,7 @@ export const NavLinks = ({
   text: string;
 }) => {
   return (
-    <Link href={URL} className=" flex items-center gap-3 text-lg">
+    <Link href={URL} className=" flex items-center gap-3 text-lg font-semibold">
       {children}
       <p>{text}</p>
     </Link>

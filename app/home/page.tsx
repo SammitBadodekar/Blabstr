@@ -38,8 +38,8 @@ export default function Home() {
         Home
       </div>
       <div className=" flex justify-between px-4 py-2 sm:hidden">
-        <div onClick={() => setIsOpen(true)}>
-          <ProfileImage src={user.imageUrl} size={50} />
+        <div onClick={() => setIsOpen(true)} className=" pt-1">
+          <ProfileImage src={user.imageUrl} size={40} />
         </div>
 
         <Logo text={true} />
@@ -49,11 +49,16 @@ export default function Home() {
         <div
           className={`absolute top-0 ${
             isOpen ? "left-0" : " -left-full"
-          }  p-2 duration-300 ease-out`}
+          }  z-20  duration-300 ease-out`}
           ref={modalRef}
         >
           <MobileMenu />
         </div>
+        <div
+          className={`absolute top-0 h-screen w-screen ${
+            isOpen ? "left-0 opacity-100" : " -left-full opacity-0"
+          } z-10  bg-darkTransparent backdrop-blur-sm transition-opacity duration-300 ease-out`}
+        ></div>
       </div>
       <MakePost />
       {Array(30).fill(<Post />)}
