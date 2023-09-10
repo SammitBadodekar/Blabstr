@@ -29,8 +29,6 @@ const MakePost = () => {
 
   const handleTextPost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log(post);
     if (user.email && post.text) {
       toast.promise(
         axios.post("/api/post/upload", { email: user.email, post }),

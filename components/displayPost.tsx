@@ -20,7 +20,6 @@ const DisplayPost = () => {
   return (
     <div className=" flex w-full flex-col ">
       {posts.map((post: any) => {
-        console.log(post);
         return (
           <div className=" relative m-2 flex w-full gap-2 rounded-lg  p-4 pb-10">
             <ProfileImage src={post?.user?.imageUrl} size={50} />

@@ -10,11 +10,10 @@ export default function Home() {
   const { status } = useSession();
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/signin");
-    }
     if (status === "authenticated") {
       router.push("/home");
+    } else {
+      router.push("/signin");
     }
   }, [status]);
 

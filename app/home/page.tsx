@@ -40,7 +40,7 @@ export default function Home() {
       </div>
       <div className=" flex justify-between px-4 py-2 sm:hidden">
         <div onClick={() => setIsOpen(true)} className=" pt-1">
-          <ProfileImage src={user.imageUrl} size={40} />
+          <ProfileImage src={user?.imageUrl} size={40} />
         </div>
 
         <Logo text={true} />
