@@ -102,7 +102,7 @@ const MakePost = () => {
                       width={200}
                       height={200}
                       alt=""
-                      className=" h-40 w-40"
+                      className=" h-40 w-40 w-full object-contain"
                     />
                   ) : (
                     <div className=" flex h-40 w-40 items-center justify-center rounded-xl border-2 bg-lightTheme dark:bg-darkTheme">

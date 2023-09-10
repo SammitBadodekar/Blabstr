@@ -31,7 +31,7 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
     try {
       const response = await axios.put("/api/users/signup", session?.user);
       if (response.data === "Created New Account") {
-        router.push("/home");
+        router.push("/setup-profile");
       }
     } catch (error) {
       router.push("/home");

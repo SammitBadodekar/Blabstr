@@ -18,8 +18,14 @@ const RenderPages = ({ children }: { children: React.ReactNode }) => {
 
   const pathname = usePathname();
 
-  const headerLessRoutes = ["/", "/signin", "/signup"];
-  const protectedRoutes = ["/home", "/editProfile", "/post"];
+  const headerLessRoutes = ["/", "/signin", "/signup", "/setup-profile"];
+  const protectedRoutes = [
+    "/home",
+    "/editProfile",
+    "/post",
+    "/setup-profile",
+    "/profile",
+  ];
 
   const isHeaderLessPathName = headerLessRoutes.includes(pathname);
   if (
