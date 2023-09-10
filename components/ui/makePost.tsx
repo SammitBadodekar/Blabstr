@@ -34,8 +34,8 @@ const MakePost = () => {
         axios.post("/api/post/upload", { email: user.email, post }),
         {
           loading: "Uploading...",
-          success: <b>Successfully Uploaded Post</b>,
-          error: <b>Could not upload Post</b>,
+          success: <p>Successfully Uploaded Post</p>,
+          error: <p>Could not upload Post</p>,
         }
       );
       setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
@@ -84,14 +84,14 @@ const MakePost = () => {
               <p>Images</p>
             </PostMethod>
           </AlertDialogTrigger>
-          <AlertDialogContent className=" h-screen overflow-y-scroll bg-slate-300 dark:bg-slate-800 sm:h-96">
+          <AlertDialogContent className=" h-screen overflow-y-scroll bg-slate-300 dark:bg-darkTheme sm:h-96 sm:dark:bg-slate-800">
             <AlertDialogHeader>
               <AlertDialogTitle className=" flex justify-center text-2xl">
                 Upload Photo
               </AlertDialogTitle>
               <AlertDialogDescription className=" ">
                 <form
-                  className="flex flex-col items-center justify-center gap-4 pt-10"
+                  className="flex flex-col  justify-center gap-4 pt-10"
                   onSubmit={(e) => {
                     handleImagePost(e);
                   }}
@@ -102,10 +102,10 @@ const MakePost = () => {
                       width={200}
                       height={200}
                       alt=""
-                      className=" h-40 w-40 w-full object-contain"
+                      className=" h-40 w-full object-contain"
                     />
                   ) : (
-                    <div className=" flex h-40 w-40 items-center justify-center rounded-xl border-2 bg-lightTheme dark:bg-darkTheme">
+                    <div className=" flex h-40 w-full items-center justify-center rounded-xl border-2 bg-lightTheme dark:bg-darkTheme">
                       Image
                     </div>
                   )}
@@ -123,11 +123,11 @@ const MakePost = () => {
                       // Do something with the error.
                       toast.error(`Failed to upload`);
                     }}
-                    className=" rounded-lg bg-blue-500 p-2 text-lightTheme"
+                    className=" w-fit rounded-lg bg-blue-500 p-1 text-lightTheme"
                   />
 
-                  <div className=" grid">
-                    <label htmlFor="">Caption</label>
+                  <div className=" mt-10 grid">
+                    <p>Caption</p>
                     <textarea
                       name=""
                       id=""
@@ -141,9 +141,9 @@ const MakePost = () => {
                     ></textarea>
                   </div>
                   {post.text && post.image ? (
-                    <AlertDialogCancel>
-                      <Button type="submit">Post</Button>
-                    </AlertDialogCancel>
+                    <AlertDialogAction className=" w-fit" type="submit">
+                      Post
+                    </AlertDialogAction>
                   ) : (
                     <Button type="submit">Post</Button>
                   )}

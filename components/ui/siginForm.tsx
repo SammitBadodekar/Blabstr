@@ -6,7 +6,6 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { LiaSpinnerSolid } from "react-icons/lia";
 import { toast } from "react-hot-toast";
-import { useMutation } from "react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -34,17 +33,15 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
         router.push("/setup-profile");
       }
     } catch (error) {
-      router.push("/home");
+      if (!session?.user?.image) {
+        router.push("/setup-profile");
+      } else router.push("/home");
     }
   };
 
   if (session?.user) {
     pushUser();
   }
-
-  const mutation = useMutation(() => {
-    return axios.put("/api/users/signup", userInput);
-  });
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -63,13 +60,21 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
       userInput.password &&
       userInput.email
     ) {
-      mutation.mutate();
-
-      if (mutation.isError) toast.error("Account already exists");
-      if (mutation.isSuccess) {
-        toast.success("Successfully created account");
-        router.push("/signin");
-      }
+      toast
+        .promise(axios.put("/api/users/signup", userInput), {
+          loading: "Creating new account...",
+          success: <p>Successfully created account</p>,
+          error: (
+            <p>
+              Account with email <b>"{userInput.email}"</b> already exists
+            </p>
+          ),
+        })
+        .then((resp) => {
+          if (resp.data === "Created New Account") {
+            router.push("/signin");
+          }
+        });
     } else toast.error("Fill all details");
   };
   return (
@@ -120,11 +125,7 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
           type="submit"
           className=" mt-4 rounded-lg bg-lightGray p-2 px-14 font-semibold dark:bg-darkGray md:w-full"
         >
-          {mutation.isLoading
-            ? "Loading..."
-            : formType === "signup"
-            ? "Create Account"
-            : "Sign in"}
+          {formType === "signup" ? "Create Account" : "Sign in"}
         </button>
       </form>
       <p className=" -my-3 text-xl font-semibold">or</p>

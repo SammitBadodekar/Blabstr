@@ -43,7 +43,10 @@ const MobileMenu = () => {
         </Link>
       </div>
 
-      <button className=" flex items-center gap-2" onClick={() => signOut()}>
+      <button
+        className=" mt-auto flex items-center gap-2 text-lg font-extrabold"
+        onClick={() => signOut()}
+      >
         <BiLogOut />
         <p>SignOut</p>
       </button>

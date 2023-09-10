@@ -2,6 +2,7 @@ import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/db";
+import bcrypt from "bcrypt";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -32,7 +33,9 @@ export const options: NextAuthOptions = {
 
         if (
           credentials?.email === user?.email &&
-          credentials?.password === user?.password
+          credentials?.password &&
+          user?.password &&
+          (await bcrypt.compare(credentials?.password, user?.password))
         ) {
           return user;
         } else {

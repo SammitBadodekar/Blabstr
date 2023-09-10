@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
 
 export const PUT = async (req: any) => {
   const user = await req.json();
@@ -15,7 +16,7 @@ export const PUT = async (req: any) => {
         imageUrl:
           user?.image ||
           "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
-        password: user?.password,
+        password: await bcrypt.hash(user?.password, 10),
         email: user?.email,
       },
     });

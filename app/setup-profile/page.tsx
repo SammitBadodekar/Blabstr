@@ -18,7 +18,9 @@ const Page = () => {
     createdAt: "",
     email: session?.user?.email || "",
     id: "",
-    imageUrl: session?.user?.image || "",
+    imageUrl:
+      session?.user?.image ||
+      "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
     bgImage: "",
     tag: "",
     name: session?.user?.name || "",

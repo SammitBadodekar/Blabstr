@@ -28,11 +28,7 @@ const RenderPages = ({ children }: { children: React.ReactNode }) => {
   ];
 
   const isHeaderLessPathName = headerLessRoutes.includes(pathname);
-  if (
-    protectedRoutes.includes(pathname) &&
-    !session?.user &&
-    status === "unauthenticated"
-  )
+  if (protectedRoutes.includes(pathname) && status === "unauthenticated")
     router.push("/signin");
 
   useEffect(() => {
@@ -65,12 +61,15 @@ const RenderPages = ({ children }: { children: React.ReactNode }) => {
 };
 export default RenderPages;
 
-interface User {
+export interface User {
   createdAt: string;
   email: string;
   id: string;
   imageUrl: string;
   name: string;
-  password: string;
+  password?: string;
   updatedAt: string;
+  tag: string;
+  bgImage: string;
+  about: string;
 }
