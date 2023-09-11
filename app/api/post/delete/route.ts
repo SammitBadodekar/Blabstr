@@ -3,14 +3,17 @@ import { NextResponse } from "next/server";
 
 export const PUT = async (req: any) => {
   const body = await req.json();
-  console.log(body.id);
+  console.log(body);
   try {
-    await prisma.posts.delete({
-      where: {
-        id: body.id,
-      },
-    });
-  } catch (error) {}
-
-  return new NextResponse(JSON.stringify("Created New Account"));
+    if (body.userEmail === body.postAuthor) {
+      await prisma.posts.delete({
+        where: {
+          id: body.id,
+        },
+      });
+      return new NextResponse(JSON.stringify("deleted"));
+    } else throw new Error("unauthorized");
+  } catch (error) {
+    return new NextResponse(JSON.stringify(error), { status: 401 });
+  }
 };
