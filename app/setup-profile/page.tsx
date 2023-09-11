@@ -42,7 +42,6 @@ const Page = () => {
         e.preventDefault();
         if (updatedUser?.name && updatedUser?.about) {
           setUser(updatedUser);
-          console.log(updatedUser);
           toast.promise(axios.put("/api/users/update", updatedUser), {
             loading: "Saving...",
             success: <b>Successfully Updated profile</b>,

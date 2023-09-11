@@ -24,7 +24,6 @@ const Page = () => {
     if (!search) SetSearchUser(user);
     const getUser = async () => {
       const user = await axios.get(`/api/users/${search}`);
-      console.log(user);
       SetSearchUser(user.data);
     };
     if (search) getUser();

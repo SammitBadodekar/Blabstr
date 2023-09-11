@@ -4,16 +4,40 @@ import ProfileImage from "./ui/profileImage";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BsBookmarkPlus } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/atoms/userState";
+import toast from "react-hot-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const DisplayPost = () => {
-  const [posts, setPost] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [user, setUser] = useRecoilState(userState);
+
+  const handleDelete = async (id: string) => {
+    toast.promise(axios.put("/api/post/delete", { id }), {
+      loading: "deleting...",
+      success: <p>Post deleted ,reload to see changes</p>,
+      error: <p>Unable to delete post</p>,
+    });
+  };
 
   useEffect(() => {
     const getPosts = async () => {
       const posts = await axios.get("/api/post/getMany");
-      setPost(posts.data.reverse());
+      setPosts(posts.data.reverse());
     };
     getPosts();
   }, []);
@@ -21,6 +45,8 @@ const DisplayPost = () => {
   return (
     <div className=" flex w-full flex-col ">
       {posts.map((post: any) => {
+        const isAuthor = post.user.email === user.email;
+
         return (
           <div className=" relative m-2 flex w-full gap-2 rounded-lg  p-4 pb-10">
             <Link href={`/profile?id=${post?.user?.email}`}>
@@ -54,6 +80,33 @@ const DisplayPost = () => {
                 <BsBookmarkPlus />
               </div>
             </div>
+            {isAuthor && (
+              <AlertDialog>
+                <AlertDialogTrigger
+                  className={`absolute right-4 top-4 flex items-center rounded-lg border-2 p-1`}
+                >
+                  <MdDeleteOutline />{" "}
+                  <p className=" hidden sm:inline"> Delete</p>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your account and remove your data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleDelete(post.id)}>
+                      Delete Post
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
           </div>
         );
       })}
