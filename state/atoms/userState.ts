@@ -13,5 +13,10 @@ export const userState = atom({
     about: "",
     password: "",
     updatedAt: "",
+    posts: [],
+    followers: [],
+    following: [],
+    savedPosts: [],
+    likedPosts: [],
   },
 });

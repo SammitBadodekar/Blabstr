@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 
 export const PUT = async (req: any) => {
   const user = await req.json();
+  console.log(user);
 
   const existingUser = await prisma.users.findFirst({
     where: { email: user.email },
@@ -16,7 +17,7 @@ export const PUT = async (req: any) => {
         imageUrl:
           user?.image ||
           "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
-        password: await bcrypt.hash(user?.password, 10),
+        password: user?.password ? await bcrypt.hash(user?.password, 10) : null,
         email: user?.email,
       },
     });

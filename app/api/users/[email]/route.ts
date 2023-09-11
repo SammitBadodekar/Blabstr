@@ -12,6 +12,17 @@ export const GET = async (
       where: {
         email: email,
       },
+      include: {
+        posts: {
+          include: {
+            user: true,
+          },
+        },
+        followers: true,
+        following: true,
+        savedPosts: true,
+        likedPosts: true,
+      },
     });
     return new NextResponse(JSON.stringify(user));
   } catch (error) {

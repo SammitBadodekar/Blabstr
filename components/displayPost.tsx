@@ -22,7 +22,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-const DisplayPost = () => {
+const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useRecoilState(userState);
 
@@ -37,29 +37,43 @@ const DisplayPost = () => {
   useEffect(() => {
     const getPosts = async () => {
       const posts = await axios.get("/api/post/getMany");
-      setPosts(posts.data.reverse());
+      setPosts(posts.data);
     };
-    getPosts();
+    if (existingPosts) setPosts(existingPosts);
+    else getPosts();
   }, []);
 
   return (
     <div className=" flex w-full flex-col ">
       {posts.map((post: any) => {
-        const isAuthor = post.user.email === user.email;
+        const isAuthor = post?.user?.email === user?.email;
+        const date = new Date(post?.createdAt);
+        const formatted = new Intl.DateTimeFormat("en-US", {
+          month: "short",
+          day: "numeric",
+        }).format(date);
 
         return (
-          <div className=" relative m-2 flex w-full gap-2 rounded-lg  p-4 pb-10">
-            <Link href={`/profile?id=${post?.user?.email}`}>
+          <div
+            className=" relative m-2 flex w-full gap-2 rounded-lg  p-4 pb-10"
+            key={post?.id}
+          >
+            <Link href={`/profile?id=${post?.user?.email}&tab=blabs`}>
               <ProfileImage src={post?.user?.imageUrl} size={50} />
             </Link>
 
             <div className=" flex w-full flex-col  gap-2 pr-4">
-              <Link href={`/profile?id=${post?.user?.email}`}>
+              <Link
+                href={`/profile?id=${post?.user?.email}&tab=blabs`}
+                className=" flex items-center gap-4"
+              >
                 <p className=" font-bold">{post?.user?.name}</p>
+                <p className=" text-lightGray"> {formatted}</p>
               </Link>
 
               <p className=" -mt-2 text-xs text-lightGray">
-                {post?.user?.about.slice(0, 30)}...
+                {post?.user?.about?.slice(0, 30)}
+                {post?.user?.about?.length > 30 ? "..." : ""}
               </p>
               <p className=" max-w-sm text-darkTheme dark:text-lightTheme">
                 {post?.text}
@@ -83,7 +97,7 @@ const DisplayPost = () => {
             {isAuthor && (
               <AlertDialog>
                 <AlertDialogTrigger
-                  className={`absolute right-4 top-4 flex items-center rounded-lg border-2 p-1`}
+                  className={`absolute right-8 top-4 flex items-center rounded-lg border-2 bg-lightTheme p-1 dark:bg-darkTheme`}
                 >
                   <MdDeleteOutline />{" "}
                   <p className=" hidden sm:inline"> Delete</p>
@@ -95,7 +109,7 @@ const DisplayPost = () => {
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
+                      this post.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>

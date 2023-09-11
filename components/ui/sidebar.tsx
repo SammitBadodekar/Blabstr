@@ -33,7 +33,7 @@ const Sidebar = () => {
         <BsPeople />
       </NavLinks>
       {user?.imageUrl && (
-        <NavLinks text="Profile" URL="/profile">
+        <NavLinks text="Profile" URL={`/profile?id=${user.email}&tab=blabs`}>
           <ProfileImage src={user?.imageUrl} size={40} />
         </NavLinks>
       )}

@@ -72,4 +72,9 @@ export interface User {
   tag: string;
   bgImage: string;
   about: string;
+  posts: [];
+  followers: [];
+  following: [];
+  savedPosts: [];
+  likedPosts: [];
 }

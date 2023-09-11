@@ -27,9 +27,9 @@ const MakePost = () => {
   const [post, setPost] = useState({ text: "", image: "", video: "" });
   const [user, setUser] = useRecoilState(userState);
 
-  const handleTextPost = (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (user.email && post.text) {
+    if (user.email && post.text && !post.image) {
       toast.promise(
         axios.post("/api/post/upload", { email: user.email, post }),
         {
@@ -40,9 +40,6 @@ const MakePost = () => {
       );
       setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
     }
-  };
-  const handleImagePost = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     if (user.email && post.text && post.image) {
       toast.promise(
         axios.post("/api/post/upload", { email: user.email, post }),
@@ -60,7 +57,7 @@ const MakePost = () => {
       <form
         className=" flex items-center gap-4 p-4"
         onSubmit={(e) => {
-          handleTextPost(e);
+          handlePost(e);
         }}
       >
         <input
@@ -93,7 +90,7 @@ const MakePost = () => {
                 <form
                   className="flex flex-col  justify-center gap-4 pt-10"
                   onSubmit={(e) => {
-                    handleImagePost(e);
+                    handlePost(e);
                   }}
                 >
                   {post.image ? (
@@ -123,7 +120,7 @@ const MakePost = () => {
                       // Do something with the error.
                       toast.error(`Failed to upload`);
                     }}
-                    className=" w-fit rounded-lg bg-blue-500 p-1 text-lightTheme"
+                    className=" w-fit self-center rounded-lg bg-blue-500 p-1 text-lightTheme sm:self-start"
                   />
 
                   <div className=" mt-10 grid">
@@ -140,14 +137,9 @@ const MakePost = () => {
                       className="rounded-lg border-2 bg-lightTheme p-2  dark:bg-darkTheme "
                     ></textarea>
                   </div>
-                  {post.text && post.image ? (
-                    <AlertDialogAction className=" w-fit" type="submit">
-                      Post
-                    </AlertDialogAction>
-                  ) : (
-                    <Button type="submit">Post</Button>
-                  )}
-
+                  <AlertDialogAction type="submit" className=" mt-10">
+                    Post
+                  </AlertDialogAction>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                 </form>
               </AlertDialogDescription>

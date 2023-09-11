@@ -20,6 +20,8 @@ model Users {
   posts Posts[] @relation("posts")
   savedPosts Posts[]  @relation("savedposts")
   likedPosts Posts[] @relation("likedposts")
+  followers Follow[] @relation("followers")
+  following Follow[] @relation("following")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -39,6 +41,8 @@ model Posts {
   likedby  Users?    @relation("likedposts",fields: [likedbyEmail], references: [email])
   likedbyEmail String?
   comments Comments[]
+   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@index([ UserEmail], name: "post_id_index")
   @@index([ savedbyEmail], name: "savedpost_id_index")
   @@index([ likedbyEmail], name: "likedpost_id_index")
@@ -50,11 +54,25 @@ model Comments{
   postId String 
   @@index([postId], name: "post_id_index")
   replies Replies[]
+   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Replies{
   id String @id @default(uuid())
   comment Comments  @relation(fields: [commentId], references: [id])
  commentId String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
  @@index([commentId], name: "post_id_index")
+}
+
+model Follow{
+  id String @id @default(uuid())
+  followedby Users @relation("followers",fields: [followedbyEmail] , references: [email])
+  followedbyEmail String
+  followedTo Users @relation("following",fields: [followedToEmail] , references: [email])
+  followedToEmail String
+  @@index([followedbyEmail], name: "followers")
+  @@index([followedToEmail], name: "following")
 }

@@ -62,7 +62,7 @@ export default function Home() {
         ></div>
       </div>
       <MakePost />
-      <DisplayPost />
+      <DisplayPost existingPosts={null} />
     </div>
   );
 }

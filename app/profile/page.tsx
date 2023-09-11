@@ -1,7 +1,5 @@
 "use client";
 
-import { useRecoilState } from "recoil";
-import { userState } from "@/state/atoms/userState";
 import ProfileImage from "@/components/ui/profileImage";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -10,20 +8,27 @@ import { SlCalender } from "react-icons/sl";
 import EditProfile from "@/components/edit-profile";
 import { useSearchParams } from "next/navigation";
 import { User } from "@/components/renderPages";
-
-/* dialog import from shadcn */
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import DisplayPost from "@/components/displayPost";
+import Link from "next/link";
 
 const Page = () => {
-  const [user, setUser] = useRecoilState(userState);
   const [searchUser, SetSearchUser] = useState<User>();
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const search = searchParams.get("id");
+  const tab = searchParams.get("tab");
 
   useEffect(() => {
-    if (!search) SetSearchUser(user);
+    if (!search) {
+      toast.error("no such user exist");
+      router.push("/home");
+    }
     const getUser = async () => {
       const user = await axios.get(`/api/users/${search}`);
+      console.log(user);
       SetSearchUser(user.data);
     };
     if (search) getUser();
@@ -51,18 +56,45 @@ const Page = () => {
       <div className=" mx-4 -mt-16 w-fit rounded-full bg-lightTheme  dark:bg-darkTheme">
         <ProfileImage src={searchUser?.imageUrl || ""} size={120} />
       </div>
-      <div className=" flex flex-col gap-4 px-4">
+      <div className=" flex flex-col gap-4 border-b-2 px-4 pb-4">
         <p className=" text-2xl font-bold">{searchUser?.name}</p>
         <p className=" -mt-4 dark:text-darkGray">
-          @{searchUser?.email.split("@")[0]}
+          @{searchUser?.email?.split("@")[0]}
         </p>
         <p>{searchUser?.about}</p>
         <div className=" flex items-center gap-2 text-sm text-darkGray">
-          <SlCalender /> <p>Joined on {searchUser?.createdAt.split("T")[0]}</p>
+          <SlCalender /> <p>Joined on {searchUser?.createdAt?.split("T")[0]}</p>
         </div>
       </div>
+      <div className=" sticky top-0 z-30 -mt-4 flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">
+        <Tabs text="blabs" tab={tab} searchUser={searchUser} />
+        <Tabs text="replies" tab={tab} searchUser={searchUser} />
+        <Tabs text="likes" tab={tab} searchUser={searchUser} />
+      </div>
+      {searchUser && tab == "blabs" && (
+        <DisplayPost existingPosts={searchUser?.posts} />
+      )}
     </div>
   );
 };
 
 export default Page;
+
+const Tabs = ({
+  searchUser,
+  tab,
+  text,
+}: {
+  searchUser: User | undefined;
+  tab: string | null;
+  text: string;
+}) => {
+  return (
+    <Link
+      href={`/profile?id=${searchUser?.email}&tab=${text}`}
+      className={`${tab === text ? "border-b-4 border-b-blue-500" : ""} `}
+    >
+      {text}
+    </Link>
+  );
+};

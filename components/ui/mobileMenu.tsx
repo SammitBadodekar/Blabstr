@@ -14,7 +14,7 @@ const MobileMenu = () => {
   return (
     <div className=" flex h-screen w-full flex-col gap-6 overflow-y-scroll bg-lightTheme p-4 px-8 dark:bg-darkTheme">
       {user?.imageUrl && (
-        <NavLinks text="Profile" URL="/profile">
+        <NavLinks text="Profile" URL={`/profile?id=${user.email}&tab=blabs`}>
           <ProfileImage src={user?.imageUrl} size={40} />
         </NavLinks>
       )}
