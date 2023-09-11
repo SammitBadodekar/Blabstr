@@ -12,11 +12,14 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import DisplayPost from "@/components/displayPost";
 import Link from "next/link";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/atoms/userState";
 
 const Page = () => {
   const [searchUser, SetSearchUser] = useState<User>();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [user, setUser] = useRecoilState(userState);
 
   const search = searchParams.get("id");
   const tab = searchParams.get("tab");
@@ -36,7 +39,7 @@ const Page = () => {
 
   return (
     <div className=" relative flex w-full flex-col gap-4">
-      {!search && <EditProfile />}
+      {searchUser?.email === user.email && <EditProfile />}
 
       {searchUser?.bgImage ? (
         <Image

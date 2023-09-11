@@ -51,8 +51,15 @@ const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
         setPosts(sortedPosts);
       }
     };
-    if (existingPosts) setPosts(existingPosts);
-    else getPosts();
+    if (existingPosts) {
+      const sortedPosts = existingPosts.sort((a: any, b: any): number => {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
+      setPosts(sortedPosts);
+      setPosts(existingPosts);
+    } else getPosts();
   }, []);
 
   return (
