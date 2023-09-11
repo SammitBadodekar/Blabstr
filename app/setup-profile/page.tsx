@@ -27,6 +27,11 @@ const Page = () => {
     about: "",
     password: "",
     updatedAt: "",
+    posts: [],
+    followers: [],
+    following: [],
+    savedPosts: [],
+    likedPosts: [],
   });
 
   const router = useRouter();
