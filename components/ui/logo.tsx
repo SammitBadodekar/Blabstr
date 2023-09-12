@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Logo = ({ text }: { text: true | false }) => {
   return (
-    <Link href="/home" className="flex items-center">
+    <div className="flex items-center">
       <Image
         src="/_6dd78af8-728b-43b4-9083-9b6eb8bb0017-removebg-preview.svg"
         width={50}
@@ -12,7 +12,7 @@ const Logo = ({ text }: { text: true | false }) => {
         className=" lg:-my-4 lg:-ml-2"
       />
       <p className={`${text ? "" : " hidden lg:inline"}  font-bold`}>Blabstr</p>
-    </Link>
+    </div>
   );
 };
 export default Logo;

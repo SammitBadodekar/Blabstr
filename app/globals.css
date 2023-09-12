@@ -106,3 +106,7 @@
     min-width: 25rem;
   }
 }
+
+.dvh {
+  height: 100dvh;
+}

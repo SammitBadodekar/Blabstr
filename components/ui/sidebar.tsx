@@ -14,6 +14,8 @@ import ProfileImage from "./profileImage";
 const Sidebar = () => {
   const [user, setUser] = useRecoilState(userState);
 
+  console.log(user);
+
   return (
     <aside className="col-start-1 hidden h-screen flex-col items-center gap-4 overflow-x-hidden overflow-y-scroll border-r-2 border-lightGray bg-lightTheme px-4 py-8 text-xl font-bold dark:border-slate-800 dark:bg-darkTheme sm:col-end-3 sm:flex sm:gap-6 md:col-end-3 md:w-full lg:col-end-3 lg:items-start">
       <Logo text={false} />
@@ -33,7 +35,7 @@ const Sidebar = () => {
         <BsPeople />
       </NavLinks>
       {user?.imageUrl && (
-        <NavLinks text="Profile" URL={`/profile?id=${user.email}&tab=blabs`}>
+        <NavLinks text="Profile" URL={`/${user.tag}`}>
           <ProfileImage src={user?.imageUrl} size={40} />
         </NavLinks>
       )}

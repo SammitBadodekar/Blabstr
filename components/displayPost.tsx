@@ -72,12 +72,12 @@ const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
         return (
           <div className=" relative flex w-full  flex-col gap-2" key={post?.id}>
             <div className="flex w-full gap-2 rounded-lg  p-4">
-              <Link href={`/profile?id=${post?.user?.email}&tab=blabs`}>
+              <Link href={`/${post?.user?.tag}`} className=" h-fit">
                 <ProfileImage src={post?.user?.imageUrl} size={50} />
               </Link>
 
               <div className=" flex w-full flex-col  gap-2 pr-4">
-                <Link href={`/profile?id=${post?.user?.email}&tab=blabs`}>
+                <Link href={`/${post?.user?.tag}`}>
                   <p className=" font-bold">{post?.user?.name}</p>
                 </Link>
 

@@ -15,32 +15,28 @@ import Link from "next/link";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 
-const Page = () => {
+const Page = ({ params }: { params: { tag: string } }) => {
+  console.log(params.tag);
+
   const [searchUser, SetSearchUser] = useState<User>();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [user, setUser] = useRecoilState(userState);
 
-  const search = searchParams.get("id");
   const tab = searchParams.get("tab");
 
   useEffect(() => {
-    if (!search) {
-      toast.error("no such user exist");
-      router.push("/home");
-    }
     const getUser = async () => {
-      const user = await axios.get(`/api/users/${search}`);
-      console.log(user);
+      const user = await axios.get(`/api/users/${params.tag}`);
+      if (!user.data) router.push("/user-not-found");
       SetSearchUser(user.data);
     };
-    if (search) getUser();
+    getUser();
   }, []);
 
   return (
     <div className=" relative flex w-full flex-col gap-4">
       {searchUser?.email === user.email && <EditProfile />}
-
       {searchUser?.bgImage ? (
         <Image
           src={
@@ -61,9 +57,7 @@ const Page = () => {
       </div>
       <div className=" flex flex-col gap-4 border-b-2 px-4 pb-4">
         <p className=" text-2xl font-bold">{searchUser?.name}</p>
-        <p className=" -mt-4 dark:text-darkGray">
-          @{searchUser?.email?.split("@")[0]}
-        </p>
+        <p className=" -mt-4 dark:text-darkGray">@{searchUser?.tag}</p>
         <p>{searchUser?.about}</p>
         <div className=" flex items-center gap-2 text-sm text-darkGray">
           <SlCalender /> <p>Joined on {searchUser?.createdAt?.split("T")[0]}</p>
@@ -74,7 +68,7 @@ const Page = () => {
         <Tabs text="replies" tab={tab} searchUser={searchUser} />
         <Tabs text="likes" tab={tab} searchUser={searchUser} />
       </div>
-      {searchUser && tab == "blabs" && (
+      {searchUser && (tab == "blabs" || !tab) && (
         <DisplayPost existingPosts={searchUser?.posts} />
       )}
     </div>
@@ -94,8 +88,12 @@ const Tabs = ({
 }) => {
   return (
     <Link
-      href={`/profile?id=${searchUser?.email}&tab=${text}`}
-      className={`${tab === text ? "border-b-4 border-b-blue-500" : ""} `}
+      href={`/${searchUser?.tag}?tab=${text}`}
+      className={`${
+        tab === text || (!tab && text === "blabs")
+          ? "border-b-4 border-b-blue-500"
+          : ""
+      } `}
     >
       {text}
     </Link>

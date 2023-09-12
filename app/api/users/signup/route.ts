@@ -19,6 +19,7 @@ export const PUT = async (req: any) => {
           "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
         password: user?.password ? await bcrypt.hash(user?.password, 10) : null,
         email: user?.email,
+        tag: user?.email?.split("@")[0],
       },
     });
     return new NextResponse(JSON.stringify("Created New Account"));

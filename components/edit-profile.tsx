@@ -37,17 +37,14 @@ const EditProfile = () => {
         <AlertDialogTrigger className=" rounded-lg border-2 border-lightGray p-2 ">
           Edit Profile
         </AlertDialogTrigger>
-        <AlertDialogContent className=" h-full overflow-y-scroll  bg-slate-300 dark:bg-slate-700 sm:h-80 lg:h-96">
+        <AlertDialogContent className=" h-full overflow-x-hidden overflow-y-scroll  bg-slate-300 dark:bg-slate-800 sm:h-80 lg:h-96">
           <AlertDialogHeader>
             <AlertDialogTitle className=" text-center text-2xl font-bold">
               Edit Profile
             </AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription className=" flex flex-col gap-2 ">
-            <div className=" flex w-full flex-col justify-center gap-2 p-4">
-              <p className="  text-xl font-medium text-darkTheme dark:text-lightTheme">
-                Background Image
-              </p>
+            <div className=" flex w-full flex-col justify-center gap-2">
               <Image
                 src={
                   updatedUser.bgImage ||
@@ -59,7 +56,7 @@ const EditProfile = () => {
                 className=" h-24 w-full rounded-md object-cover "
               />
 
-              <Button className=" h-8 w-fit overflow-hidden">
+              <Button className=" -mt-20 mr-4 h-8 w-fit self-end overflow-hidden text-center">
                 <UploadButton
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => {
@@ -71,44 +68,38 @@ const EditProfile = () => {
                   }}
                   onUploadError={(error: Error) => {
                     // Do something with the error.
-                    toast.error(`Failed to upload`);
+                    toast.error(`Max size should be less than 16 MB`);
                   }}
                   className="pt-4"
                 />
               </Button>
-              <p>Max: 16 MB</p>
             </div>
-            <div className=" flex gap-4 sm:flex-col">
-              <div className=" flex w-full flex-col justify-center gap-2 p-4">
-                <p className="  text-xl font-medium text-darkTheme dark:text-lightTheme">
-                  Profile Photo
-                </p>
-                <ProfileImage
-                  src={
-                    updatedUser.imageUrl ||
-                    "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
-                  }
-                  size={100}
+
+            <div className=" -mt-8 ml-2 flex w-full flex-col justify-center gap-2 p-4 sm:ml-4">
+              <ProfileImage
+                src={
+                  updatedUser.imageUrl ||
+                  "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
+                }
+                size={100}
+              />
+              <Button className=" -ml-3 h-8 w-fit overflow-hidden">
+                <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res) => {
+                    toast.success("successfully updated profile");
+                    setUpdatedUser((prev) => ({
+                      ...prev,
+                      imageUrl: res ? res[0]?.url : prev.imageUrl,
+                    }));
+                  }}
+                  onUploadError={(error: Error) => {
+                    // Do something with the error.
+                    toast.error(`Max size should be less than 16 MB`);
+                  }}
+                  className="  pt-4"
                 />
-                <Button className=" h-8 w-fit overflow-hidden">
-                  <UploadButton
-                    endpoint="imageUploader"
-                    onClientUploadComplete={(res) => {
-                      toast.success("successfully updated profile");
-                      setUpdatedUser((prev) => ({
-                        ...prev,
-                        imageUrl: res ? res[0]?.url : prev.imageUrl,
-                      }));
-                    }}
-                    onUploadError={(error: Error) => {
-                      // Do something with the error.
-                      toast.error(`Failed to upload`);
-                    }}
-                    className="  pt-4"
-                  />
-                </Button>
-                <p>Max: 16 MB</p>
-              </div>
+              </Button>
             </div>
 
             <form
@@ -116,11 +107,11 @@ const EditProfile = () => {
               className="flex flex-col gap-4 p-2 "
               onSubmit={(e) => {
                 e.preventDefault();
-                if (updatedUser.name && updatedUser.about) {
+                if (updatedUser.name && updatedUser.about && user.tag) {
                   toast.promise(axios.put("/api/users/update", updatedUser), {
                     loading: "Saving...",
-                    success: <b>Successfully Updated profile</b>,
-                    error: <b>Could not Update profile</b>,
+                    success: <p>Successfully Updated profile</p>,
+                    error: <p>@{updatedUser.tag} already taken</p>,
                   });
                 }
               }}
@@ -142,6 +133,28 @@ const EditProfile = () => {
                     setUpdatedUser((prev) => ({
                       ...prev,
                       name: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+
+              <div className={` grid `}>
+                <label
+                  htmlFor=""
+                  className="text-darkTheme dark:text-lightTheme"
+                >
+                  @
+                </label>
+                <input
+                  type="text"
+                  placeholder="Your cool username"
+                  value={updatedUser?.tag}
+                  className={`${inputClassnames}`}
+                  required
+                  onChange={(e) =>
+                    setUpdatedUser((prev) => ({
+                      ...prev,
+                      tag: e.target.value,
                     }))
                   }
                 />
@@ -175,6 +188,11 @@ const EditProfile = () => {
                 <AlertDialogAction
                   type="submit"
                   className=" w-fit rounded-lg border-2 bg-slate-300 p-2 dark:text-darkTheme"
+                  disabled={
+                    updatedUser.name && updatedUser.about && updatedUser.tag
+                      ? false
+                      : true
+                  }
                 >
                   Save
                 </AlertDialogAction>

@@ -1,29 +1,26 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Logo from "@/components/ui/logo";
 import ThemeToggleButton from "@/components/ui/ThemeToggleButton";
-import { useRecoilState } from "recoil";
-import { userState } from "@/state/atoms/userState";
 
 const Page = () => {
   const { data: session } = useSession();
-  const [user, setUser] = useRecoilState(userState);
   const [updatedUser, setUpdatedUser] = useState({
     createdAt: "",
-    email: session?.user?.email || "",
+    email: "",
     id: "",
     imageUrl:
       session?.user?.image ||
       "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
     bgImage: "",
     tag: "",
-    name: session?.user?.name || "",
+    name: "",
     about: "",
     password: "",
     updatedAt: "",
@@ -36,6 +33,22 @@ const Page = () => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    const getId = async () => {
+      const { data } = await axios.get(`/api/users/${session?.user?.email}`);
+      setUpdatedUser((prev) => ({
+        ...prev,
+        id: data?.id,
+        about: data?.about || "",
+        name: data?.name,
+        email: data?.email,
+      }));
+    };
+    if (session?.user?.email) {
+      getId();
+    }
+  }, [session?.user]);
+
   const inputClassnames =
     "rounded-lg dark:bg-darkTheme border-2 p-2 bg-lightTheme text-darkTheme dark:text-lightTheme";
 
@@ -45,20 +58,34 @@ const Page = () => {
       className="flex h-screen flex-col gap-4 p-2 sm:items-center sm:justify-center"
       onSubmit={(e) => {
         e.preventDefault();
-        if (updatedUser?.name && updatedUser?.about) {
-          setUser(updatedUser);
-          toast.promise(axios.put("/api/users/update", updatedUser), {
-            loading: "Saving...",
-            success: <b>Successfully Updated profile</b>,
-            error: <b>Could not Update profile</b>,
-          });
-          setTimeout(() => {
-            router.push("/home");
-          }, 1000);
+        console.log(updatedUser);
+        if (
+          updatedUser?.name &&
+          updatedUser?.about &&
+          updatedUser?.tag &&
+          updatedUser?.id
+        ) {
+          toast
+            .promise(axios.put("/api/users/update", updatedUser), {
+              loading: "Saving...",
+              success: <p>Successfully saved profile</p>,
+              error: (
+                <p>
+                  @
+                  {updatedUser.tag
+                    ? updatedUser.tag
+                    : updatedUser?.email?.split("@")[0]}{" "}
+                  is already taken
+                </p>
+              ),
+            })
+            .then((resp) => {
+              if (resp.data === "updated") router.push("/home");
+            });
         }
       }}
     >
-      <div className=" pb-10 pt-1 sm:self-center">
+      <div className=" pb-4 pt-4 sm:self-center">
         <Logo text={true} />
       </div>
       <div className=" absolute right-4 top-4">
@@ -80,6 +107,28 @@ const Page = () => {
               setUpdatedUser((prev) => ({
                 ...prev,
                 name: e.target.value,
+              }))
+            }
+          />
+        </div>
+        <div className={` grid `}>
+          <label htmlFor="" className=" text-darkGray dark:text-lightGray ">
+            @
+          </label>
+          <input
+            type="text"
+            placeholder="Your cool tag"
+            value={
+              updatedUser.tag
+                ? updatedUser.tag
+                : updatedUser?.email?.split("@")[0] || ""
+            }
+            className={`${inputClassnames} w-full`}
+            required
+            onChange={(e) =>
+              setUpdatedUser((prev) => ({
+                ...prev,
+                tag: e.target.value,
               }))
             }
           />

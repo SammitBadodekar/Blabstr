@@ -12,9 +12,9 @@ import ProfileImage from "./profileImage";
 const MobileMenu = () => {
   const [user, setUser] = useRecoilState(userState);
   return (
-    <div className=" flex h-screen w-full flex-col gap-6 overflow-y-scroll bg-lightTheme p-4 px-8 dark:bg-darkTheme">
+    <div className=" dvh flex w-full flex-col gap-6 overflow-y-scroll bg-lightTheme p-4 px-8 dark:bg-darkTheme">
       {user?.imageUrl && (
-        <NavLinks text="Profile" URL={`/profile?id=${user.email}&tab=blabs`}>
+        <NavLinks text="Profile" URL={`/${user?.tag}`}>
           <ProfileImage src={user?.imageUrl} size={40} />
         </NavLinks>
       )}

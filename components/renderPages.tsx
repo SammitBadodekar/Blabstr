@@ -19,13 +19,7 @@ const RenderPages = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const headerLessRoutes = ["/", "/signin", "/signup", "/setup-profile"];
-  const protectedRoutes = [
-    "/home",
-    "/editProfile",
-    "/post",
-    "/setup-profile",
-    "/profile",
-  ];
+  const protectedRoutes = ["/home", "/editProfile", "/post", "/setup-profile"];
 
   const isHeaderLessPathName = headerLessRoutes.includes(pathname);
   if (protectedRoutes.includes(pathname) && status === "unauthenticated")
@@ -72,9 +66,9 @@ export interface User {
   tag: string;
   bgImage: string;
   about: string;
-  posts: [];
-  followers: [];
-  following: [];
-  savedPosts: [];
-  likedPosts: [];
+  posts?: [];
+  followers?: [];
+  following?: [];
+  savedPosts?: [];
+  likedPosts?: [];
 }

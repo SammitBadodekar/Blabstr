@@ -13,9 +13,12 @@ export const PUT = async (req: any) => {
         imageUrl: user?.imageUrl,
         about: user?.about,
         bgImage: user?.bgImage,
+        tag: user?.tag,
       },
     });
-  } catch (error) {}
-
-  return new NextResponse(JSON.stringify("Created New Account"));
+  } catch (error) {
+    console.log(error);
+    return new NextResponse(JSON.stringify(error), { status: 403 });
+  }
+  return new NextResponse(JSON.stringify("updated"));
 };

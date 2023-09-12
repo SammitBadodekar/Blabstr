@@ -16,7 +16,7 @@ model Users {
   email String @unique
   password String?
   about String?
-  tag String?
+  tag String? @unique
   posts Posts[] @relation("posts")
   savedPosts Posts[]  @relation("savedposts")
   likedPosts Posts[] @relation("likedposts")
