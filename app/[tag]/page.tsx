@@ -33,6 +33,14 @@ const Page = ({ params }: { params: { tag: string } }) => {
     getUser();
   }, []);
 
+  const date = new Date(
+    searchUser?.createdAt ? searchUser?.createdAt : "2023-09-11T07:14:21.552Z"
+  );
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+  }).format(date);
+
   if (!searchUser) {
     return <ProfileSkeleton />;
   }
@@ -63,7 +71,7 @@ const Page = ({ params }: { params: { tag: string } }) => {
         <p className=" -mt-4 dark:text-darkGray">@{searchUser?.tag}</p>
         <p>{searchUser?.about}</p>
         <div className=" flex items-center gap-2 text-sm text-darkGray">
-          <SlCalender /> <p>Joined on {searchUser?.createdAt?.split("T")[0]}</p>
+          <SlCalender /> <p>Joined on {formattedDate}</p>
         </div>
       </div>
       <div className=" sticky top-0 z-30 -mt-4 flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">

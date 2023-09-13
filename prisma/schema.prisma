@@ -76,3 +76,12 @@ model Follow{
   @@index([followedbyEmail], name: "followers")
   @@index([followedToEmail], name: "following")
 }
+
+model FeaturedUsers {
+  id String @id @unique
+  name String
+  email String @unique
+  imageUrl String @db.Text
+  about String?
+  tag String? @unique
+}
