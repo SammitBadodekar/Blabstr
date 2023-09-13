@@ -14,6 +14,7 @@ import DisplayPost from "@/components/displayPost";
 import Link from "next/link";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
+import ProfileSkeleton from "@/components/skeletons/profileSkeleton";
 
 const Page = ({ params }: { params: { tag: string } }) => {
   const [searchUser, SetSearchUser] = useState<User>();
@@ -31,6 +32,10 @@ const Page = ({ params }: { params: { tag: string } }) => {
     };
     getUser();
   }, []);
+
+  if (!searchUser) {
+    return <ProfileSkeleton />;
+  }
 
   return (
     <div className=" relative flex w-full flex-col gap-4">

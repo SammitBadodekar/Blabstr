@@ -40,7 +40,11 @@ const Page = () => {
         about: data?.about || "",
         name: data?.name,
         email: data?.email,
-        imageUrl: `${session?.user?.image}`,
+        imageUrl: `${
+          session?.user?.image
+            ? session?.user?.image
+            : "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
+        }`,
         tag: data?.email?.split("@")[0],
       }));
     };
@@ -117,11 +121,7 @@ const Page = () => {
           <input
             type="text"
             placeholder="Your cool tag"
-            value={
-              updatedUser.tag
-                ? updatedUser.tag
-                : updatedUser?.email?.split("@")[0] || ""
-            }
+            value={updatedUser.tag}
             className={`${inputClassnames} w-full`}
             required
             onChange={(e) =>
