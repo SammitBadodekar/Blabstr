@@ -31,7 +31,7 @@ const Page = ({ params }: { params: { tag: string } }) => {
       SetSearchUser(user.data);
     };
     getUser();
-  }, []);
+  }, [user]);
 
   const date = new Date(
     searchUser?.createdAt ? searchUser?.createdAt : "2023-09-11T07:14:21.552Z"
