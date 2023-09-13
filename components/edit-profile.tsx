@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import {
   AlertDialog,
@@ -23,6 +24,7 @@ import { Button } from "@/components/ui/button";
 const EditProfile = () => {
   const [user, setUser] = useRecoilState(userState);
   const [updatedUser, setUpdatedUser] = useState(user);
+  const router = useRouter();
 
   useEffect(() => {
     setUpdatedUser(user);
@@ -56,7 +58,7 @@ const EditProfile = () => {
                 className=" h-24 w-full rounded-md object-cover "
               />
 
-              <Button className=" -mt-20 mr-4 h-8 w-fit self-end overflow-hidden text-center">
+              <Button className=" -mt-20 mr-4 h-8 w-fit self-end overflow-hidden border-2 text-center">
                 <UploadButton
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => {
@@ -108,11 +110,18 @@ const EditProfile = () => {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (updatedUser.name && updatedUser.about && user.tag) {
-                  toast.promise(axios.put("/api/users/update", updatedUser), {
-                    loading: "Saving...",
-                    success: <p>Successfully Updated profile</p>,
-                    error: <p>@{updatedUser.tag} already taken</p>,
-                  });
+                  toast
+                    .promise(axios.put("/api/users/update", updatedUser), {
+                      loading: "Saving...",
+                      success: <p>Successfully Updated profile</p>,
+                      error: <p>@{updatedUser.tag} already taken</p>,
+                    })
+                    .then((response) => {
+                      if (response.data === "updated") {
+                        setUser(updatedUser);
+                        router.push(`/${updatedUser.tag}`);
+                      }
+                    });
                 }
               }}
             >
@@ -187,7 +196,7 @@ const EditProfile = () => {
               <div className=" mt-10 flex items-center justify-between">
                 <AlertDialogAction
                   type="submit"
-                  className=" w-fit rounded-lg border-2 bg-slate-300 p-2 dark:text-darkTheme"
+                  className=" w-fit rounded-lg border-2 bg-darkTheme p-2 dark:bg-lightTheme dark:text-darkTheme"
                   disabled={
                     updatedUser.name && updatedUser.about && updatedUser.tag
                       ? false

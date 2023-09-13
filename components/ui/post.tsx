@@ -46,7 +46,7 @@ const Post = ({
             {post?.user?.about?.length > 30 ? "..." : ""}
           </p>
 
-          <p className=" max-w-sm text-darkTheme dark:text-lightTheme">
+          <p className=" max-w-md text-darkTheme dark:text-lightTheme">
             {post?.text}
           </p>
           {post.image && (
