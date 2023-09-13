@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export const PUT = async (req: any) => {
   const body = await req.json();
-  console.log(body);
   try {
     if (body.userEmail === body.postAuthor) {
       await prisma.posts.delete({

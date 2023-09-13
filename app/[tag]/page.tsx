@@ -16,8 +16,6 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 
 const Page = ({ params }: { params: { tag: string } }) => {
-  console.log(params.tag);
-
   const [searchUser, SetSearchUser] = useState<User>();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -27,7 +25,7 @@ const Page = ({ params }: { params: { tag: string } }) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const user = await axios.get(`/api/users/${params.tag}`);
+      const user = await axios.get(`/api/users/getByTag/${params.tag}`);
       if (!user.data) router.push("/user-not-found");
       SetSearchUser(user.data);
     };

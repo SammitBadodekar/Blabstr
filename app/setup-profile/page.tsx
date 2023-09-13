@@ -15,9 +15,7 @@ const Page = () => {
     createdAt: "",
     email: "",
     id: "",
-    imageUrl:
-      session?.user?.image ||
-      "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
+    imageUrl: "",
     bgImage: "",
     tag: "",
     name: "",
@@ -42,6 +40,8 @@ const Page = () => {
         about: data?.about || "",
         name: data?.name,
         email: data?.email,
+        imageUrl: `${session?.user?.image}`,
+        tag: data?.email?.split("@")[0],
       }));
     };
     if (session?.user?.email) {
@@ -58,7 +58,6 @@ const Page = () => {
       className="flex h-screen flex-col gap-4 p-2 sm:items-center sm:justify-center"
       onSubmit={(e) => {
         e.preventDefault();
-        console.log(updatedUser);
         if (
           updatedUser?.name &&
           updatedUser?.about &&

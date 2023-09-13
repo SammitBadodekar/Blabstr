@@ -4,8 +4,6 @@ import bcrypt from "bcrypt";
 
 export const PUT = async (req: any) => {
   const user = await req.json();
-  console.log(user);
-
   const existingUser = await prisma.users.findFirst({
     where: { email: user.email },
   });
