@@ -1,14 +1,18 @@
+"use client";
+
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 import toast from "react-hot-toast";
 import Post from "./ui/post";
 import { postState } from "@/state/atoms/postState";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
   const [user, setUser] = useRecoilState(userState);
   const [posts, setPosts] = useRecoilState(postState);
+  const [parent, enableAnimations] = useAutoAnimate();
 
   const handleDelete = async (id: string, postAuthor: string) => {
     toast
@@ -56,7 +60,7 @@ const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
   }, []);
 
   return (
-    <div className=" flex w-full flex-col ">
+    <div className=" flex w-full flex-col " ref={parent}>
       {posts.map((post: any) => {
         const isAuthor = post?.user?.email === user?.email;
 
