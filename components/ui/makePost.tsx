@@ -49,9 +49,9 @@ const MakePost = () => {
               },
               ...prev,
             ]);
+            setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
           }
         });
-      setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
     }
     if (user.email && post.text && post.image) {
       toast.promise(
