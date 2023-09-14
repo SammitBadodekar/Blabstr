@@ -119,7 +119,9 @@ const EditProfile = () => {
                     .then((response) => {
                       if (response.data === "updated") {
                         setUser(updatedUser);
-                        router.push(`/${updatedUser.tag}`);
+                        setTimeout(() => {
+                          router.push(`/${updatedUser.tag}`);
+                        }, 1000);
                       }
                     });
                 }

@@ -16,7 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 
 const Post = ({
   post,
@@ -28,7 +28,7 @@ const Post = ({
   handleDelete: Function;
 }) => {
   const date = new Date(post?.createdAt);
-  const timeAgo = formatDistanceToNow(date, { addSuffix: true });
+  const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
   return (
     <div className=" relative flex w-full  flex-col gap-2" key={post?.id}>
       <div className="flex w-full gap-2 rounded-lg  p-4">

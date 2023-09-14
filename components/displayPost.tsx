@@ -4,20 +4,32 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 import toast from "react-hot-toast";
 import Post from "./ui/post";
+import { postState } from "@/state/atoms/postState";
 
 const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
-  const [posts, setPosts] = useState([]);
   const [user, setUser] = useRecoilState(userState);
+  const [posts, setPosts] = useRecoilState(postState);
 
   const handleDelete = async (id: string, postAuthor: string) => {
-    toast.promise(
-      axios.put("/api/post/delete", { id, userEmail: user.email, postAuthor }),
-      {
-        loading: "deleting...",
-        success: <p>Post deleted ,reload to see changes</p>,
-        error: <p>Unable to delete post</p>,
-      }
-    );
+    toast
+      .promise(
+        axios.put("/api/post/delete", {
+          id,
+          userEmail: user.email,
+          postAuthor,
+        }),
+        {
+          loading: "deleting...",
+          success: <p>Post deleted</p>,
+          error: <p>Unable to delete post</p>,
+        }
+      )
+      .then((response) => {
+        if (response.data === "deleted") {
+          const updatedPosts = posts.filter((post: any) => post?.id !== id);
+          setPosts(updatedPosts);
+        }
+      });
   };
 
   useEffect(() => {

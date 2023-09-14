@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export const POST = async (req: any) => {
   const body = await req.json();
   try {
-    await prisma.posts.create({
+    const post = await prisma.posts.create({
       data: {
         text: body.post.text,
         image: body.post.image,
@@ -13,7 +13,8 @@ export const POST = async (req: any) => {
         type: "text",
       },
     });
-  } catch (error) {}
-
-  return new NextResponse(JSON.stringify("Created New Account"));
+    return new NextResponse(JSON.stringify(post));
+  } catch (error) {
+    return new NextResponse(JSON.stringify("error"));
+  }
 };

@@ -3,7 +3,7 @@
 import { AiOutlineVideoCamera } from "react-icons/ai";
 import { BsImages } from "react-icons/bs";
 import { Button } from "./button";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -22,22 +22,35 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { postState } from "@/state/atoms/postState";
+import { Console } from "console";
 
 const MakePost = () => {
   const [post, setPost] = useState({ text: "", image: "", video: "" });
   const [user, setUser] = useRecoilState(userState);
+  const [posts, setPosts] = useRecoilState(postState);
 
   const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (user.email && post.text && !post.image) {
-      toast.promise(
-        axios.post("/api/post/upload", { email: user.email, post }),
-        {
-          loading: "Uploading...",
+      toast
+        .promise(axios.post("/api/post/upload", { email: user.email, post }), {
+          loading: "Posting...",
           success: <p>Successfully Uploaded Post</p>,
           error: <p>Could not upload Post</p>,
-        }
-      );
+        })
+        .then((response: AxiosResponse) => {
+          if (response.statusText === "OK") {
+            const newPost = response.data;
+            setPosts((prev) => [
+              {
+                ...newPost,
+                user,
+              },
+              ...prev,
+            ]);
+          }
+        });
       setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
     }
     if (user.email && post.text && post.image) {
@@ -72,7 +85,7 @@ const MakePost = () => {
         <Button type="submit" className=" rounded-full font-bold">
           Post
         </Button>
-      </form>{" "}
+      </form>
       <div className=" flex w-full items-center gap-4 px-8 pb-4">
         <AlertDialog>
           <AlertDialogTrigger>
@@ -81,7 +94,7 @@ const MakePost = () => {
               <p>Images</p>
             </PostMethod>
           </AlertDialogTrigger>
-          <AlertDialogContent className=" h-screen overflow-y-scroll bg-slate-300 dark:bg-darkTheme sm:h-96 sm:dark:bg-slate-800">
+          <AlertDialogContent className=" h-screen overflow-y-scroll bg-slate-300  dark:bg-slate-800 sm:h-96">
             <AlertDialogHeader>
               <AlertDialogTitle className=" flex justify-center text-2xl">
                 Upload Photo
@@ -106,22 +119,23 @@ const MakePost = () => {
                       Image
                     </div>
                   )}
-
-                  <UploadButton
-                    endpoint="imageUploader"
-                    onClientUploadComplete={(res) => {
-                      toast.success("successfully updated profile");
-                      setPost((prev) => ({
-                        ...prev,
-                        image: res ? res[0]?.url : prev.image,
-                      }));
-                    }}
-                    onUploadError={(error: Error) => {
-                      // Do something with the error.
-                      toast.error(`Failed to upload`);
-                    }}
-                    className=" w-fit self-center rounded-lg bg-blue-500 p-1 text-lightTheme sm:self-start"
-                  />
+                  <div className=" h-8 w-fit self-center overflow-hidden rounded-lg border-2 bg-darkTheme p-2 text-center text-lightTheme dark:bg-lightTheme dark:text-darkTheme">
+                    <UploadButton
+                      endpoint="imageUploader"
+                      onClientUploadComplete={(res) => {
+                        toast.success("successfully uploaded image");
+                        setPost((prev) => ({
+                          ...prev,
+                          image: res ? res[0]?.url : prev.image,
+                        }));
+                      }}
+                      onUploadError={(error: Error) => {
+                        // Do something with the error.
+                        toast.error(`Failed to upload`);
+                      }}
+                      className=" -mt-3"
+                    />
+                  </div>
 
                   <div className=" mt-10 grid">
                     <p>Caption</p>
