@@ -40,7 +40,11 @@ const MakePost = () => {
           error: <p>Could not upload Post</p>,
         })
         .then((response: AxiosResponse) => {
+          console.log(response);
+          console.log(response.statusText);
+          console.log(response.data);
           if (response.statusText === "OK") {
+            console.log("inside if condition");
             const newPost = response.data;
             setPosts((prev) => [
               {
