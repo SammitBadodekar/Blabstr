@@ -18,8 +18,8 @@ model Users {
   about String?
   tag String? @unique
   posts Posts[] @relation("posts")
-  savedPosts Posts[]  @relation("savedposts")
-  likedPosts Posts[] @relation("likedposts")
+  savedPosts Posts[]  @relation(name: "savedposts")
+ likedPosts Posts[] @relation(name: "LikedPosts")
   followers Follow[] @relation("followers")
   following Follow[] @relation("following")
   createdAt DateTime @default(now())
@@ -32,20 +32,14 @@ model Posts {
   text String?
   image String? @db.Text
   video String? @db.Text
-  likes Int?
-  saves Int?
   user    Users    @relation("posts",fields: [UserEmail], references: [email])
   UserEmail   String
-  savedby  Users?    @relation("savedposts",fields: [savedbyEmail], references: [email])
-  savedbyEmail String?
-  likedby  Users?    @relation("likedposts",fields: [likedbyEmail], references: [email])
-  likedbyEmail String?
+  savedby  Users[] @relation(name: "savedposts")
+  likedBy Users[] @relation(name: "LikedPosts")
   comments Comments[]
    createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@index([ UserEmail], name: "post_id_index")
-  @@index([ savedbyEmail], name: "savedpost_id_index")
-  @@index([ likedbyEmail], name: "likedpost_id_index")
 }
 
 model Comments{

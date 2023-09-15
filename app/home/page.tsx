@@ -38,7 +38,7 @@ export default function Home() {
       <div className="sticky top-0 z-20 hidden w-full bg-lightTransparent p-2 text-center font-bold backdrop-blur-sm dark:bg-darkTransparent sm:block">
         Home
       </div>
-      <div className=" flex justify-between px-4 py-2 sm:hidden">
+      <div className=" sticky top-0 z-10 flex justify-between bg-lightTransparent px-4 py-2 backdrop-blur-sm dark:bg-darkTransparent sm:hidden">
         <div onClick={() => setIsOpen(true)} className=" pt-1">
           <ProfileImage src={user?.imageUrl} size={40} />
         </div>

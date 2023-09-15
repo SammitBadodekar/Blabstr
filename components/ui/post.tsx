@@ -17,6 +17,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { formatDistanceToNowStrict } from "date-fns";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/atoms/userState";
 
 const Post = ({
   post,
@@ -29,6 +32,12 @@ const Post = ({
 }) => {
   const date = new Date(post?.createdAt);
   const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
+  const [user, setUser] = useRecoilState(userState);
+
+  const handleLike = (postId: string) => {
+    axios.put("/api/post/like", { postId, userId: user.id });
+  };
+
   return (
     <div className=" relative flex w-full  flex-col gap-2" key={post?.id}>
       <div className="flex w-full gap-2 rounded-lg  p-4">
@@ -62,7 +71,14 @@ const Post = ({
       </div>
 
       <div className="  flex justify-around gap-4 pb-2 text-darkGray dark:text-lightGray">
-        <AiOutlineHeart />
+        <div
+          onClick={() => handleLike(post.id)}
+          className=" flex items-center gap-2"
+        >
+          <AiOutlineHeart />
+          <p>{post?.likedBy?.length}</p>
+        </div>
+
         <FaRegComment />
         <BsBookmarkPlus />
       </div>

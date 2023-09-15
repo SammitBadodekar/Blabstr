@@ -8,6 +8,7 @@ export const GET = async () => {
     const user = await prisma.posts.findMany({
       include: {
         user: true,
+        likedBy: true,
       },
     });
     return new NextResponse(JSON.stringify(user));
