@@ -38,16 +38,16 @@ const Post = ({
   const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
   const [user, setUser] = useRecoilState(userState);
   const [likes, setLikes] = useState([...Object.values(post.likedBy)]);
-  const isLiked = likes.some((users: any) => users.id === user.id);
+  const isLiked = likes.some((users: any) => users?.id === user?.id);
 
   const handleLike = (postId: string) => {
     if (!isLiked) {
-      axios.put("/api/post/like", { postId, userId: user.id });
+      axios.put("/api/post/like", { postId, userId: user?.id });
       setLikes((prev) => [user, ...prev]);
     }
     if (isLiked) {
-      axios.put("/api/post/dislike", { postId, userId: user.id });
-      const newLikes = likes.filter((like: any) => like.id !== user.id);
+      axios.put("/api/post/dislike", { postId, userId: user?.id });
+      const newLikes = likes.filter((like: any) => like?.id !== user?.id);
       setLikes(newLikes);
     }
   };
@@ -68,7 +68,7 @@ const Post = ({
             {post?.user?.about?.slice(0, 30)}
             {post?.user?.about?.length > 30 ? "..." : ""}
           </p>
-          <Link href={`/post/${post.id}`}>
+          <Link href={`/post/${post?.id}`}>
             <p className=" max-w-md text-darkTheme dark:text-lightTheme">
               {post?.text}
             </p>
@@ -87,13 +87,13 @@ const Post = ({
 
       <div className="  flex justify-around gap-4 pb-2 text-darkGray dark:text-lightGray">
         <div
-          onClick={() => handleLike(post.id)}
+          onClick={() => handleLike(post?.id)}
           className=" flex items-center gap-2"
         >
           {isLiked ? <FcLike /> : <AiOutlineHeart />}
           <p>{likes.length}</p>
         </div>
-        <Link href={`/post/${post.id}`} className=" flex items-center gap-2">
+        <Link href={`/post/${post?.id}`} className=" flex items-center gap-2">
           <FaRegComment />
         </Link>
         <div className=" flex items-center gap-2">
@@ -121,7 +121,7 @@ const Post = ({
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
-                onClick={() => handleDelete(post.id, post?.user?.email)}
+                onClick={() => handleDelete(post?.id, post?.user?.email)}
               >
                 Delete Post
               </AlertDialogAction>
