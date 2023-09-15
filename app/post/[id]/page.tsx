@@ -11,6 +11,7 @@ import Link from "next/link";
 import { User } from "@/components/renderPages";
 import FeaturedAccount from "@/components/ui/featuredAccount";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import PostSkeleton from "@/components/skeletons/postSkeleton";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const searchParams = useSearchParams();
@@ -25,8 +26,6 @@ const Page = ({ params }: { params: { id: string } }) => {
     };
     getUser();
   }, []);
-
-  console.log(post);
 
   const handleDelete = async (id: string, postAuthor: string) => {
     toast
@@ -51,6 +50,10 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const tab = searchParams.get("tab");
   const isAuthor = post?.user?.email === user?.email;
+
+  if (!post.id) {
+    return <PostSkeleton />;
+  }
 
   return (
     <div>

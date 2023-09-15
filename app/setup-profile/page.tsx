@@ -8,9 +8,12 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Logo from "@/components/ui/logo";
 import ThemeToggleButton from "@/components/ui/ThemeToggleButton";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/atoms/userState";
 
 const Page = () => {
   const { data: session } = useSession();
+  const [user, setUser] = useRecoilState(userState);
   const [updatedUser, setUpdatedUser] = useState({
     createdAt: "",
     email: "",
@@ -30,6 +33,7 @@ const Page = () => {
   });
 
   const router = useRouter();
+  console.log(updatedUser);
 
   useEffect(() => {
     const getId = async () => {
@@ -45,7 +49,7 @@ const Page = () => {
             ? session?.user?.image
             : "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
         }`,
-        tag: data?.email?.split("@")[0],
+        tag: data.tag,
       }));
     };
     if (session?.user?.email) {
@@ -83,7 +87,10 @@ const Page = () => {
               ),
             })
             .then((resp) => {
-              if (resp.data === "updated") router.push("/home");
+              if (resp.data === "updated") {
+                setUser(updatedUser);
+                router.push("/home");
+              }
             });
         }
       }}
