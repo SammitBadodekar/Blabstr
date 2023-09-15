@@ -63,7 +63,6 @@ const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
     <div className=" flex w-full flex-col " ref={parent}>
       {posts.map((post: any) => {
         const isAuthor = post?.user?.email === user?.email;
-        console.log(post);
         return (
           <Post post={post} isAuthor={isAuthor} handleDelete={handleDelete} />
         );

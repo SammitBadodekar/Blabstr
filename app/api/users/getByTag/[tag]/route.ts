@@ -15,6 +15,8 @@ export const GET = async (
         posts: {
           include: {
             user: true,
+            likedBy: true,
+            savedby: true,
           },
         },
         followers: true,

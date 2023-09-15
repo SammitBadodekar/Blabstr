@@ -1,5 +1,8 @@
+"use client";
+
 import ProfileImage from "./profileImage";
 import { AiOutlineHeart } from "react-icons/ai";
+import { FcLike } from "react-icons/fc";
 import { BsBookmarkPlus } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
@@ -20,6 +23,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
+import { useState } from "react";
 
 const Post = ({
   post,
@@ -33,9 +37,19 @@ const Post = ({
   const date = new Date(post?.createdAt);
   const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
   const [user, setUser] = useRecoilState(userState);
+  const [likes, setLikes] = useState([...Object.values(post.likedBy)]);
+  const isLiked = likes.some((users: any) => users.id === user.id);
 
   const handleLike = (postId: string) => {
-    axios.put("/api/post/like", { postId, userId: user.id });
+    if (!isLiked) {
+      axios.put("/api/post/like", { postId, userId: user.id });
+      setLikes((prev) => [user, ...prev]);
+    }
+    if (isLiked) {
+      axios.put("/api/post/dislike", { postId, userId: user.id });
+      const newLikes = likes.filter((like: any) => like.id !== user.id);
+      setLikes(newLikes);
+    }
   };
 
   return (
@@ -75,12 +89,15 @@ const Post = ({
           onClick={() => handleLike(post.id)}
           className=" flex items-center gap-2"
         >
-          <AiOutlineHeart />
-          <p>{post?.likedBy?.length}</p>
+          {isLiked ? <FcLike /> : <AiOutlineHeart />}
+          <p>{likes.length}</p>
         </div>
-
-        <FaRegComment />
-        <BsBookmarkPlus />
+        <div className=" flex items-center gap-2">
+          <FaRegComment />
+        </div>
+        <div className=" flex items-center gap-2">
+          <BsBookmarkPlus />
+        </div>
       </div>
       <p className=" border-b-2 px-4 pb-2 text-xs text-darkGray dark:text-lightGray">
         {timeAgo}

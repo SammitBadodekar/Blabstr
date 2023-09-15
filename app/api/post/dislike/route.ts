@@ -11,13 +11,13 @@ export const PUT = async (req: any) => {
       },
       data: {
         likedBy: {
-          connect: {
+          disconnect: {
             id: body.userId,
           },
         },
       },
     });
-    return new NextResponse(JSON.stringify("liked"));
+    return new NextResponse(JSON.stringify("disliked"));
   } catch (error) {
     console.log(error);
     return new NextResponse(JSON.stringify("error"));
