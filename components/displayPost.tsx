@@ -49,11 +49,13 @@ const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
       }
     };
     if (existingPosts) {
-      const sortedPosts = existingPosts.sort((a: any, b: any): number => {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      });
+      const sortedPosts = Object.values(existingPosts).sort(
+        (a: any, b: any): number => {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
+      );
       setPosts(sortedPosts);
       setPosts(existingPosts);
     } else getPosts();

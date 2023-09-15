@@ -76,11 +76,14 @@ const Page = ({ params }: { params: { tag: string } }) => {
       </div>
       <div className=" sticky top-0 z-30 -mt-4 flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">
         <Tabs text="blabs" tab={tab} searchUser={searchUser} />
-        <Tabs text="replies" tab={tab} searchUser={searchUser} />
         <Tabs text="likes" tab={tab} searchUser={searchUser} />
+        <Tabs text="replies" tab={tab} searchUser={searchUser} />
       </div>
       {searchUser && (tab == "blabs" || !tab) && (
         <DisplayPost existingPosts={searchUser?.posts} />
+      )}
+      {searchUser && tab == "likes" && (
+        <DisplayPost existingPosts={searchUser?.likedPosts} />
       )}
     </div>
   );
@@ -105,6 +108,7 @@ const Tabs = ({
           ? "border-b-4 border-b-blue-500"
           : ""
       } `}
+      scroll={false}
     >
       {text}
     </Link>

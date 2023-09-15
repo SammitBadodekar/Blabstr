@@ -174,7 +174,7 @@ const MakePost = () => {
 
         <PostMethod>
           <AiOutlineVideoCamera />
-          <p>Video</p>
+          <p onClick={() => toast("Video post is in development")}>Video</p>
         </PostMethod>
       </div>
     </div>

@@ -22,7 +22,13 @@ export const GET = async (
         followers: true,
         following: true,
         savedPosts: true,
-        likedPosts: true,
+        likedPosts: {
+          include: {
+            user: true,
+            likedBy: true,
+            savedby: true,
+          },
+        },
       },
     });
     return new NextResponse(JSON.stringify(userByTag));

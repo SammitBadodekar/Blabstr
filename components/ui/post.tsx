@@ -68,19 +68,20 @@ const Post = ({
             {post?.user?.about?.slice(0, 30)}
             {post?.user?.about?.length > 30 ? "..." : ""}
           </p>
-
-          <p className=" max-w-md text-darkTheme dark:text-lightTheme">
-            {post?.text}
-          </p>
-          {post.image && (
-            <Image
-              src={post.image}
-              width={200}
-              height={200}
-              alt=""
-              className="w-full self-start rounded-xl border-2 object-contain"
-            />
-          )}
+          <Link href={`/post/${post.id}`}>
+            <p className=" max-w-md text-darkTheme dark:text-lightTheme">
+              {post?.text}
+            </p>
+            {post.image && (
+              <Image
+                src={post.image}
+                width={200}
+                height={200}
+                alt=""
+                className="w-full self-start rounded-xl border-2 object-contain"
+              />
+            )}
+          </Link>
         </div>
       </div>
 
@@ -92,9 +93,9 @@ const Post = ({
           {isLiked ? <FcLike /> : <AiOutlineHeart />}
           <p>{likes.length}</p>
         </div>
-        <div className=" flex items-center gap-2">
+        <Link href={`/post/${post.id}`} className=" flex items-center gap-2">
           <FaRegComment />
-        </div>
+        </Link>
         <div className=" flex items-center gap-2">
           <BsBookmarkPlus />
         </div>

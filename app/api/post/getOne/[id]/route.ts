@@ -8,12 +8,17 @@ export const GET = async (
   const { id } = params;
 
   try {
-    const user = await prisma.users.findFirst({
+    const post = await prisma.posts.findFirst({
       where: {
         id: id,
       },
+      include: {
+        likedBy: true,
+        savedby: true,
+        user: true,
+      },
     });
-    return new NextResponse(JSON.stringify(user));
+    return new NextResponse(JSON.stringify(post));
   } catch (error) {
     return new NextResponse("error");
   }
