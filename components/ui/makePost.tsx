@@ -54,14 +54,25 @@ const MakePost = () => {
         });
     }
     if (user.email && post.text && post.image) {
-      toast.promise(
-        axios.post("/api/post/upload", { email: user.email, post }),
-        {
+      toast
+        .promise(axios.post("/api/post/upload", { email: user.email, post }), {
           loading: "Posting...",
           success: <p>Successfully Uploaded Post</p>,
           error: <b>Could not upload Post</b>,
-        }
-      );
+        })
+        .then((response: AxiosResponse) => {
+          if (response.status === 200) {
+            const newPost = response.data;
+            setPosts((prev) => [
+              {
+                ...newPost,
+                user,
+              },
+              ...prev,
+            ]);
+            setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
+          }
+        });
       setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
     }
   };

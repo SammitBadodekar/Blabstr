@@ -12,6 +12,10 @@ export const POST = async (req: any) => {
         UserEmail: body.email,
         type: "text",
       },
+      include: {
+        likedBy: true,
+        savedby: true,
+      },
     });
     return new NextResponse(JSON.stringify(post));
   } catch (error) {
