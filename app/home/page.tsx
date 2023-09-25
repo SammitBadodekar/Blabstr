@@ -34,7 +34,7 @@ export default function Home() {
   }, [isOpen]);
 
   return (
-    <div className=" page w-full">
+    <div className="page w-full">
       <div className="sticky top-0 z-20 hidden w-full bg-lightTransparent p-2 text-center font-bold backdrop-blur-sm dark:bg-darkTransparent sm:block">
         Home
       </div>
@@ -58,7 +58,7 @@ export default function Home() {
         <div
           className={`absolute top-0 h-screen w-screen ${
             isOpen ? "left-0 opacity-100" : " -left-full opacity-0"
-          } z-10  bg-darkTransparent backdrop-blur-sm transition-opacity duration-300 ease-out`}
+          } z-10  bg-darkTransparent backdrop-blur-md transition-opacity duration-300 ease-out`}
         ></div>
       </div>
       <MakePost />

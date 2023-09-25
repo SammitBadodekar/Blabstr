@@ -11,6 +11,25 @@ export const GET = async (
       where: {
         tag: tag,
       },
+      include: {
+        posts: {
+          include: {
+            user: true,
+            likedBy: true,
+            savedby: true,
+          },
+        },
+        followers: true,
+        following: true,
+        savedPosts: true,
+        likedPosts: {
+          include: {
+            user: true,
+            likedBy: true,
+            savedby: true,
+          },
+        },
+      },
     });
     return new NextResponse(JSON.stringify(userByTag));
   } catch (error) {

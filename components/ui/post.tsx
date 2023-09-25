@@ -69,7 +69,7 @@ const Post = ({
             {post?.user?.about?.length > 30 ? "..." : ""}
           </p>
           <Link href={`/post/${post?.id}`}>
-            <p className=" max-w-md text-darkTheme dark:text-lightTheme">
+            <p className=" max-w-5xl text-darkTheme dark:text-lightTheme">
               {post?.text}
             </p>
             {post.image && (

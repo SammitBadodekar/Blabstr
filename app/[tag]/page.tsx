@@ -15,9 +15,12 @@ import Link from "next/link";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 import ProfileSkeleton from "@/components/skeletons/profileSkeleton";
+import MultiplePostsSkeleton from "@/components/skeletons/multiplePostSkeleton";
 
 const Page = ({ params }: { params: { tag: string } }) => {
   const [searchUser, SetSearchUser] = useState<User>();
+  const [additionalUserInfo, SetAdditionalUserInfo] =
+    useState<AdditionalUserInfo>();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [user, setUser] = useRecoilState(userState);
@@ -29,6 +32,8 @@ const Page = ({ params }: { params: { tag: string } }) => {
       const user = await axios.get(`/api/users/getByTag/${params.tag}`);
       if (!user.data) router.push("/user-not-found");
       SetSearchUser(user.data);
+      const { data } = await axios.get(`/api/users/getPosts/${params.tag}`);
+      SetAdditionalUserInfo(data);
     };
     getUser();
   }, [user]);
@@ -46,7 +51,7 @@ const Page = ({ params }: { params: { tag: string } }) => {
   }
 
   return (
-    <div className=" relative flex w-full flex-col gap-4">
+    <div className="page relative flex w-full flex-col gap-4">
       {searchUser?.email === user.email && <EditProfile />}
       {searchUser?.bgImage ? (
         <Image
@@ -79,11 +84,12 @@ const Page = ({ params }: { params: { tag: string } }) => {
         <Tabs text="likes" tab={tab} searchUser={searchUser} />
         <Tabs text="replies" tab={tab} searchUser={searchUser} />
       </div>
-      {searchUser && (tab == "blabs" || !tab) && (
-        <DisplayPost existingPosts={searchUser?.posts} />
+      {additionalUserInfo && (tab == "blabs" || !tab) && (
+        <DisplayPost existingPosts={additionalUserInfo?.posts} />
       )}
-      {searchUser && tab == "likes" && (
-        <DisplayPost existingPosts={searchUser?.likedPosts} />
+      {!additionalUserInfo && <MultiplePostsSkeleton />}
+      {additionalUserInfo && tab == "likes" && (
+        <DisplayPost existingPosts={additionalUserInfo?.likedPosts} />
       )}
     </div>
   );
@@ -114,3 +120,11 @@ const Tabs = ({
     </Link>
   );
 };
+
+interface AdditionalUserInfo {
+  posts: [];
+  followers: [];
+  following: [];
+  savedPosts: [];
+  likedPosts: [];
+}

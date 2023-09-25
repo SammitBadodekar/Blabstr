@@ -57,7 +57,6 @@ const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
         }
       );
       setPosts(sortedPosts);
-      setPosts(existingPosts);
     } else getPosts();
   }, []);
 
@@ -66,7 +65,9 @@ const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
       {posts.map((post: any) => {
         const isAuthor = post?.user?.email === user?.email;
         return (
-          <Post post={post} isAuthor={isAuthor} handleDelete={handleDelete} />
+          <div key={post?.id}>
+            <Post post={post} isAuthor={isAuthor} handleDelete={handleDelete} />
+          </div>
         );
       })}
     </div>
