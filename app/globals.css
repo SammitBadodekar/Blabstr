@@ -101,9 +101,9 @@
     min-width: 20rem;
   }
 }
-@media screen and (min-width: 1080px) {
+@media screen and (min-width: 1800px) {
   .page {
-    min-width: 25rem;
+    min-width: 40rem;
   }
 }
 
