@@ -71,4 +71,5 @@ export interface User {
   following?: [];
   savedPosts?: [];
   likedPosts?: [];
+  isVerified?: boolean;
 }
