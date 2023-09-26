@@ -16,7 +16,7 @@ const MobileNavbar = () => {
       </NavLinks>
       <Link
         href="/post"
-        className=" rounded-full bg-lightGray p-2 px-4 text-lightTheme dark:bg-lightTheme dark:text-darkTheme"
+        className=" rounded-full bg-darkTheme p-2 px-4 text-lightTheme dark:bg-lightTheme dark:text-darkTheme"
       >
         <p className=" font-bold">+</p>
       </Link>

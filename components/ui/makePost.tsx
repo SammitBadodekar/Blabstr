@@ -10,6 +10,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 import { UploadButton } from "@/utils/uploadthing";
 import Image from "next/image";
+import ReactPlayer from "react-player";
 
 import {
   AlertDialog,
@@ -171,11 +172,84 @@ const MakePost = () => {
             </AlertDialogHeader>
           </AlertDialogContent>
         </AlertDialog>
+        <AlertDialog>
+          <AlertDialogTrigger>
+            <PostMethod>
+              <AiOutlineVideoCamera />
+              <p>Video</p>
+            </PostMethod>
+          </AlertDialogTrigger>
+          <AlertDialogContent className=" h-screen overflow-y-scroll bg-slate-300  dark:bg-slate-800 sm:h-full">
+            <AlertDialogHeader>
+              <AlertDialogTitle className=" flex justify-center text-2xl">
+                Upload Video
+              </AlertDialogTitle>
+              <AlertDialogDescription className=" ">
+                <form
+                  className="flex flex-col  justify-center gap-4 pt-10"
+                  onSubmit={(e) => {
+                    handlePost(e);
+                  }}
+                >
+                  {post.video ? (
+                    <div className=" flex justify-center">
+                      <ReactPlayer
+                        url={post.video}
+                        controls={true}
+                        width="auto"
+                        config={{
+                          youtube: {
+                            playerVars: { showinfo: 1 },
+                          },
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div className=" flex h-40 w-full items-center justify-center rounded-xl border-2 bg-lightTheme dark:bg-darkTheme">
+                      Video
+                    </div>
+                  )}
+                  <div className=" h-8 w-fit self-center overflow-hidden rounded-lg border-2 bg-darkTheme p-2 text-center text-lightTheme dark:bg-lightTheme dark:text-darkTheme">
+                    <UploadButton
+                      endpoint="videoUploader"
+                      onClientUploadComplete={(res) => {
+                        toast.success("successfully uploaded video");
+                        setPost((prev) => ({
+                          ...prev,
+                          video: res ? res[0]?.url : prev.video,
+                        }));
+                      }}
+                      onUploadError={(error: Error) => {
+                        // Do something with the error.
+                        toast.error(`video size should be less than 64MB`);
+                      }}
+                      className=" -mt-3"
+                    />
+                  </div>
 
-        <PostMethod>
-          <AiOutlineVideoCamera />
-          <p onClick={() => toast("Video post is in development")}>Video</p>
-        </PostMethod>
+                  <div className=" mt-10 grid">
+                    <p>Caption</p>
+                    <textarea
+                      name=""
+                      id=""
+                      cols={30}
+                      rows={3}
+                      onChange={(e) => {
+                        setPost((prev) => ({ ...prev, text: e.target.value }));
+                      }}
+                      placeholder="Caption for you post"
+                      className="rounded-lg border-2 bg-lightTheme p-2  dark:bg-darkTheme "
+                    ></textarea>
+                  </div>
+                  <AlertDialogAction type="submit" className=" mt-10">
+                    Post
+                  </AlertDialogAction>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                </form>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

@@ -8,6 +8,13 @@ import { FaRegComment } from "react-icons/fa";
 import { MdDeleteOutline, MdVerified } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
+import { formatDistanceToNowStrict } from "date-fns";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/atoms/userState";
+import { useEffect, useRef, useState } from "react";
+import ReactPlayer from "react-player";
+import { InView } from "react-intersection-observer";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,11 +26,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { formatDistanceToNowStrict } from "date-fns";
-import axios from "axios";
-import { useRecoilState } from "recoil";
-import { userState } from "@/state/atoms/userState";
-import { useState } from "react";
 
 const Post = ({
   post,
@@ -39,6 +41,9 @@ const Post = ({
   const [user, setUser] = useRecoilState(userState);
   const [likes, setLikes] = useState([...Object.values(post.likedBy)]);
   const isLiked = likes.some((users: any) => users?.id === user?.id);
+  const videoRef = useRef();
+
+  useEffect(() => {});
 
   const handleLike = (postId: string) => {
     if (!isLiked) {
@@ -90,6 +95,21 @@ const Post = ({
               />
             )}
           </Link>
+          {post.video && (
+            <InView>
+              {({ inView, ref, entry }) => (
+                <div className=" flex justify-center rounded-xl" ref={ref}>
+                  <ReactPlayer
+                    url={post.video}
+                    playing={inView}
+                    controls={true}
+                    width="auto"
+                    height="auto"
+                  />
+                </div>
+              )}
+            </InView>
+          )}
         </div>
       </div>
 

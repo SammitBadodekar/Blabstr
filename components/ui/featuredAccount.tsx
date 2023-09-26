@@ -10,8 +10,8 @@ const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
         <ProfileImage src={user.imageUrl} size={40} />
       </Link>
       <Link href={`/${user.tag}`}>
-        <div className=" flex items-center gap-2">
-          <p className=" font-bold">{user?.name}</p>
+        <div className=" flex items-center gap-1">
+          <p className=" text-xs font-bold">{user?.name}</p>
           {user.isVerified && (
             <div className=" text-lg text-yellow-400">
               <MdVerified />
@@ -23,7 +23,9 @@ const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
         </p>
       </Link>
 
-      <Button className=" ml-auto rounded-xl px-3">Follow</Button>
+      <Button className=" ml-auto rounded-xl px-3" size="sm">
+        Follow
+      </Button>
     </div>
   );
 };

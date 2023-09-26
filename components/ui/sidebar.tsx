@@ -41,7 +41,7 @@ const Sidebar = () => {
         <ThemeToggleButton />
         <Link
           href="/post"
-          className=" flex w-full items-center justify-center gap-2 rounded-full bg-darkGray p-2 text-xs text-lightTheme dark:bg-extraLightGray dark:text-darkTheme lg:mt-4"
+          className=" flex w-full items-center justify-center gap-2 rounded-full bg-darkTheme p-2 text-xs text-lightTheme dark:bg-extraLightGray dark:text-darkTheme lg:mt-4"
         >
           <p className=" text-xl font-bold">+</p>
           <p className="hidden  font-medium lg:inline">Post</p>
@@ -77,8 +77,8 @@ export const NavLinks = ({
       href={URL}
       className={` ${
         active === text.toLocaleLowerCase()
-          ? " text-3xl font-extrabold sm:text-lg"
-          : " text-lg font-normal sm:text-sm"
+          ? " text-3xl font-extrabold sm:text-base"
+          : " text-2xl font-thin sm:text-sm sm:font-normal"
       } flex items-center gap-2 duration-300 ease-out `}
     >
       {children}

@@ -36,7 +36,7 @@ const MobileMenu = () => {
         <ThemeToggleButton />
         <Link
           href="/post"
-          className=" flex w-full items-center justify-center gap-2 rounded-full bg-darkGray p-2 text-xs text-lightTheme dark:bg-extraLightGray dark:text-darkTheme"
+          className=" flex w-full items-center justify-center gap-2 rounded-full bg-darkTheme p-2 text-xs text-lightTheme dark:bg-extraLightGray dark:text-darkTheme"
         >
           <p className=" text-xl font-bold">+</p>
           <p className="font-medium ">Post</p>
