@@ -77,8 +77,8 @@ export const NavLinks = ({
       href={URL}
       className={` ${
         active === text.toLocaleLowerCase()
-          ? " text-3xl font-extrabold sm:text-base"
-          : " text-2xl font-thin sm:text-sm sm:font-normal"
+          ? " text-2xl font-extrabold sm:text-base"
+          : " text-lg font-normal sm:text-sm"
       } flex items-center gap-2 duration-300 ease-out `}
     >
       {children}
