@@ -24,6 +24,7 @@ model Users {
   following Follow[] @relation("following")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  isVerified Boolean @default(false)
 }
 
 model Posts {
@@ -78,4 +79,5 @@ model FeaturedUsers {
   imageUrl String @db.Text
   about String?
   tag String? @unique
+  isVerified Boolean @default(false)
 }

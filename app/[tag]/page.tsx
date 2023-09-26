@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { SlCalender } from "react-icons/sl";
+import { MdVerified } from "react-icons/md";
 import EditProfile from "@/components/edit-profile";
 import { useSearchParams } from "next/navigation";
 import { User } from "@/components/renderPages";
@@ -72,7 +73,15 @@ const Page = ({ params }: { params: { tag: string } }) => {
         <ProfileImage src={searchUser?.imageUrl || ""} size={120} />
       </div>
       <div className=" flex flex-col gap-4 border-b-2 px-4 pb-4">
-        <p className=" text-2xl font-bold">{searchUser?.name}</p>
+        <div className=" flex items-center gap-2">
+          <p className=" text-2xl font-bold">{searchUser?.name}</p>
+          {searchUser.isVerified && (
+            <div className=" text-2xl font-extrabold text-yellow-400">
+              <MdVerified />
+            </div>
+          )}
+        </div>
+
         <p className=" -mt-4 dark:text-darkGray">@{searchUser?.tag}</p>
         <p>{searchUser?.about}</p>
         <div className=" flex items-center gap-2 text-sm text-darkGray">

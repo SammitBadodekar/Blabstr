@@ -30,6 +30,7 @@ const Page = () => {
     following: [],
     savedPosts: [],
     likedPosts: [],
+    isVerified: false,
   });
 
   const router = useRouter();

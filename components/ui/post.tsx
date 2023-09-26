@@ -5,7 +5,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { FcLike } from "react-icons/fc";
 import { BsBookmarkPlus } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline, MdVerified } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -60,8 +60,16 @@ const Post = ({
         </Link>
 
         <div className=" flex w-full flex-col  gap-2 pr-4">
-          <Link href={`/${post?.user?.tag}`}>
+          <Link
+            href={`/${post?.user?.tag}`}
+            className=" flex items-center gap-2"
+          >
             <p className=" font-bold">{post?.user?.name}</p>
+            {post?.user?.isVerified && (
+              <div className=" text-lg font-extrabold text-yellow-400">
+                <MdVerified />
+              </div>
+            )}
           </Link>
 
           <p className=" -mt-2 text-xs text-darkGray dark:text-lightGray">

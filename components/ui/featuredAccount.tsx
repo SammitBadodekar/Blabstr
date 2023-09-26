@@ -1,6 +1,7 @@
 import ProfileImage from "./profileImage";
 import { Button } from "./button";
 import Link from "next/link";
+import { MdVerified } from "react-icons/md";
 
 const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
   return (
@@ -9,8 +10,14 @@ const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
         <ProfileImage src={user.imageUrl} size={40} />
       </Link>
       <Link href={`/${user.tag}`}>
-        {" "}
-        <p className="text-xs font-bold">{user.name}</p>
+        <div className=" flex items-center gap-2">
+          <p className=" font-bold">{user?.name}</p>
+          {user.isVerified && (
+            <div className=" text-lg text-yellow-400">
+              <MdVerified />
+            </div>
+          )}
+        </div>
         <p className=" text-xs text-darkGray dark:text-lightGray">
           @{user.tag}
         </p>
@@ -29,4 +36,5 @@ interface FeaturedAccount {
   tag: string;
   about: string;
   email: string;
+  isVerified: boolean;
 }
