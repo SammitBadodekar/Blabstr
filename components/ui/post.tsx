@@ -36,7 +36,6 @@ const Post = ({
   isAuthor: boolean;
   handleDelete: Function;
 }) => {
-  console.log(post);
   const date = new Date(post?.createdAt);
   const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
   const [user, setUser] = useRecoilState(userState);
@@ -44,8 +43,6 @@ const Post = ({
   const isLiked = likes.some((users: any) => users?.id === user?.id);
   const [saves, setSaves] = useState([...Object.values(post.savedby)]);
   const isSaved = saves.some((users: any) => users?.id === user?.id);
-
-  console.log(isSaved);
 
   useEffect(() => {});
 
@@ -136,7 +133,11 @@ const Post = ({
           {isLiked ? <FcLike /> : <AiOutlineHeart />}
           <p>{likes.length}</p>
         </div>
-        <Link href={`/post/${post?.id}`} className=" flex items-center gap-2">
+        <Link
+          href={`/post/${post?.id}?tab=comments`}
+          className=" flex items-center gap-2"
+          scroll={false}
+        >
           <FaRegComment />
         </Link>
         <div

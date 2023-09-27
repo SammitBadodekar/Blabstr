@@ -34,7 +34,6 @@ const Page = () => {
   });
 
   const router = useRouter();
-  console.log(updatedUser);
 
   useEffect(() => {
     const getId = async () => {

@@ -16,6 +16,11 @@ export const GET = async (
         likedBy: true,
         savedby: true,
         user: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
     return new NextResponse(JSON.stringify(post));
