@@ -21,7 +21,6 @@ export const GET = async (
         },
         followers: true,
         following: true,
-        savedPosts: true,
         likedPosts: {
           include: {
             user: true,
