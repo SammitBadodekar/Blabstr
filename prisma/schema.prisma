@@ -18,6 +18,8 @@ model Users {
   about String?
   tag String? @unique
   posts Posts[] @relation("posts")
+  comments Comments[] @relation("comment")
+  replies Replies[] @relation("reply")
   savedPosts Posts[]  @relation(name: "savedposts")
  likedPosts Posts[] @relation(name: "LikedPosts")
   followers Follow[] @relation("followers")
@@ -45,21 +47,30 @@ model Posts {
 
 model Comments{
   id String @id @default(uuid())
+  text String
   post Posts  @relation(fields: [postId], references: [id])
   postId String 
-  @@index([postId], name: "post_id_index")
+  user    Users    @relation("comment",fields: [UserEmail], references: [email])
+  UserEmail   String
   replies Replies[]
-   createdAt DateTime @default(now())
+  
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@index([postId], name: "post_id_index")
+  @@index([UserEmail], name: "Comment_id_index")
 }
 
 model Replies{
   id String @id @default(uuid())
+  text String
   comment Comments  @relation(fields: [commentId], references: [id])
- commentId String 
+  commentId String
+  user    Users    @relation("reply",fields: [UserEmail], references: [email])
+  UserEmail   String 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
  @@index([commentId], name: "post_id_index")
+  @@index([UserEmail], name: "Reply_id_index")
 }
 
 model Follow{

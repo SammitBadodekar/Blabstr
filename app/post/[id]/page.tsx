@@ -12,17 +12,26 @@ import { User } from "@/components/renderPages";
 import FeaturedAccount from "@/components/ui/featuredAccount";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import PostSkeleton from "@/components/skeletons/postSkeleton";
+import MakeComment from "@/components/ui/makeComment";
+import ProfileImage from "@/components/ui/profileImage";
+import { MdDeleteOutline, MdVerified } from "react-icons/md";
+import { Button } from "@/components/ui/button";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useRef } from "react";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [user, setUser] = useRecoilState(userState);
   const [post, setPost] = useState<any>({});
+  const [comments, setComments] = useState<any[]>([]);
+  const [parent, enableAnimations] = useAutoAnimate();
 
   useEffect(() => {
     const getUser = async () => {
-      const user = await axios.get(`/api/post/getOne/${params.id}`);
-      setPost(user.data);
+      const post = await axios.get(`/api/post/getOne/${params.id}`);
+      setPost(post.data);
+      setComments(post.data.comments);
     };
     getUser();
   }, []);
@@ -68,14 +77,64 @@ const Page = ({ params }: { params: { id: string } }) => {
         <Post post={post} isAuthor={isAuthor} handleDelete={handleDelete} />
       )}
       <div className=" sticky top-0  flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">
-        <Tabs text="comments" tab={tab} post={post} />
         <Tabs text="likes" tab={tab} post={post} />
-        <Tabs text="saves" tab={tab} post={post} />
+        <Tabs text="comments" tab={tab} post={post} />
       </div>
       {(!tab || tab === "likes") &&
         post?.likedBy?.map((user: User) => {
           return <FeaturedAccount user={user} />;
         })}
+      {tab === "comments" && (
+        <div>
+          <MakeComment
+            userEmail={user.email}
+            postId={post.id}
+            setComments={setComments}
+          />
+          <div className="flex w-full flex-col" ref={parent}>
+            {comments.map((comment) => {
+              return (
+                <div className="flex w-full gap-2 rounded-lg  border-b-2 p-4">
+                  <Link href={`/${comment?.user?.tag}`} className=" h-fit">
+                    <ProfileImage src={comment?.user?.imageUrl} size={50} />
+                  </Link>
+
+                  <div className=" flex w-full flex-col  gap-2 pr-4">
+                    <Link
+                      href={`/${comment?.user?.tag}`}
+                      className=" flex items-center gap-2"
+                    >
+                      <p className=" font-bold">{comment?.user?.name}</p>
+                      {comment?.user?.isVerified && (
+                        <div className=" text-lg font-extrabold text-yellow-400">
+                          <MdVerified />
+                        </div>
+                      )}
+                    </Link>
+
+                    <p className=" -mt-2 text-xs text-darkGray dark:text-lightGray">
+                      {comment?.user?.about?.slice(0, 30)}
+                      {comment?.user?.about?.length > 30 ? "..." : ""}
+                    </p>
+
+                    <p className=" max-w-5xl text-darkTheme dark:text-lightTheme">
+                      {comment?.text}
+                    </p>
+                  </div>
+
+                  <Button
+                    className={` ml-auto flex items-center gap-2 `}
+                    variant="secondary"
+                  >
+                    <MdDeleteOutline />
+                    <p className=" hidden sm:inline">Delete</p>
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
