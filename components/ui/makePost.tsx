@@ -33,28 +33,7 @@ const MakePost = () => {
 
   const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (user.email && post.text && !post.image) {
-      toast
-        .promise(axios.post("/api/post/upload", { email: user.email, post }), {
-          loading: "Posting...",
-          success: <p>Successfully Uploaded Post</p>,
-          error: <p>Could not upload Post</p>,
-        })
-        .then((response: AxiosResponse) => {
-          if (response.status === 200) {
-            const newPost = response.data;
-            setPosts((prev) => [
-              {
-                ...newPost,
-                user,
-              },
-              ...prev,
-            ]);
-            setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
-          }
-        });
-    }
-    if (user.email && post.text && post.image) {
+    if (user.email && (post.text || post.image || post.video)) {
       toast
         .promise(axios.post("/api/post/upload", { email: user.email, post }), {
           loading: "Posting...",

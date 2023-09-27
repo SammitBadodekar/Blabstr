@@ -2,7 +2,7 @@
 
 import ThemeToggleButton from "./ThemeToggleButton";
 import { BiHomeCircle, BiSearchAlt, BiBell, BiLogOut } from "react-icons/bi";
-import { BsChatDots, BsPeople } from "react-icons/bs";
+import { BsChatDots, BsPeople, BsBookmark } from "react-icons/bs";
 import Link from "next/link";
 import Logo from "./logo";
 import { signOut } from "next-auth/react";
@@ -31,6 +31,11 @@ const Sidebar = () => {
       <NavLinks text="Communities" URL="/communities">
         <BsPeople />
       </NavLinks>
+      {user.savedPosts && (
+        <NavLinks text="Saves" URL="/saves">
+          <BsBookmark />
+        </NavLinks>
+      )}
       {user?.imageUrl && (
         <NavLinks text="Profile" URL={`/${user.tag}`}>
           <ProfileImage src={user?.imageUrl} size={40} />
