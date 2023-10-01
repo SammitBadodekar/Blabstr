@@ -136,9 +136,9 @@ const Post = ({
         <Link
           href={`/post/${post?.id}?tab=comments`}
           className=" flex items-center gap-2"
-          scroll={false}
         >
           <FaRegComment />
+          <p>{post?.comments?.length}</p>
         </Link>
         <div
           onClick={() => handleSave(post?.id)}
