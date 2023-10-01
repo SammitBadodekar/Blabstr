@@ -17,7 +17,7 @@ import ProfileImage from "@/components/ui/profileImage";
 import { MdDeleteOutline, MdVerified } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { useRef } from "react";
+import { formatDistanceToNowStrict } from "date-fns";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const searchParams = useSearchParams();
@@ -31,7 +31,14 @@ const Page = ({ params }: { params: { id: string } }) => {
     const getUser = async () => {
       const post = await axios.get(`/api/post/getOne/${params.id}`);
       setPost(post.data);
-      setComments(post.data.comments);
+      const sortedComments = post.data.comments.sort(
+        (a: any, b: any): number => {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
+      );
+      setComments(sortedComments);
     };
     getUser();
   }, []);
@@ -53,6 +60,27 @@ const Page = ({ params }: { params: { id: string } }) => {
       .then((response) => {
         if (response.data === "deleted") {
           router.push("/home");
+        }
+      });
+  };
+
+  const handleCommentDelete = async (id: string, commentAuthor: string) => {
+    toast
+      .promise(
+        axios.put("/api/comments/delete", {
+          id,
+          userEmail: user.email,
+          commentAuthor,
+        }),
+        {
+          loading: "deleting...",
+          success: <p>comment deleted</p>,
+          error: <p>Unable to delete post</p>,
+        }
+      )
+      .then((response) => {
+        if (response.data === "deleted") {
+          setComments(comments.filter((comment) => comment.id !== id));
         }
       });
   };
@@ -85,16 +113,25 @@ const Page = ({ params }: { params: { id: string } }) => {
           return <FeaturedAccount user={user} />;
         })}
       {tab === "comments" && (
-        <div>
+        <div ref={parent}>
           <MakeComment
             userEmail={user.email}
             postId={post.id}
             setComments={setComments}
           />
-          <div className="flex w-full flex-col" ref={parent}>
+          <div className="flex w-full flex-col">
             {comments.map((comment) => {
+              const isCommentAuthor = user?.email === comment?.user?.email;
+              const date = new Date(comment?.createdAt);
+              const timeAgo = formatDistanceToNowStrict(date, {
+                addSuffix: true,
+              });
+
               return (
-                <div className="flex w-full gap-2 rounded-lg  border-b-2 p-4">
+                <div
+                  className="flex w-full gap-2 rounded-lg  border-b-2 p-4"
+                  key={comment?.id}
+                >
                   <Link href={`/${comment?.user?.tag}`} className=" h-fit">
                     <ProfileImage src={comment?.user?.imageUrl} size={50} />
                   </Link>
@@ -120,15 +157,23 @@ const Page = ({ params }: { params: { id: string } }) => {
                     <p className=" max-w-5xl text-darkTheme dark:text-lightTheme">
                       {comment?.text}
                     </p>
+                    <p className="text-xs text-darkGray dark:text-lightGray">
+                      {timeAgo}
+                    </p>
                   </div>
 
-                  <Button
-                    className={` ml-auto flex items-center gap-2 `}
-                    variant="secondary"
-                  >
-                    <MdDeleteOutline />
-                    <p className=" hidden sm:inline">Delete</p>
-                  </Button>
+                  {isCommentAuthor && (
+                    <Button
+                      className={` ml-auto flex items-center gap-2 `}
+                      variant="secondary"
+                      onClick={() =>
+                        handleCommentDelete(comment?.id, comment?.user?.email)
+                      }
+                    >
+                      <MdDeleteOutline />
+                      <p className=" hidden sm:inline">Delete</p>
+                    </Button>
+                  )}
                 </div>
               );
             })}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./button";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -12,6 +12,7 @@ const MakeComment = ({
   userEmail: string;
   setComments: Function;
 }) => {
+  const [comment, setComment] = useState("");
   const handleComment = (e: any) => {
     e.preventDefault();
 
@@ -32,6 +33,7 @@ const MakeComment = ({
         console.log(resp);
         if (resp.status === 200) {
           setComments((prev: Array<object>) => [resp.data, ...prev]);
+          setComment("");
         }
       });
   };
@@ -46,9 +48,11 @@ const MakeComment = ({
         name="comment"
         id="comment"
         cols={30}
-        rows={2}
+        rows={1}
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
         placeholder="What's your though on this ?"
-        className=" w-full rounded-2xl border-2 bg-lightTheme p-2 dark:bg-darkTheme"
+        className=" w-full rounded-3xl border-2 bg-lightTheme p-4  dark:bg-darkTheme"
       ></textarea>
       <Button type="submit" className=" rounded-full font-bold">
         Comment
