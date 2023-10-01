@@ -19,6 +19,19 @@ export const GET = async (
             savedby: true,
           },
         },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                likedBy: true,
+                savedby: true,
+              },
+            },
+            user: true,
+          },
+        },
+        replies: true,
         followers: true,
         following: true,
         likedPosts: {

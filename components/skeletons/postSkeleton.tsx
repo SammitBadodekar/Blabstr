@@ -47,8 +47,12 @@ const PostSkeleton = () => {
             <Skeleton width={90} height={30} />
             <Skeleton width={90} height={30} />
           </div>
-          <div className=" m-4 h-screen ">
-            <Skeleton className=" my-2 h-14 w-full" count={5} />
+          <div className=" m-4 h-screen bg-lightTheme dark:bg-darkTheme">
+            <Skeleton className=" my-2 h-14 w-full " />
+            <Skeleton className=" my-2 h-14 w-full " />
+            <Skeleton className=" my-2 h-14 w-full " />
+            <Skeleton className=" my-2 h-14 w-full " />
+            <Skeleton className=" my-2 h-14 w-full " />
           </div>
         </div>
       </SkeletonTheme>

@@ -34,7 +34,7 @@ const Post = ({
 }: {
   post: any;
   isAuthor: boolean;
-  handleDelete: Function;
+  handleDelete?: Function;
 }) => {
   const date = new Date(post?.createdAt);
   const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
@@ -169,7 +169,11 @@ const Post = ({
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
-                onClick={() => handleDelete(post?.id, post?.user?.email)}
+                onClick={() => {
+                  if (handleDelete) {
+                    handleDelete(post?.id, post?.user?.email);
+                  }
+                }}
               >
                 Delete Post
               </AlertDialogAction>
