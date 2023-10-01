@@ -13,11 +13,8 @@ import FeaturedAccount from "@/components/ui/featuredAccount";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import PostSkeleton from "@/components/skeletons/postSkeleton";
 import MakeComment from "@/components/ui/makeComment";
-import ProfileImage from "@/components/ui/profileImage";
-import { MdDeleteOutline, MdVerified } from "react-icons/md";
-import { Button } from "@/components/ui/button";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { formatDistanceToNowStrict } from "date-fns";
+import Comment from "@/components/ui/comment";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const searchParams = useSearchParams();
@@ -64,27 +61,6 @@ const Page = ({ params }: { params: { id: string } }) => {
       });
   };
 
-  const handleCommentDelete = async (id: string, commentAuthor: string) => {
-    toast
-      .promise(
-        axios.put("/api/comments/delete", {
-          id,
-          userEmail: user.email,
-          commentAuthor,
-        }),
-        {
-          loading: "deleting...",
-          success: <p>comment deleted</p>,
-          error: <p>Unable to delete post</p>,
-        }
-      )
-      .then((response) => {
-        if (response.data === "deleted") {
-          setComments(comments.filter((comment) => comment.id !== id));
-        }
-      });
-  };
-
   const tab = searchParams.get("tab");
   const isAuthor = post?.user?.email === user?.email;
 
@@ -104,7 +80,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       {post.createdAt && (
         <Post post={post} isAuthor={isAuthor} handleDelete={handleDelete} />
       )}
-      <div className=" sticky top-0  flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">
+      <div className=" sticky top-0 z-20  flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">
         <Tabs text="likes" tab={tab} post={post} />
         <Tabs text="comments" tab={tab} post={post} />
       </div>
@@ -121,60 +97,12 @@ const Page = ({ params }: { params: { id: string } }) => {
           />
           <div className="flex w-full flex-col">
             {comments.map((comment) => {
-              const isCommentAuthor = user?.email === comment?.user?.email;
-              const date = new Date(comment?.createdAt);
-              const timeAgo = formatDistanceToNowStrict(date, {
-                addSuffix: true,
-              });
-
               return (
-                <div
-                  className="flex w-full gap-2 rounded-lg  border-b-2 p-4"
-                  key={comment?.id}
-                >
-                  <Link href={`/${comment?.user?.tag}`} className=" h-fit">
-                    <ProfileImage src={comment?.user?.imageUrl} size={50} />
-                  </Link>
-
-                  <div className=" flex w-full flex-col  gap-2 pr-4">
-                    <Link
-                      href={`/${comment?.user?.tag}`}
-                      className=" flex items-center gap-2"
-                    >
-                      <p className=" font-bold">{comment?.user?.name}</p>
-                      {comment?.user?.isVerified && (
-                        <div className=" text-lg font-extrabold text-yellow-400">
-                          <MdVerified />
-                        </div>
-                      )}
-                    </Link>
-
-                    <p className=" -mt-2 text-xs text-darkGray dark:text-lightGray">
-                      {comment?.user?.about?.slice(0, 30)}
-                      {comment?.user?.about?.length > 30 ? "..." : ""}
-                    </p>
-
-                    <p className=" max-w-5xl text-darkTheme dark:text-lightTheme">
-                      {comment?.text}
-                    </p>
-                    <p className="text-xs text-darkGray dark:text-lightGray">
-                      {timeAgo}
-                    </p>
-                  </div>
-
-                  {isCommentAuthor && (
-                    <Button
-                      className={` ml-auto flex items-center gap-2 `}
-                      variant="secondary"
-                      onClick={() =>
-                        handleCommentDelete(comment?.id, comment?.user?.email)
-                      }
-                    >
-                      <MdDeleteOutline />
-                      <p className=" hidden sm:inline">Delete</p>
-                    </Button>
-                  )}
-                </div>
+                <Comment
+                  comment={comment}
+                  user={user}
+                  setComments={setComments}
+                />
               );
             })}
           </div>

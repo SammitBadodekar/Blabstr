@@ -54,8 +54,8 @@ const MakeComment = ({
         placeholder="What's your though on this ?"
         className=" w-full rounded-3xl border-2 bg-lightTheme p-4  dark:bg-darkTheme"
       ></textarea>
-      <Button type="submit" className=" rounded-full font-bold">
-        Comment
+      <Button type="submit" className=" rounded-full font-bold" size="sm">
+        Post
       </Button>
     </form>
   );
