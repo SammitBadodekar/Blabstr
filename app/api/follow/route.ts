@@ -3,27 +3,42 @@ import { NextResponse } from "next/server";
 
 export const PUT = async (req: any) => {
   const body = await req.json();
+  console.log(body);
   try {
-    prisma.users.update({
+    await prisma.follow.create({
+      data: {
+        followedbyEmail: body.followedByEmail,
+        followedToEmail: body.followedToEmail,
+      },
+    });
+    /* prisma.users.update({
       where: {
-        id: body.followedBy.id,
+        id: body.followedById,
       },
       data: {
-        following: body.followedBy.following,
+        following: {
+          connect: {
+            id: body.followedToId,
+          },
+        },
       },
     });
 
     prisma.users.update({
       where: {
-        id: body.followedTo.id,
+        id: body.followedToId,
       },
       data: {
-        following: body.followedTo.following,
+        followers: {
+          connect: {
+            id: body.followedById,
+          },
+        },
       },
-    });
+    }); */
+    return new NextResponse(JSON.stringify("updated"));
   } catch (error) {
     console.log(error);
     return new NextResponse(JSON.stringify(error), { status: 403 });
   }
-  return new NextResponse(JSON.stringify("updated"));
 };
