@@ -1,9 +1,30 @@
+"use client";
+
 import ProfileImage from "./profileImage";
 import { Button } from "./button";
 import Link from "next/link";
 import { MdVerified } from "react-icons/md";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/atoms/userState";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { User } from "../renderPages";
 
 const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  let isFollowed = currentUser?.following?.some(
+    (users: User) => users.id === user.id
+  );
+
+  const handleFollow = async () => {
+    isFollowed = true;
+    const { data } = await axios.put("/api/follow", {
+      followedByEmail: currentUser.email,
+      followedToEmail: user.email,
+    });
+    console.log(data);
+  };
+
   return (
     <div className="flex w-full flex-wrap gap-2 p-2">
       <Link href={`/${user.tag}`}>
@@ -23,9 +44,21 @@ const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
         </p>
       </Link>
 
-      <Button className=" ml-auto rounded-xl px-3" size="sm">
-        Follow
-      </Button>
+      {isFollowed ? (
+        <p className="ml-auto rounded-xl border-2 px-3 text-center">
+          Following
+        </p>
+      ) : user.email === currentUser.email ? (
+        <p className="ml-auto rounded-xl px-3 text-center">You</p>
+      ) : (
+        <Button
+          className="ml-auto rounded-xl px-3"
+          size="sm"
+          onClick={handleFollow}
+        >
+          Follow
+        </Button>
+      )}
     </div>
   );
 };
