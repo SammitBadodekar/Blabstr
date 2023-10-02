@@ -48,7 +48,7 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="page flex flex-col items-center justify-center gap-8 p-8">
+    <div className="page flex flex-col items-center justify-center gap-8 p-2 py-4 sm:p-8">
       <input
         type="text"
         className=" w-full rounded-full border-2 bg-lightTheme p-2 px-4 dark:bg-darkTheme"

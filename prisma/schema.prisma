@@ -21,9 +21,9 @@ model Users {
   comments Comments[] @relation("comment")
   replies Replies[] @relation("reply")
   savedPosts Posts[]  @relation(name: "savedposts")
- likedPosts Posts[] @relation(name: "LikedPosts")
-  followers Follow[] @relation("followers")
-  following Follow[] @relation("following")
+  likedPosts Posts[] @relation(name: "LikedPosts")
+  followers Users[]  @relation("UserFollows")
+  following  Users[]  @relation("UserFollows")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isVerified Boolean @default(false)
@@ -73,15 +73,7 @@ model Replies{
   @@index([UserEmail], name: "Reply_id_index")
 }
 
-model Follow{
-  id String @id @default(uuid())
-  followedby Users @relation("followers",fields: [followedbyEmail] , references: [email])
-  followedbyEmail String
-  followedTo Users @relation("following",fields: [followedToEmail] , references: [email])
-  followedToEmail String
-  @@index([followedbyEmail], name: "followers")
-  @@index([followedToEmail], name: "following")
-}
+
 
 model FeaturedUsers {
   id String @id @unique
