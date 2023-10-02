@@ -30,7 +30,6 @@ const MakeComment = ({
         }
       )
       .then((resp) => {
-        console.log(resp);
         if (resp.status === 200) {
           setComments((prev: Array<object>) => [resp.data, ...prev]);
           setComment("");
