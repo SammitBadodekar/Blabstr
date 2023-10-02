@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 export const PUT = async (req: any) => {
   const body = await req.json();
+  console.log(body);
   try {
     await prisma.users.update({
       where: {
@@ -10,7 +11,7 @@ export const PUT = async (req: any) => {
       },
       data: {
         following: {
-          connect: {
+          disconnect: {
             id: body.followedToId,
           },
         },
@@ -23,7 +24,7 @@ export const PUT = async (req: any) => {
       },
       data: {
         followers: {
-          connect: {
+          disconnect: {
             id: body.followedById,
           },
         },

@@ -12,6 +12,7 @@ export const GET = async (
         email: email,
       },
       include: {
+        following: true,
         savedPosts: {
           include: {
             user: true,

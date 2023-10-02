@@ -19,6 +19,7 @@ import ProfileSkeleton from "@/components/skeletons/profileSkeleton";
 import MultiplePostsSkeleton from "@/components/skeletons/multiplePostSkeleton";
 import Comment from "@/components/ui/comment";
 import Post from "@/components/ui/post";
+import FeaturedAccount from "@/components/ui/featuredAccount";
 
 const Page = ({ params }: { params: { tag: string } }) => {
   const [searchUser, SetSearchUser] = useState<User>();
@@ -89,12 +90,52 @@ const Page = ({ params }: { params: { tag: string } }) => {
         <div className=" flex items-center gap-2 text-sm text-darkGray">
           <SlCalender /> <p>Joined on {formattedDate}</p>
         </div>
+        <div className=" flex w-full gap-4 px-4">
+          <Link
+            className=" flex items-center gap-2"
+            href={`/${searchUser?.tag}?tab=following`}
+          >
+            <span className=" text-xl font-bold">
+              {searchUser.following?.length}
+            </span>
+            Following
+          </Link>
+          <Link
+            className=" flex items-center gap-2"
+            href={`/${searchUser?.tag}?tab=followers`}
+          >
+            <span className=" text-xl font-bold">
+              {searchUser.followers?.length}
+            </span>
+            Followers
+          </Link>
+        </div>
       </div>
-      <div className=" sticky top-0 z-30 -mt-4 flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">
+
+      <div
+        className={`sticky top-0 z-30 -mt-4 flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent`}
+      >
         <Tabs text="blabs" tab={tab} searchUser={searchUser} />
         <Tabs text="likes" tab={tab} searchUser={searchUser} />
         <Tabs text="replies" tab={tab} searchUser={searchUser} />
       </div>
+
+      {tab === "following" && (
+        <div>
+          {searchUser.following?.map((users) => {
+            return <FeaturedAccount user={users} />;
+          })}
+        </div>
+      )}
+
+      {tab === "followers" && (
+        <div>
+          {searchUser.followers?.map((users) => {
+            return <FeaturedAccount user={users} />;
+          })}
+        </div>
+      )}
+
       {additionalUserInfo && (tab == "blabs" || !tab) && (
         <DisplayPost existingPosts={additionalUserInfo?.posts} />
       )}

@@ -6,23 +6,41 @@ import Link from "next/link";
 import { MdVerified } from "react-icons/md";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
-import toast from "react-hot-toast";
 import axios from "axios";
 import { User } from "../renderPages";
+import { useEffect, useState } from "react";
 
 const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userState);
-  let isFollowed = currentUser?.following?.some(
-    (users: User) => users.id === user.id
-  );
+  const [following, setFollowing] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setFollowing(currentUser.following);
+    }
+  }, [currentUser]);
+
+  let isFollowed = following?.some((users: User) => users.id === user.id);
 
   const handleFollow = async () => {
-    isFollowed = true;
-    const { data } = await axios.put("/api/follow", {
-      followedByEmail: currentUser.email,
-      followedToEmail: user.email,
-    });
-    console.log(data);
+    console.log(isFollowed);
+    if (!isFollowed) {
+      setFollowing((prev) => [user, ...prev]);
+      await axios.put("/api/follow", {
+        followedById: currentUser.id,
+        followedToId: user.id,
+      });
+    }
+    if (isFollowed) {
+      const updatedFollow = following.filter(
+        (users: User) => users.id !== user.id
+      );
+      setFollowing(updatedFollow);
+      await axios.put("/api/unfollow", {
+        followedById: currentUser.id,
+        followedToId: user.id,
+      });
+    }
   };
 
   return (
@@ -45,11 +63,18 @@ const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
       </Link>
 
       {isFollowed ? (
-        <p className="ml-auto rounded-xl border-2 px-3 text-center">
+        <Button
+          className="ml-auto rounded-xl border-2 border-lightGray px-2 dark:border-darkGray"
+          size="sm"
+          variant="secondary"
+          onClick={handleFollow}
+        >
           Following
-        </p>
+        </Button>
       ) : user.email === currentUser.email ? (
-        <p className="ml-auto rounded-xl px-3 text-center">You</p>
+        <Button className="ml-auto rounded-xl px-5" size="sm" variant="outline">
+          You
+        </Button>
       ) : (
         <Button
           className="ml-auto rounded-xl px-3"
