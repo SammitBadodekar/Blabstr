@@ -13,6 +13,7 @@ export const PUT = async (req: any) => {
       return new NextResponse(JSON.stringify("deleted"));
     } else throw new Error("unauthorized");
   } catch (error) {
+    console.log(error)
     return new NextResponse(JSON.stringify(error), { status: 401 });
   }
 };

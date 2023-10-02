@@ -48,7 +48,7 @@ model Posts {
 model Comments{
   id String @id @default(uuid())
   text String
-  post Posts  @relation(fields: [postId], references: [id])
+  post Posts  @relation(fields: [postId], references: [id],onDelete: Cascade)
   postId String 
   user    Users    @relation("comment",fields: [UserEmail], references: [email])
   UserEmail   String
