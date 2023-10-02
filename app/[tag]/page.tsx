@@ -20,6 +20,7 @@ import MultiplePostsSkeleton from "@/components/skeletons/multiplePostSkeleton";
 import Comment from "@/components/ui/comment";
 import Post from "@/components/ui/post";
 import FeaturedAccount from "@/components/ui/featuredAccount";
+import Follow from "@/components/ui/follow";
 
 const Page = ({ params }: { params: { tag: string } }) => {
   const [searchUser, SetSearchUser] = useState<User>();
@@ -57,6 +58,12 @@ const Page = ({ params }: { params: { tag: string } }) => {
   return (
     <div className="page relative flex w-full flex-col gap-4">
       {searchUser?.email === user.email && <EditProfile />}
+      {searchUser?.email !== user.email && (
+        <div className=" absolute right-2 top-28 sm:right-4">
+          <Follow user={searchUser} />
+        </div>
+      )}
+
       {searchUser?.bgImage ? (
         <Image
           src={

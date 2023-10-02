@@ -42,7 +42,6 @@ const Page = () => {
       const { data } = await axios.get("/api/users/getAll");
       setSearchUsers(data);
       setUsers(data);
-      console.log(data);
     };
     getAllUsers();
   }, []);
