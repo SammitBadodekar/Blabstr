@@ -34,7 +34,6 @@ const Page = () => {
   });
 
   const router = useRouter();
-  console.log(updatedUser);
 
   useEffect(() => {
     const getId = async () => {
@@ -46,8 +45,8 @@ const Page = () => {
         name: data?.name,
         email: data?.email,
         imageUrl: `${
-          session?.user?.image
-            ? session?.user?.image
+          data?.imageUrl
+            ? data?.imageUrl
             : "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
         }`,
         tag: data.tag,

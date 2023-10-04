@@ -1,7 +1,7 @@
 import ProfileImage from "./profileImage";
-import { Button } from "./button";
 import Link from "next/link";
 import { MdVerified } from "react-icons/md";
+import Follow from "./follow";
 
 const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
   return (
@@ -22,16 +22,13 @@ const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
           @{user.tag}
         </p>
       </Link>
-
-      <Button className=" ml-auto rounded-xl px-3" size="sm">
-        Follow
-      </Button>
+      <Follow user={user} />
     </div>
   );
 };
 export default FeaturedAccount;
 
-interface FeaturedAccount {
+export interface FeaturedAccount {
   id: string;
   name: string;
   imageUrl: string;

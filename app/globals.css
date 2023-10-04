@@ -110,3 +110,10 @@
 .dvh {
   height: 100dvh;
 }
+
+.line-width {
+  width: 0.1rem;
+}
+.line-height {
+  height: 0.1rem;
+}

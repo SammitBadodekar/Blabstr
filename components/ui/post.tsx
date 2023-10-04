@@ -3,7 +3,7 @@
 import ProfileImage from "./profileImage";
 import { AiOutlineHeart } from "react-icons/ai";
 import { FcLike } from "react-icons/fc";
-import { BsBookmarkPlus } from "react-icons/bs";
+import { BsBookmark, BsFillBookmarkFill } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import { MdDeleteOutline, MdVerified } from "react-icons/md";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { InView } from "react-intersection-observer";
 import {
@@ -34,14 +34,15 @@ const Post = ({
 }: {
   post: any;
   isAuthor: boolean;
-  handleDelete: Function;
+  handleDelete?: Function;
 }) => {
   const date = new Date(post?.createdAt);
   const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
   const [user, setUser] = useRecoilState(userState);
   const [likes, setLikes] = useState([...Object.values(post.likedBy)]);
   const isLiked = likes.some((users: any) => users?.id === user?.id);
-  const videoRef = useRef();
+  const [saves, setSaves] = useState([...Object.values(post.savedby)]);
+  const isSaved = saves.some((users: any) => users?.id === user?.id);
 
   useEffect(() => {});
 
@@ -54,6 +55,17 @@ const Post = ({
       axios.put("/api/post/dislike", { postId, userId: user?.id });
       const newLikes = likes.filter((like: any) => like?.id !== user?.id);
       setLikes(newLikes);
+    }
+  };
+  const handleSave = (postId: string) => {
+    if (!isSaved) {
+      axios.put("/api/post/save", { postId, userId: user?.id });
+      setSaves((prev) => [user, ...prev]);
+    }
+    if (isSaved) {
+      axios.put("/api/post/unsave", { postId, userId: user?.id });
+      const newSaves = saves.filter((like: any) => like?.id !== user?.id);
+      setSaves(newSaves);
     }
   };
 
@@ -121,11 +133,19 @@ const Post = ({
           {isLiked ? <FcLike /> : <AiOutlineHeart />}
           <p>{likes.length}</p>
         </div>
-        <Link href={`/post/${post?.id}`} className=" flex items-center gap-2">
+        <Link
+          href={`/post/${post?.id}?tab=comments`}
+          className=" flex items-center gap-2"
+        >
           <FaRegComment />
+          <p>{post?.comments?.length}</p>
         </Link>
-        <div className=" flex items-center gap-2">
-          <BsBookmarkPlus />
+        <div
+          onClick={() => handleSave(post?.id)}
+          className=" flex items-center gap-2"
+        >
+          {isSaved ? <BsFillBookmarkFill /> : <BsBookmark />}
+          <p>{saves.length}</p>
         </div>
       </div>
       <p className=" border-b-2 px-4 pb-2 text-xs text-darkGray dark:text-lightGray">
@@ -149,7 +169,11 @@ const Post = ({
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
-                onClick={() => handleDelete(post?.id, post?.user?.email)}
+                onClick={() => {
+                  if (handleDelete) {
+                    handleDelete(post?.id, post?.user?.email);
+                  }
+                }}
               >
                 Delete Post
               </AlertDialogAction>

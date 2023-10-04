@@ -18,10 +18,12 @@ model Users {
   about String?
   tag String? @unique
   posts Posts[] @relation("posts")
+  comments Comments[] @relation("comment")
+  replies Replies[] @relation("reply")
   savedPosts Posts[]  @relation(name: "savedposts")
- likedPosts Posts[] @relation(name: "LikedPosts")
-  followers Follow[] @relation("followers")
-  following Follow[] @relation("following")
+  likedPosts Posts[] @relation(name: "LikedPosts")
+  followers Users[]  @relation("UserFollows")
+  following  Users[]  @relation("UserFollows")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isVerified Boolean @default(false)
@@ -45,32 +47,33 @@ model Posts {
 
 model Comments{
   id String @id @default(uuid())
-  post Posts  @relation(fields: [postId], references: [id])
+  text String
+  post Posts  @relation(fields: [postId], references: [id],onDelete: Cascade)
   postId String 
-  @@index([postId], name: "post_id_index")
+  user    Users    @relation("comment",fields: [UserEmail], references: [email])
+  UserEmail   String
   replies Replies[]
-   createdAt DateTime @default(now())
+  
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@index([postId], name: "post_id_index")
+  @@index([UserEmail], name: "Comment_id_index")
 }
 
 model Replies{
   id String @id @default(uuid())
+  text String
   comment Comments  @relation(fields: [commentId], references: [id])
- commentId String 
+  commentId String
+  user    Users    @relation("reply",fields: [UserEmail], references: [email])
+  UserEmail   String 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
  @@index([commentId], name: "post_id_index")
+  @@index([UserEmail], name: "Reply_id_index")
 }
 
-model Follow{
-  id String @id @default(uuid())
-  followedby Users @relation("followers",fields: [followedbyEmail] , references: [email])
-  followedbyEmail String
-  followedTo Users @relation("following",fields: [followedToEmail] , references: [email])
-  followedToEmail String
-  @@index([followedbyEmail], name: "followers")
-  @@index([followedToEmail], name: "following")
-}
+
 
 model FeaturedUsers {
   id String @id @unique

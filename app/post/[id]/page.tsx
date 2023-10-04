@@ -12,17 +12,30 @@ import { User } from "@/components/renderPages";
 import FeaturedAccount from "@/components/ui/featuredAccount";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import PostSkeleton from "@/components/skeletons/postSkeleton";
+import MakeComment from "@/components/ui/makeComment";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import Comment from "@/components/ui/comment";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [user, setUser] = useRecoilState(userState);
   const [post, setPost] = useState<any>({});
+  const [comments, setComments] = useState<any[]>([]);
+  const [parent, enableAnimations] = useAutoAnimate();
 
   useEffect(() => {
     const getUser = async () => {
-      const user = await axios.get(`/api/post/getOne/${params.id}`);
-      setPost(user.data);
+      const post = await axios.get(`/api/post/getOne/${params.id}`);
+      setPost(post.data);
+      const sortedComments = post.data.comments.sort(
+        (a: any, b: any): number => {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
+      );
+      setComments(sortedComments);
     };
     getUser();
   }, []);
@@ -67,15 +80,34 @@ const Page = ({ params }: { params: { id: string } }) => {
       {post.createdAt && (
         <Post post={post} isAuthor={isAuthor} handleDelete={handleDelete} />
       )}
-      <div className=" sticky top-0  flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">
-        <Tabs text="comments" tab={tab} post={post} />
+      <div className=" sticky top-0 z-20  flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">
         <Tabs text="likes" tab={tab} post={post} />
-        <Tabs text="saves" tab={tab} post={post} />
+        <Tabs text="comments" tab={tab} post={post} />
       </div>
       {(!tab || tab === "likes") &&
         post?.likedBy?.map((user: User) => {
           return <FeaturedAccount user={user} />;
         })}
+      {tab === "comments" && (
+        <div ref={parent}>
+          <MakeComment
+            userEmail={user.email}
+            postId={post.id}
+            setComments={setComments}
+          />
+          <div className="flex w-full flex-col">
+            {comments.map((comment) => {
+              return (
+                <Comment
+                  comment={comment}
+                  user={user}
+                  setComments={setComments}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

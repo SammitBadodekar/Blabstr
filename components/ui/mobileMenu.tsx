@@ -1,6 +1,6 @@
 import ThemeToggleButton from "./ThemeToggleButton";
 import { BiHomeCircle, BiSearchAlt, BiBell, BiLogOut } from "react-icons/bi";
-import { BsChatDots, BsPeople } from "react-icons/bs";
+import { BsBookmark, BsChatDots, BsPeople } from "react-icons/bs";
 import Link from "next/link";
 
 import { signOut } from "next-auth/react";
@@ -31,8 +31,13 @@ const MobileMenu = () => {
       <NavLinks text="Communities" URL="/communities">
         <BsPeople />
       </NavLinks>
+      {user.savedPosts && (
+        <NavLinks text="Saves" URL="/saves">
+          <BsBookmark />
+        </NavLinks>
+      )}
 
-      <div className=" grid w-full   gap-4">
+      <div className=" grid w-full gap-4">
         <ThemeToggleButton />
         <Link
           href="/post"

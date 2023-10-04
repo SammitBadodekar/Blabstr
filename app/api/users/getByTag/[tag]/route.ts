@@ -11,6 +11,10 @@ export const GET = async (
       where: {
         tag: tag,
       },
+      include: {
+        followers: true,
+        following: true,
+      },
     });
     return new NextResponse(JSON.stringify(userByTag));
   } catch (error) {

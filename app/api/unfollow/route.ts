@@ -10,7 +10,7 @@ export const PUT = async (req: any) => {
       },
       data: {
         following: {
-          connect: {
+          disconnect: {
             id: body.followedToId,
           },
         },
@@ -23,7 +23,7 @@ export const PUT = async (req: any) => {
       },
       data: {
         followers: {
-          connect: {
+          disconnect: {
             id: body.followedById,
           },
         },

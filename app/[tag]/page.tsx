@@ -17,6 +17,10 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 import ProfileSkeleton from "@/components/skeletons/profileSkeleton";
 import MultiplePostsSkeleton from "@/components/skeletons/multiplePostSkeleton";
+import Comment from "@/components/ui/comment";
+import Post from "@/components/ui/post";
+import FeaturedAccount from "@/components/ui/featuredAccount";
+import Follow from "@/components/ui/follow";
 
 const Page = ({ params }: { params: { tag: string } }) => {
   const [searchUser, SetSearchUser] = useState<User>();
@@ -54,6 +58,12 @@ const Page = ({ params }: { params: { tag: string } }) => {
   return (
     <div className="page relative flex w-full flex-col gap-4">
       {searchUser?.email === user.email && <EditProfile />}
+      {searchUser?.email !== user.email && (
+        <div className=" absolute right-2 top-28 sm:right-4">
+          <Follow user={searchUser} />
+        </div>
+      )}
+
       {searchUser?.bgImage ? (
         <Image
           src={
@@ -87,18 +97,79 @@ const Page = ({ params }: { params: { tag: string } }) => {
         <div className=" flex items-center gap-2 text-sm text-darkGray">
           <SlCalender /> <p>Joined on {formattedDate}</p>
         </div>
+        <div className=" flex w-full gap-4 px-4">
+          <Link
+            className=" flex items-center gap-2"
+            href={`/${searchUser?.tag}?tab=following`}
+          >
+            <span className=" text-xl font-bold">
+              {searchUser.following?.length}
+            </span>
+            Following
+          </Link>
+          <Link
+            className=" flex items-center gap-2"
+            href={`/${searchUser?.tag}?tab=followers`}
+          >
+            <span className=" text-xl font-bold">
+              {searchUser.followers?.length}
+            </span>
+            Followers
+          </Link>
+        </div>
       </div>
-      <div className=" sticky top-0 z-30 -mt-4 flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent">
+
+      <div
+        className={`sticky top-0 z-30 -mt-4 flex justify-around gap-4 bg-lightTransparent p-2 px-4 text-lg font-bold backdrop-blur-md dark:bg-darkTransparent`}
+      >
         <Tabs text="blabs" tab={tab} searchUser={searchUser} />
         <Tabs text="likes" tab={tab} searchUser={searchUser} />
         <Tabs text="replies" tab={tab} searchUser={searchUser} />
       </div>
+
+      {tab === "following" && (
+        <div>
+          {searchUser.following?.map((users) => {
+            return <FeaturedAccount user={users} />;
+          })}
+        </div>
+      )}
+
+      {tab === "followers" && (
+        <div>
+          {searchUser.followers?.map((users) => {
+            return <FeaturedAccount user={users} />;
+          })}
+        </div>
+      )}
+
       {additionalUserInfo && (tab == "blabs" || !tab) && (
         <DisplayPost existingPosts={additionalUserInfo?.posts} />
       )}
       {!additionalUserInfo && <MultiplePostsSkeleton />}
       {additionalUserInfo && tab == "likes" && (
         <DisplayPost existingPosts={additionalUserInfo?.likedPosts} />
+      )}
+      {additionalUserInfo?.comments && tab == "replies" && (
+        <div>
+          {additionalUserInfo.comments.map((comment: any) => {
+            return (
+              <div>
+                <div className="">
+                  <Post post={comment.post} isAuthor={false} />
+                </div>
+
+                <div className=" flex p-4">
+                  <div className="">
+                    <div className=" line-width h-20 bg-darkGray dark:bg-darkGray"></div>
+                    <div className=" line-height w-8 bg-darkGray dark:bg-darkGray"></div>
+                  </div>
+                  <Comment comment={comment} user={user} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
@@ -136,4 +207,5 @@ interface AdditionalUserInfo {
   following: [];
   savedPosts: [];
   likedPosts: [];
+  comments: [];
 }
