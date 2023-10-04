@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Button } from "./button";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
-import { FeaturedAccount } from "./featuredAccount";
 import { User } from "../renderPages";
 import axios from "axios";
+import { FeaturedAccountType } from "./featuredAccount";
 
-const Follow = ({ user }: { user: FeaturedAccount }) => {
+const Follow = ({ user }: { user: FeaturedAccountType }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [following, setFollowing] = useState<any[]>([]);
 
