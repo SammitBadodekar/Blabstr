@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Post from "./ui/post";
 import { postState } from "@/state/atoms/postState";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import NothingHere from "./ui/nothingHere";
 
 const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
   const [user, setUser] = useRecoilState(userState);
@@ -59,6 +60,8 @@ const DisplayPost = ({ existingPosts }: { existingPosts: any }) => {
       setPosts(sortedPosts);
     } else getPosts();
   }, []);
+
+  if (posts.length === 0) return <NothingHere variant="dog" />;
 
   return (
     <div className=" flex w-full flex-col " ref={parent}>

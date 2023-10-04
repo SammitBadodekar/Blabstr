@@ -10,6 +10,7 @@ import DisplayPost from "../displayPost";
 import Post from "./post";
 import Comment from "./comment";
 import axios from "axios";
+import NothingHere from "./nothingHere";
 
 const AdditionalUserInfo = ({
   searchUser,
@@ -43,19 +44,21 @@ const AdditionalUserInfo = ({
 
       {tab === "following" && (
         <div className=" grid gap-2">
-          <p className=" p-2 text-xl font-bold">Following:</p>
+          <p className=" p-4 text-2xl font-bold">Following:</p>
           {searchUser.following?.map((user: FeaturedAccountType) => {
             return <FeaturedAccount user={user} key={user.id} />;
           })}
+          {searchUser.following?.length === 0 && <NothingHere variant="dog" />}
         </div>
       )}
 
       {tab === "followers" && (
         <div className=" grid gap-2">
-          <p className="p-2 text-xl font-bold">Followers:</p>
+          <p className="p-4 text-2xl font-bold">Followers:</p>
           {searchUser.followers?.map((user: FeaturedAccountType) => {
             return <FeaturedAccount user={user} key={user.id} />;
           })}
+          {searchUser.followers?.length === 0 && <NothingHere variant="dog" />}
         </div>
       )}
 
