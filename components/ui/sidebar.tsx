@@ -15,7 +15,9 @@ const Sidebar = () => {
   const [user, setUser] = useRecoilState(userState);
   return (
     <aside className="col-start-1 hidden h-screen w-full flex-col items-center gap-4 overflow-x-hidden overflow-y-scroll border-r-2 border-lightGray bg-lightTheme px-4 py-8 text-xl font-bold dark:border-slate-800 dark:bg-darkTheme sm:col-end-3 sm:flex sm:gap-6 md:col-end-3 lg:col-end-3 lg:items-start">
-      <Logo text={false} />
+      <Link href="/home">
+        <Logo text={false} />
+      </Link>
       <NavLinks text="Home" URL="/home">
         <BiHomeCircle />
       </NavLinks>

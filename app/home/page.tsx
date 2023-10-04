@@ -11,6 +11,7 @@ import { BiBell } from "react-icons/bi";
 import { useState, useRef, useEffect } from "react";
 import MobileMenu from "@/components/ui/mobileMenu";
 import DisplayPost from "@/components/displayPost";
+import Link from "next/link";
 
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
@@ -42,8 +43,9 @@ export default function Home() {
         <div onClick={() => setIsOpen(true)} className=" pt-1">
           <ProfileImage src={user?.imageUrl} size={40} />
         </div>
-
-        <Logo text={true} />
+        <Link href="/home">
+          <Logo text={true} />
+        </Link>
         <NavLinks text="Notifications" URL="/notifications">
           <BiBell />
         </NavLinks>
