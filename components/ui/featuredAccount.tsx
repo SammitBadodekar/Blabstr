@@ -3,7 +3,7 @@ import Link from "next/link";
 import { MdVerified } from "react-icons/md";
 import Follow from "./follow";
 
-const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
+const FeaturedAccount = ({ user }: { user: FeaturedAccountType }) => {
   return (
     <div className="flex w-full flex-wrap gap-2 p-2">
       <Link href={`/${user.tag}`}>
@@ -28,7 +28,7 @@ const FeaturedAccount = ({ user }: { user: FeaturedAccount }) => {
 };
 export default FeaturedAccount;
 
-export interface FeaturedAccount {
+export interface FeaturedAccountType {
   id: string;
   name: string;
   imageUrl: string;

@@ -56,7 +56,7 @@ const Page = () => {
       />
       <div className=" w-full">
         {searchUsers.map((user) => {
-          return <FeaturedAccount user={user} />;
+          return <FeaturedAccount user={user} key={user.id} />;
         })}
       </div>
       <p

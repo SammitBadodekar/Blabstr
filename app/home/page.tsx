@@ -41,7 +41,13 @@ export default function Home() {
       </div>
       <div className=" sticky top-0 z-10 flex justify-between bg-lightTransparent px-4 py-2 backdrop-blur-md dark:bg-darkTransparent sm:hidden">
         <div onClick={() => setIsOpen(true)} className=" pt-1">
-          <ProfileImage src={user?.imageUrl} size={40} />
+          <ProfileImage
+            src={
+              user?.imageUrl ||
+              "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
+            }
+            size={40}
+          />
         </div>
         <Link href="/home">
           <Logo text={true} />

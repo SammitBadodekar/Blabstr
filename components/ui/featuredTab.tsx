@@ -11,7 +11,7 @@ const FeaturedTab = () => {
       <div className=" rounded-2xl bg-slate-200 p-2 dark:bg-slate-800">
         <h1 className=" p-2 text-xl font-extrabold">Who to follow</h1>
         {data?.data.map((user: any) => {
-          return <FeaturedAccount user={user} />;
+          return <FeaturedAccount user={user} key={user.id} />;
         })}
       </div>
     </aside>
