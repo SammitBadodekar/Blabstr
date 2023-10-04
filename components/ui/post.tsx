@@ -94,7 +94,7 @@ const Post = ({
             {post?.user?.about?.length > 30 ? "..." : ""}
           </p>
           <Link href={`/post/${post?.id}`}>
-            <p className=" max-w-5xl text-darkTheme dark:text-lightTheme">
+            <p className=" max-w-xl text-darkTheme dark:text-lightTheme">
               {post?.text}
             </p>
             {post.image && (
@@ -103,7 +103,7 @@ const Post = ({
                 width={200}
                 height={200}
                 alt=""
-                className="w-full self-start rounded-xl border-2 object-contain"
+                className="w-full max-w-lg self-start rounded-xl border-2 object-contain"
               />
             )}
           </Link>

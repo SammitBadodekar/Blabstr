@@ -1,6 +1,6 @@
 const Page = () => {
   return (
-    <div className=" flex h-screen items-center justify-center ">
+    <div className="page flex h-screen items-center justify-center ">
       No Notifications
     </div>
   );

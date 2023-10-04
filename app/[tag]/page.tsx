@@ -87,6 +87,7 @@ const Page = ({ params }: { params: { tag: string } }) => {
           <Link
             className=" flex items-center gap-2"
             href={`/${searchUser?.tag}?tab=following`}
+            scroll={false}
           >
             <span className=" text-xl font-bold">
               {searchUser.following?.length}
@@ -96,6 +97,7 @@ const Page = ({ params }: { params: { tag: string } }) => {
           <Link
             className=" flex items-center gap-2"
             href={`/${searchUser?.tag}?tab=followers`}
+            scroll={false}
           >
             <span className=" text-xl font-bold">
               {searchUser.followers?.length}

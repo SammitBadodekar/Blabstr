@@ -86,19 +86,9 @@
   border-radius: 2px;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 1500px) {
   .page {
-    min-width: 24rem;
-  }
-}
-@media screen and (min-width: 768px) {
-  .page {
-    min-width: 17rem;
-  }
-}
-@media screen and (min-width: 800px) {
-  .page {
-    min-width: 20rem;
+    min-width: 32rem;
   }
 }
 @media screen and (min-width: 1800px) {

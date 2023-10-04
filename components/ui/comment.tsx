@@ -72,7 +72,7 @@ const Comment = ({
           {comment?.user?.about?.length > 30 ? "..." : ""}
         </p>
 
-        <p className=" max-w-5xl text-darkTheme dark:text-lightTheme">
+        <p className=" max-w-xl text-darkTheme dark:text-lightTheme">
           {comment?.text}
         </p>
         <p className="text-xs text-darkGray dark:text-lightGray">{timeAgo}</p>
