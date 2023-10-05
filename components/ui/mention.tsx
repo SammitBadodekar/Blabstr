@@ -54,17 +54,17 @@ const Mention = ({
   }, []);
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger className=" invisible absolute -top-12 rounded-full border-2 p-2">
+      <PopoverTrigger className=" invisible absolute -top-12 w-full rounded-full border-2 p-2">
         Mention People
       </PopoverTrigger>
-      <PopoverContent className=" h-64 w-full overflow-y-scroll bg-slate-300 dark:bg-gray-800">
+      <PopoverContent className=" h-80 w-full overflow-y-scroll bg-slate-300 dark:bg-gray-800">
         <input
           type="text"
           className=" w-full rounded-full border-2 bg-lightTheme p-2 px-4 dark:bg-darkTheme"
           placeholder="Search People"
           onChange={(e) => debounceSearch(e.target.value)}
         />
-        <div className=" w-full">
+        <div className=" mt-4 grid w-full gap-2">
           {searchUsers.map((user) => {
             return (
               <div
@@ -74,7 +74,7 @@ const Mention = ({
                     text: prev.text + user.tag,
                   }));
                   setIsOpen(false);
-                  setInput("");
+                  setSearchUsers(users);
                 }}
                 className="flex w-full flex-wrap gap-2 p-2"
               >

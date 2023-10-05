@@ -84,7 +84,7 @@ const MakePost = () => {
           Post
         </Button>
       </form>
-      <div className=" relative flex w-full justify-center">
+      <div className=" relative grid w-full items-center justify-center">
         <Mention
           isOpen={isOpen}
           setIsOpen={setIsOpen}
