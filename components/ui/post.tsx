@@ -43,6 +43,7 @@ const Post = ({
   const isLiked = likes.some((users: any) => users?.id === user?.id);
   const [saves, setSaves] = useState([...Object.values(post.savedby)]);
   const isSaved = saves.some((users: any) => users?.id === user?.id);
+  let text = highlightMentions(post.text);
 
   useEffect(() => {});
 
@@ -95,7 +96,7 @@ const Post = ({
           </p>
           <Link href={`/post/${post?.id}`}>
             <p className=" max-w-xl text-darkTheme dark:text-lightTheme">
-              {post?.text}
+              {text}
             </p>
             {post.image && (
               <Image
@@ -185,3 +186,23 @@ const Post = ({
   );
 };
 export default Post;
+
+// Function to process and highlight mentions in text
+function highlightMentions(text: string) {
+  const regex = /@(\w+)/g;
+  const parts = text.split(regex);
+
+  return parts.map((part, index) => {
+    if (index % 2 === 1) {
+      // Odd-indexed parts are mentions, wrap them in a span
+      return (
+        <Link href={`/${part}`} key={index} className="text-blue-500">
+          @{part}
+        </Link>
+      );
+    } else {
+      // Even-indexed parts are regular text, display them as is
+      return part;
+    }
+  });
+}
