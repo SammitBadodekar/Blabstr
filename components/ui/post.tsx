@@ -188,7 +188,7 @@ const Post = ({
 export default Post;
 
 // Function to process and highlight mentions in text
-function highlightMentions(text: string) {
+export function highlightMentions(text: string) {
   const regex = /@(\w+)/g;
   const parts = text.split(regex);
 

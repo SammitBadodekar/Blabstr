@@ -7,6 +7,7 @@ import { User } from "../renderPages";
 import { Button } from "./button";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { highlightMentions } from "./post";
 
 const Comment = ({
   comment,
@@ -22,6 +23,7 @@ const Comment = ({
   const timeAgo = formatDistanceToNowStrict(date, {
     addSuffix: true,
   });
+  const text = highlightMentions(comment?.text);
 
   const handleCommentDelete = async (id: string, commentAuthor: string) => {
     toast
@@ -72,9 +74,7 @@ const Comment = ({
           {comment?.user?.about?.length > 30 ? "..." : ""}
         </p>
 
-        <p className=" max-w-xl text-darkTheme dark:text-lightTheme">
-          {comment?.text}
-        </p>
+        <p className=" max-w-xl text-darkTheme dark:text-lightTheme">{text}</p>
         <p className="text-xs text-darkGray dark:text-lightGray">{timeAgo}</p>
       </div>
 
