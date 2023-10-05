@@ -11,6 +11,8 @@ import { userState } from "@/state/atoms/userState";
 import { UploadButton } from "@/utils/uploadthing";
 import Image from "next/image";
 import ReactPlayer from "react-player";
+import { postState } from "@/state/atoms/postState";
+import Mention from "./mention";
 
 import {
   AlertDialog,
@@ -23,13 +25,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { postState } from "@/state/atoms/postState";
-import { Console } from "console";
 
 const MakePost = () => {
   const [post, setPost] = useState({ text: "", image: "", video: "" });
   const [user, setUser] = useRecoilState(userState);
   const [posts, setPosts] = useRecoilState(postState);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,26 +58,43 @@ const MakePost = () => {
     }
   };
   return (
-    <div>
+    <div className=" border-b border-slate-500">
       <form
         className=" flex items-center gap-4 p-4"
         onSubmit={(e) => {
           handlePost(e);
         }}
       >
-        <input
-          type="text"
+        <textarea
+          name="post"
+          id=""
+          cols={30}
+          rows={1}
           placeholder="What's happening ?"
           value={post.text}
-          className=" w-full rounded-full border-2 bg-lightTheme p-2 dark:bg-darkTheme"
+          className=" w-full rounded-3xl border-2 bg-lightTheme p-4 dark:bg-darkTheme"
           onChange={(e) => {
+            if (e.target.value.slice(-1) === "@") {
+              setIsOpen(true);
+            }
             setPost((prev) => ({ ...prev, text: e.target.value }));
           }}
-        />
-        <Button type="submit" className=" rounded-full font-bold">
+        ></textarea>
+        <Button type="submit" className=" rounded-3xl font-bold">
           Post
         </Button>
       </form>
+      <div className=" relative flex w-full justify-center">
+        <Mention
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          setPost={setPost}
+          text={post.text}
+        />
+      </div>
+      <p className=" px-8 pb-2 text-sm text-darkGray dark:text-lightGray">
+        use @ to mention people
+      </p>
       <div className=" flex w-full items-center gap-4 px-8 pb-4">
         <AlertDialog>
           <AlertDialogTrigger>
