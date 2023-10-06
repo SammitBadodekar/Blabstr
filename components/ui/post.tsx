@@ -94,11 +94,15 @@ const Post = ({
             {post?.user?.about?.slice(0, 30)}
             {post?.user?.about?.length > 30 ? "..." : ""}
           </p>
+
           <Link href={`/post/${post?.id}`}>
             <p className=" max-w-xl text-darkTheme dark:text-lightTheme">
               {text}
             </p>
-            {post.image && (
+          </Link>
+
+          {post.image && (
+            <Link href={`/preview?src=${post.image}`}>
               <Image
                 src={post.image}
                 width={200}
@@ -106,8 +110,9 @@ const Post = ({
                 alt=""
                 className="w-full max-w-lg self-start rounded-xl border-2 object-contain"
               />
-            )}
-          </Link>
+            </Link>
+          )}
+
           {post.video && (
             <InView>
               {({ inView, ref, entry }) => (
@@ -155,7 +160,7 @@ const Post = ({
       {isAuthor && (
         <AlertDialog>
           <AlertDialogTrigger
-            className={`absolute right-8 top-4 flex items-center rounded-lg border-2 bg-lightTheme p-2 dark:bg-darkTheme`}
+            className={`absolute right-8 top-4 flex items-center rounded-lg border-2 border-slate-500 bg-lightTheme p-2 dark:bg-darkTheme`}
           >
             <MdDeleteOutline /> <p className=" hidden sm:inline">Delete</p>
           </AlertDialogTrigger>
