@@ -70,6 +70,7 @@ export default function Home() {
         ></div>
       </div>
       <MakePost />
+      <div className=" line-height w-full bg-slate-200 dark:bg-slate-700"></div>
       <DisplayPost existingPosts={null} />
     </div>
   );

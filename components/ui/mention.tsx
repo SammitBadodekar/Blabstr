@@ -57,7 +57,7 @@ const Mention = ({
       <PopoverTrigger className=" invisible absolute -top-12 w-full rounded-full border-2 p-2">
         Mention People
       </PopoverTrigger>
-      <PopoverContent className=" h-80 w-full overflow-y-scroll bg-slate-300 dark:bg-gray-800">
+      <PopoverContent className=" h-80 w-full overflow-y-scroll bg-slate-300 dark:bg-gray-700">
         <input
           type="text"
           className=" w-full rounded-full border-2 bg-lightTheme p-2 px-4 dark:bg-darkTheme"
@@ -68,6 +68,7 @@ const Mention = ({
           {searchUsers.map((user) => {
             return (
               <div
+                key={user?.id}
                 onClick={() => {
                   setPost((prev: any) => ({
                     ...prev,
