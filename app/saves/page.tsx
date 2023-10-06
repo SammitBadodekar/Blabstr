@@ -11,7 +11,6 @@ const Page = () => {
   return (
     <div>
       {user?.savedPosts && <DisplayPost existingPosts={user.savedPosts} />}
-      {user?.savedPosts?.length === 0 && <NothingHere variant="poster" />}
     </div>
   );
 };
