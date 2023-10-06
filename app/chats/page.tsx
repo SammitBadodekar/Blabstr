@@ -1,8 +1,25 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
+
 const Page = () => {
   return (
-    <div className="page flex h-screen flex-col items-center justify-center text-3xl font-black">
-      Chats
-      <p className=" text-sm text-slate-400">Coming soon</p>
+    <div className=" flex h-full w-full flex-col items-center justify-center gap-4 p-8">
+      <p className=" text-3xl font-extrabold sm:text-4xl">
+        Welcome to your Chats!
+      </p>
+      <p className=" text-center text-darkGray dark:text-lightGray">
+        Drop a line, share posts and more with private conversation between you
+        and others on Blabstr
+      </p>
+
+      <Button
+        className=" rounded-full font-extrabold"
+        onClick={() => toast("Chats is in development")}
+      >
+        Write a message
+      </Button>
     </div>
   );
 };

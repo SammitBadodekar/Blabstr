@@ -10,10 +10,10 @@ export const metadata: Metadata = {
   title: "Blabstr",
   description: "The social media",
 };
-export default function RootLayout({
-  children,
-}: {
+
+export default function RootLayout(props: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -21,7 +21,10 @@ export default function RootLayout({
         className={`${inter.className} bg-lightTheme text-darkTheme dark:bg-darkTheme dark:text-lightTheme`}
       >
         <AllProviders>
-          <RenderPages>{children}</RenderPages>
+          <RenderPages>
+            {props.children}
+            {props.modal}
+          </RenderPages>
         </AllProviders>
       </body>
     </html>

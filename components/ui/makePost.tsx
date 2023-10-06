@@ -58,7 +58,7 @@ const MakePost = () => {
     }
   };
   return (
-    <div className=" border-b border-slate-500">
+    <div>
       <form
         className=" flex items-center gap-4 p-4"
         onSubmit={(e) => {
