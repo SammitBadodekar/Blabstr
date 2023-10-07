@@ -93,7 +93,7 @@ const MakePost = () => {
         />
       </div>
       <p className=" px-8 pb-2 text-sm text-darkGray dark:text-lightGray">
-        use @ to mention people
+        you can @mention other people
       </p>
       <div className=" flex w-full items-center gap-4 px-8 pb-4">
         <AlertDialog>

@@ -24,6 +24,7 @@ model Users {
   likedPosts Posts[] @relation(name: "LikedPosts")
   followers Users[]  @relation("UserFollows")
   following  Users[]  @relation("UserFollows")
+  communities Community[]  @relation("community")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isVerified Boolean @default(false)
@@ -83,4 +84,12 @@ model FeaturedUsers {
   about String?
   tag String? @unique
   isVerified Boolean @default(false)
+}
+
+model Community{
+ id String @id @default(uuid()) 
+  name String @unique
+  members Users[] @relation(name: "community")
+  description String
+  imageUrl String @db.Text
 }
