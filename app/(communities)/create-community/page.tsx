@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { inputClassnames } from "@/app/setup-profile/page";
+import { inputClassnames } from "@/components/inputClassNames";
 import { UploadButton } from "@/utils/uploadthing";
 import toast from "react-hot-toast";
 import ProfileImage from "@/components/ui/profileImage";

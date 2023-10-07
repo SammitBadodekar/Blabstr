@@ -7,7 +7,7 @@ import axios from "axios";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { inputClassnames } from "@/app/setup-profile/page";
+import { inputClassnames } from "@/components/inputClassNames";
 
 import {
   AlertDialog,

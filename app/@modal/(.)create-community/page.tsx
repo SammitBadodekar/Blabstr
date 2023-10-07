@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Modal from "@/components/modal";
-import { inputClassnames } from "@/app/setup-profile/page";
+import { inputClassnames } from "@/components/inputClassNames";
 import Image from "next/image";
 import { UploadButton } from "@/utils/uploadthing";
 import toast from "react-hot-toast";

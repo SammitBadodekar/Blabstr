@@ -10,9 +10,7 @@ import Logo from "@/components/ui/logo";
 import ThemeToggleButton from "@/components/ui/ThemeToggleButton";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
-
-export const inputClassnames =
-  "rounded-lg dark:bg-darkTheme border-2 p-2 bg-lightTheme text-darkTheme dark:text-lightTheme";
+import { inputClassnames } from "@/components/inputClassNames";
 
 const Page = () => {
   const { data: session } = useSession();
