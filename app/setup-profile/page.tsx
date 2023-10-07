@@ -11,6 +11,9 @@ import ThemeToggleButton from "@/components/ui/ThemeToggleButton";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 
+export const inputClassnames =
+  "rounded-lg dark:bg-darkTheme border-2 p-2 bg-lightTheme text-darkTheme dark:text-lightTheme";
+
 const Page = () => {
   const { data: session } = useSession();
   const [user, setUser] = useRecoilState(userState);
@@ -56,9 +59,6 @@ const Page = () => {
       getId();
     }
   }, [session?.user]);
-
-  const inputClassnames =
-    "rounded-lg dark:bg-darkTheme border-2 p-2 bg-lightTheme text-darkTheme dark:text-lightTheme";
 
   return (
     <form

@@ -7,6 +7,7 @@ import axios from "axios";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { inputClassnames } from "@/app/setup-profile/page";
 
 import {
   AlertDialog,
@@ -29,9 +30,6 @@ const EditProfile = () => {
   useEffect(() => {
     setUpdatedUser(user);
   }, [user]);
-
-  const inputClassnames =
-    "rounded-lg dark:bg-darkTheme border-2 p-2 bg-lightTheme text-darkTheme dark:text-lightTheme";
 
   return (
     <div className=" absolute right-4 top-28 ">
