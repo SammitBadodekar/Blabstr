@@ -115,7 +115,7 @@ const MakePost = () => {
                     handlePost(e);
                   }}
                 >
-                  {post.image ? (
+                  {post.image && (
                     <Image
                       src={post.image}
                       width={200}
@@ -123,28 +123,22 @@ const MakePost = () => {
                       alt=""
                       className=" h-40 w-full object-contain"
                     />
-                  ) : (
-                    <div className=" flex h-40 w-full items-center justify-center rounded-xl border-2 bg-lightTheme dark:bg-darkTheme">
-                      Image
-                    </div>
                   )}
-                  <div className=" h-8 w-fit self-center overflow-hidden rounded-lg border-2 bg-darkTheme p-2 text-center text-lightTheme dark:bg-lightTheme dark:text-darkTheme">
-                    <UploadButton
-                      endpoint="imageUploader"
-                      onClientUploadComplete={(res) => {
-                        toast.success("successfully uploaded image");
-                        setPost((prev) => ({
-                          ...prev,
-                          image: res ? res[0]?.url : prev.image,
-                        }));
-                      }}
-                      onUploadError={(error: Error) => {
-                        // Do something with the error.
-                        toast.error(`Failed to upload`);
-                      }}
-                      className=" -mt-3"
-                    />
-                  </div>
+                  <UploadButton
+                    endpoint="imageUploader"
+                    onClientUploadComplete={(res) => {
+                      toast.success("successfully uploaded image");
+                      setPost((prev) => ({
+                        ...prev,
+                        image: res ? res[0]?.url : prev.image,
+                      }));
+                    }}
+                    onUploadError={(error: Error) => {
+                      // Do something with the error.
+                      toast.error(`Failed to upload`);
+                    }}
+                    className="dark:ut-allowed-content:text-lightTheme"
+                  />
 
                   <div className=" mt-10 grid">
                     <p>Caption</p>
@@ -188,7 +182,7 @@ const MakePost = () => {
                     handlePost(e);
                   }}
                 >
-                  {post.video ? (
+                  {post.video && (
                     <div className=" flex justify-center">
                       <ReactPlayer
                         url={post.video}
@@ -201,29 +195,23 @@ const MakePost = () => {
                         }}
                       />
                     </div>
-                  ) : (
-                    <div className=" flex h-40 w-full items-center justify-center rounded-xl border-2 bg-lightTheme dark:bg-darkTheme">
-                      Video
-                    </div>
                   )}
-                  <div className=" h-8 w-fit self-center overflow-hidden rounded-lg border-2 bg-darkTheme p-2 text-center text-lightTheme dark:bg-lightTheme dark:text-darkTheme">
-                    <UploadButton
-                      endpoint="videoUploader"
-                      onClientUploadComplete={(res) => {
-                        toast.success("successfully uploaded video");
-                        setPost((prev) => ({
-                          ...prev,
-                          video: res ? res[0]?.url : prev.video,
-                        }));
-                      }}
-                      onUploadError={(error: Error) => {
-                        // Do something with the error.
-                        toast.error(`video size should be less than 64MB`);
-                      }}
-                      className=" -mt-3"
-                    />
-                  </div>
 
+                  <UploadButton
+                    endpoint="videoUploader"
+                    onClientUploadComplete={(res) => {
+                      toast.success("successfully uploaded video");
+                      setPost((prev) => ({
+                        ...prev,
+                        video: res ? res[0]?.url : prev.video,
+                      }));
+                    }}
+                    onUploadError={(error: Error) => {
+                      // Do something with the error.
+                      toast.error(`video size should be less than 64MB`);
+                    }}
+                    className=" dark:ut-allowed-content:text-lightTheme"
+                  />
                   <div className=" mt-10 grid">
                     <p>Caption</p>
                     <textarea

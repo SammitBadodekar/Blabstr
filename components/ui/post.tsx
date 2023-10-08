@@ -36,6 +36,7 @@ const Post = ({
   isAuthor: boolean;
   handleDelete?: Function;
 }) => {
+  console.log(post?.createdAt);
   const date = new Date(post?.createdAt);
   const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
   const [user, setUser] = useRecoilState(userState);
