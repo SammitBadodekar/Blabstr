@@ -1,33 +1,55 @@
 "use client";
 
 import React, { useState } from "react";
+import Modal from "@/components/modal";
 import { inputClassnames } from "@/components/inputClassNames";
 import { UploadButton } from "@/utils/uploadthing";
 import toast from "react-hot-toast";
 import ProfileImage from "@/components/ui/profileImage";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useRecoilState } from "recoil";
+import { communityState } from "@/state/atoms/communityState";
+import { Community } from "@/app/(communities)/communities/page";
 
 const CreateNewCommunity = () => {
-  const [community, setCommunity] = useState({
+  const [communities, setCommunities] = useRecoilState(communityState);
+  const [community, setCommunity] = useState<Community>({
     name: "",
     description: "",
-    imageUrl: "",
+    imageUrl: "/team-placeholder.png",
+    members: [],
   });
+  const router = useRouter();
 
   const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    toast.promise(axios.post("/api/communities/create", community), {
-      loading: "Creating...",
-      success: <p>Created</p>,
-      error: <p>Community with name {community.name} already exists</p>,
-    });
+    if (community.name && community.description) {
+      toast
+        .promise(axios.post("/api/communities/create", community), {
+          loading: "Creating...",
+          success: <p>Created</p>,
+          error: (
+            <p>
+              Community with name <b>"{community.name}"</b> already exists
+            </p>
+          ),
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            if (resp.status === 200) {
+              setCommunities((prev) => [community, ...prev]);
+            }
+            router.back();
+          }
+        });
+    }
   };
   return (
     <form
       onSubmit={(e) => handleCreate(e)}
-      className="grid gap-2 overflow-y-scroll  p-4 py-8 sm:p-8"
+      className="dvh grid gap-2 overflow-y-scroll rounded-xl p-4 py-8 sm:p-8"
     >
       <p className=" text-center text-2xl font-extrabold">
         Create a new Community
@@ -53,7 +75,7 @@ const CreateNewCommunity = () => {
           className="dark:ut-allowed-content:text-lightTheme "
         />
       </div>
-      <div className=" grid w-full gap-2">
+      <div className=" grid gap-2">
         <label htmlFor="">Name</label>
         <input
           type="text"
@@ -63,6 +85,7 @@ const CreateNewCommunity = () => {
           onChange={(e) =>
             setCommunity((prev) => ({ ...prev, name: e.target.value }))
           }
+          required
         />
       </div>
       <div className=" mt-4 grid gap-2">
@@ -78,10 +101,18 @@ const CreateNewCommunity = () => {
           onChange={(e) =>
             setCommunity((prev) => ({ ...prev, description: e.target.value }))
           }
+          required
         ></textarea>
       </div>
-      <Button type="submit" className=" mt-4">
+      <Button
+        type="submit"
+        className=" mt-4"
+        disabled={community.name && community.description ? false : true}
+      >
         Create
+      </Button>
+      <Button variant="outline" onClick={() => router.back()}>
+        Cancel
       </Button>
     </form>
   );

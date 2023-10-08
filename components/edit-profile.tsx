@@ -44,7 +44,7 @@ const EditProfile = () => {
             </AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription className=" flex flex-col gap-2 ">
-            <div className=" flex w-full flex-col justify-center gap-2">
+            <div className=" relative flex w-full flex-col justify-center gap-2">
               <Image
                 src={
                   updatedUser.bgImage ||
@@ -55,51 +55,47 @@ const EditProfile = () => {
                 alt="BG image "
                 className=" h-24 w-full rounded-md object-cover "
               />
-
-              <Button className=" -mt-20 mr-4 h-8 w-fit self-end overflow-hidden border-2 text-center">
-                <UploadButton
-                  endpoint="imageUploader"
-                  onClientUploadComplete={(res) => {
-                    toast.success("successfully updated profile");
-                    setUpdatedUser((prev) => ({
-                      ...prev,
-                      bgImage: res ? res[0]?.url : prev.imageUrl,
-                    }));
-                  }}
-                  onUploadError={(error: Error) => {
-                    // Do something with the error.
-                    toast.error(`Max size should be less than 16 MB`);
-                  }}
-                  className="pt-4"
-                />
-              </Button>
+              <div className="absolute top-0 h-24 w-full bg-darkTransparent"></div>
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  toast.success("successfully updated profile");
+                  setUpdatedUser((prev) => ({
+                    ...prev,
+                    bgImage: res ? res[0]?.url : prev.imageUrl,
+                  }));
+                }}
+                onUploadError={(error: Error) => {
+                  // Do something with the error.
+                  toast.error(`Max size should be less than 16 MB`);
+                }}
+                className=" absolute right-2 top-6 ut-allowed-content:text-lightTheme sm:right-8 "
+              />
             </div>
 
-            <div className=" -mt-8 ml-2 flex w-full flex-col justify-center gap-2 p-4 sm:ml-4">
+            <div className=" z-10  -mt-16 flex w-full flex-col items-start gap-2 p-4 sm:ml-4">
               <ProfileImage
                 src={
                   updatedUser.imageUrl ||
                   "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
                 }
-                size={100}
+                size={120}
               />
-              <Button className=" -ml-3 h-8 w-fit overflow-hidden">
-                <UploadButton
-                  endpoint="imageUploader"
-                  onClientUploadComplete={(res) => {
-                    toast.success("successfully updated profile");
-                    setUpdatedUser((prev) => ({
-                      ...prev,
-                      imageUrl: res ? res[0]?.url : prev.imageUrl,
-                    }));
-                  }}
-                  onUploadError={(error: Error) => {
-                    // Do something with the error.
-                    toast.error(`Max size should be less than 16 MB`);
-                  }}
-                  className="  pt-4"
-                />
-              </Button>
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  toast.success("successfully updated profile");
+                  setUpdatedUser((prev) => ({
+                    ...prev,
+                    imageUrl: res ? res[0]?.url : prev.imageUrl,
+                  }));
+                }}
+                onUploadError={(error: Error) => {
+                  // Do something with the error.
+                  toast.error(`Max size should be less than 16 MB`);
+                }}
+                className=" -ml-4 dark:ut-allowed-content:text-lightTheme"
+              />
             </div>
 
             <form
