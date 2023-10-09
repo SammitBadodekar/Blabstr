@@ -40,7 +40,10 @@ const Page = () => {
           {communities.map((community: Community) => {
             return (
               <div className=" gap-2 sm:flex" key={community.id}>
-                <div className=" flex gap-2">
+                <Link
+                  href={`/communities/${community.id}`}
+                  className=" flex gap-2"
+                >
                   <ProfileImage src={community.imageUrl} size={80} />
                   <div className=" w-full">
                     <p className=" text-lg font-bold">{community.name}</p>
@@ -48,7 +51,7 @@ const Page = () => {
                       {community.description}
                     </p>
                   </div>
-                </div>
+                </Link>
 
                 <Button
                   className=" mt-2 w-full border-2 border-gray-500 sm:ml-auto sm:mt-0 sm:w-fit"
