@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 
 export async function POST(req: Request) {
   const data = await req.text();
-  const [socketId, channelName] = data
+  /* const [socketId, channelName] = data
     .split("&")
     .map((str) => str.split("=")[1]);
 
@@ -19,6 +19,6 @@ export async function POST(req: Request) {
     channelName,
     presenceData
   );
-
-  return new Response(JSON.stringify(auth));
+ */
+  return new Response(JSON.stringify(data));
 }
