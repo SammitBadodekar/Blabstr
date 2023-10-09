@@ -12,34 +12,44 @@ import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import { communityState } from "@/state/atoms/communityState";
 import { Community } from "@/app/(communities)/communities/page";
+import { userState } from "@/state/atoms/userState";
 
 const CreateNewCommunity = () => {
   const [communities, setCommunities] = useRecoilState(communityState);
+  const [user, setUser] = useRecoilState(userState);
+
   const [community, setCommunity] = useState<Community>({
     name: "",
     description: "",
     imageUrl: "/team-placeholder.png",
     members: [],
   });
+
   const router = useRouter();
 
   const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (community.name && community.description) {
+    if (community.name && community.description && user.id) {
       toast
-        .promise(axios.post("/api/communities/create", community), {
-          loading: "Creating...",
-          success: <p>Created</p>,
-          error: (
-            <p>
-              Community with name <b>"{community.name}"</b> already exists
-            </p>
-          ),
-        })
+        .promise(
+          axios.post("/api/communities/create", {
+            userId: user.id,
+            ...community,
+          }),
+          {
+            loading: "Creating...",
+            success: <p>Created</p>,
+            error: (
+              <p>
+                Community with name <b>"{community.name}"</b> already exists
+              </p>
+            ),
+          }
+        )
         .then((resp) => {
           if (resp.status === 200) {
             if (resp.status === 200) {
-              setCommunities((prev) => [community, ...prev]);
+              setCommunities((prev) => [resp.data, ...prev]);
             }
             router.back();
           }

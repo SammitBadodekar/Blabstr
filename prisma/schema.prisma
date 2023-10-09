@@ -18,6 +18,7 @@ model Users {
   about String?
   tag String? @unique
   posts Posts[] @relation("posts")
+  communityPosts CommunityPost[] @relation("communityPosts")
   comments Comments[] @relation("comment")
   replies Replies[] @relation("reply")
   savedPosts Posts[]  @relation(name: "savedposts")
@@ -25,6 +26,7 @@ model Users {
   followers Users[]  @relation("UserFollows")
   following  Users[]  @relation("UserFollows")
   communities Community[]  @relation("community")
+  communityAdmin Community[]  @relation("community-admin")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isVerified Boolean @default(false)
@@ -92,4 +94,18 @@ model Community{
   members Users[] @relation(name: "community")
   description String
   imageUrl String @db.Text
+  admin Users[] @relation(name: "community-admin")
+}
+
+model CommunityPost{
+  id String @id @default(uuid()) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user    Users    @relation("communityPosts",fields: [UserEmail], references: [email])
+  UserEmail   String
+  text String?
+  image String? @db.Text
+  video String? @db.Text
+  @@index([UserEmail], name: "communityPosts_index")
+
 }
