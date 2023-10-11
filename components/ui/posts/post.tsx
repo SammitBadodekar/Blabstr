@@ -1,6 +1,6 @@
 "use client";
 
-import ProfileImage from "./profileImage";
+import ProfileImage from "../profileImage";
 import { AiOutlineHeart } from "react-icons/ai";
 import { FcLike } from "react-icons/fc";
 import { BsBookmark, BsFillBookmarkFill } from "react-icons/bs";
@@ -36,7 +36,6 @@ const Post = ({
   isAuthor: boolean;
   handleDelete?: Function;
 }) => {
-  console.log(post?.createdAt);
   const date = new Date(post?.createdAt);
   const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
   const [user, setUser] = useRecoilState(userState);

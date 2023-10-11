@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Button } from "./button";
+import { Button } from "../button";
 import axios from "axios";
 import toast from "react-hot-toast";
-import Mention from "./mention";
+import Mention from "../mention";
 
 const MakeComment = ({
   postId,

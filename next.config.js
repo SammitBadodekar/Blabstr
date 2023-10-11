@@ -8,6 +8,9 @@ const nextConfig = {
       "images.pexels.com",
     ],
   },
+  experimental: {
+    serverActions: true,
+  },
 };
 
 module.exports = nextConfig;

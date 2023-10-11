@@ -2,7 +2,7 @@
 
 import { AiOutlineVideoCamera } from "react-icons/ai";
 import { BsImages } from "react-icons/bs";
-import { Button } from "./button";
+import { Button } from "../button";
 import axios, { AxiosResponse } from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
@@ -12,7 +12,7 @@ import { UploadButton } from "@/utils/uploadthing";
 import Image from "next/image";
 import ReactPlayer from "react-player";
 import { postState } from "@/state/atoms/postState";
-import Mention from "./mention";
+import Mention from "../mention";
 
 import {
   AlertDialog,

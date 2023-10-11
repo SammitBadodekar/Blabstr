@@ -5,16 +5,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import axios from "axios";
-import Post from "@/components/ui/post";
+import Post from "@/components/ui/posts/post";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { User } from "@/components/renderPages";
 import FeaturedAccount from "@/components/ui/featuredAccount";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import PostSkeleton from "@/components/skeletons/postSkeleton";
-import MakeComment from "@/components/ui/makeComment";
+import MakeComment from "@/components/ui/posts/makeComment";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import Comment from "@/components/ui/comment";
+import Comment from "@/components/ui/posts/comment";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const searchParams = useSearchParams();

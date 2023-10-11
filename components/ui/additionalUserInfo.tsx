@@ -7,8 +7,8 @@ import Link from "next/link";
 import FeaturedAccount, { FeaturedAccountType } from "./featuredAccount";
 import MultiplePostsSkeleton from "../skeletons/multiplePostSkeleton";
 import DisplayPost from "../displayPost";
-import Post from "./post";
-import Comment from "./comment";
+import Post from "./posts/post";
+import Comment from "./posts/comment";
 import axios from "axios";
 import NothingHere from "./nothingHere";
 
