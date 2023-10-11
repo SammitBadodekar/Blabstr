@@ -1,10 +1,10 @@
 import Link from "next/link";
 import React from "react";
-import ProfileImage from "./profileImage";
+import ProfileImage from "../profileImage";
 import { MdDeleteOutline, MdVerified } from "react-icons/md";
 import { formatDistanceToNowStrict } from "date-fns";
-import { User } from "../renderPages";
-import { Button } from "./button";
+import { User } from "../../renderPages";
+import { Button } from "../button";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { highlightMentions } from "./post";

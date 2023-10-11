@@ -95,6 +95,7 @@ model Community{
   description String
   imageUrl String @db.Text
   admin Users[] @relation(name: "community-admin")
+  communityPosts CommunityPost[] @relation(name: "communityPost")
 }
 
 model CommunityPost{
@@ -106,6 +107,9 @@ model CommunityPost{
   text String?
   image String? @db.Text
   video String? @db.Text
+  community Community @relation(name: "communityPost", fields: [communityId], references: [id],onDelete: Cascade)
+  communityId String
   @@index([UserEmail], name: "communityPosts_index")
+  @@index([communityId], name: "communityPosts_Id")
 
 }

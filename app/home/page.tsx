@@ -1,6 +1,6 @@
 "use client";
 
-import MakePost from "@/components/ui/makePost";
+import MakePost from "@/components/ui/posts/makePost";
 import Logo from "@/components/ui/logo";
 
 import ProfileImage from "@/components/ui/profileImage";

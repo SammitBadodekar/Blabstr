@@ -1,4 +1,4 @@
-import MakePost from "@/components/ui/makePost";
+import MakePost from "@/components/ui/posts/makePost";
 
 const Page = () => {
   return (

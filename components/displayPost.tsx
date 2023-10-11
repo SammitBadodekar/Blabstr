@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 import toast from "react-hot-toast";
-import Post from "./ui/post";
+import Post from "./ui/posts/post";
 import { postState } from "@/state/atoms/postState";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import NothingHere from "./ui/nothingHere";
