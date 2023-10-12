@@ -46,7 +46,11 @@ const RenderPages = ({ children }: { children: React.ReactNode }) => {
       <div className=" flex w-full items-center justify-center  ">
         <div className=" grid w-full grid-cols-1 sm:grid-cols-12 2xl:w-fit ">
           <Sidebar />
-          <main className=" dvh w-screen overflow-x-hidden overflow-y-scroll pb-20 sm:col-start-3 sm:col-end-13 sm:w-full sm:pb-0 lg:col-end-9">
+          <main
+            className={`${
+              !isFooterLessRoute ? " pb-20" : ""
+            }  dvh w-screen overflow-x-hidden overflow-y-scroll  sm:col-start-3 sm:col-end-13 sm:w-full sm:pb-0 lg:col-end-9`}
+          >
             {children}
             {!isFooterLessRoute && <MobileNavbar />}
           </main>

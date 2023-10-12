@@ -100,9 +100,6 @@
 .dvh {
   height: 100dvh;
 }
-.chats {
-  height: 100dvh - 7rem;
-}
 
 .line-width {
   width: 0.1rem;
