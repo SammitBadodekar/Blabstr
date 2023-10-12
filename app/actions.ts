@@ -17,7 +17,7 @@ export async function CommunityPost(
   const session = await getServerSession(options);
   const text = post.get("text");
 
-  if (session?.user?.email) {
+  if (session?.user?.email && (text || image || video)) {
     const data = await prisma.communityPost.create({
       data: {
         text: text as string,
@@ -42,3 +42,11 @@ export async function CommunityPost(
     await pusher.trigger(id, "CommunityPost", JSON.stringify(data));
   }
 }
+
+export const DeleteCommunityPosts = async (id: string) => {
+  await prisma.communityPost.delete({
+    where: {
+      id: id,
+    },
+  });
+};

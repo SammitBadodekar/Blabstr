@@ -47,7 +47,7 @@ const Page = () => {
                   <ProfileImage src={community.imageUrl} size={80} />
                   <div className=" w-full">
                     <p className=" text-lg font-bold">{community.name}</p>
-                    <p className=" text-darkGray dark:text-lightGray ">
+                    <p className=" text-sm text-darkGray dark:text-lightGray">
                       {community.description}
                     </p>
                   </div>

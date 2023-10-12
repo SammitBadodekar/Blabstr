@@ -13,6 +13,10 @@ import { highlightMentions } from "../posts/post";
 import { userState } from "@/state/atoms/userState";
 import { useRecoilState } from "recoil";
 import { formatDistanceToNowStrict } from "date-fns";
+import { Button } from "../button";
+import { DeleteCommunityPosts } from "@/app/actions";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export interface CommunityPost {
   id: string;
@@ -32,6 +36,7 @@ export default function DisplayCommunityPosts({
   id: string;
 }) {
   const [user, setUser] = useRecoilState(userState);
+  const router = useRouter();
 
   const [totalCommunityPosts, setTotalCommunityPosts] =
     useState(CommunityPosts);
@@ -61,7 +66,7 @@ export default function DisplayCommunityPosts({
   };
 
   return (
-    <div className=" chats flex w-full flex-col items-start gap-2 overflow-y-scroll">
+    <div className="flex h-full w-full flex-col items-start gap-2">
       {totalCommunityPosts.map((communityPost: CommunityPost, index) => {
         let text;
         const date = new Date(communityPost?.createdAt);
@@ -75,7 +80,7 @@ export default function DisplayCommunityPosts({
           <div
             className={`${
               user.email === communityPost.user.email ? " self-end" : ""
-            } flex w-full max-w-sm  gap-2 rounded-lg p-4`}
+            }  flex w-full  max-w-sm gap-2 rounded-lg px-4 py-1`}
             ref={
               index === totalCommunityPosts.length - 1 ? messageEndRef : null
             }
@@ -85,7 +90,7 @@ export default function DisplayCommunityPosts({
             </Link>
 
             <div
-              className={` flex w-full flex-col  gap-2 rounded-lg rounded-tl-none bg-slate-200 p-4 dark:bg-gray-800`}
+              className={`relative flex w-full flex-col  gap-2 rounded-lg rounded-tl-none bg-slate-200 p-2 dark:bg-gray-800`}
             >
               <Link
                 href={`/${communityPost?.user?.tag}`}
@@ -98,6 +103,10 @@ export default function DisplayCommunityPosts({
                   </div>
                 )}
               </Link>
+
+              <p className=" -mt-2 text-xs text-darkGray dark:text-lightGray">
+                @{communityPost?.user?.tag}
+              </p>
 
               <p className=" max-w-xl text-darkTheme dark:text-lightTheme">
                 {text}
@@ -130,6 +139,27 @@ export default function DisplayCommunityPosts({
                   )}
                 </InView>
               )}
+              <Button
+                variant="secondary"
+                size="sm"
+                className=" absolute right-2 top-2 border-2 border-gray-500 p-2"
+                onClick={async () => {
+                  toast
+                    .promise(DeleteCommunityPosts(communityPost.id), {
+                      loading: "Deleting...",
+                      success: <p>Deleted</p>,
+                      error: <p>Could not delete</p>,
+                    })
+                    .then(() => {
+                      const updatedPosts = totalCommunityPosts.filter(
+                        (post) => post.id !== communityPost.id
+                      );
+                      setTotalCommunityPosts(updatedPosts);
+                    });
+                }}
+              >
+                Delete
+              </Button>
               <p className=" pt-2 text-xs text-darkGray dark:text-lightGray">
                 {timeAgo}
               </p>
