@@ -52,7 +52,6 @@ export default function DisplayCommunityPosts({
     channel.bind("CommunityPost", function (data: any) {
       console.log(data);
       setTotalCommunityPosts((prev) => [...prev, data]);
-      scrollTobottom();
     });
 
     return () => {
@@ -60,6 +59,10 @@ export default function DisplayCommunityPosts({
       pusher.unsubscribe("Community");
     };
   }, []);
+
+  useEffect(() => {
+    scrollTobottom();
+  }, [totalCommunityPosts.length]);
 
   const scrollTobottom = () => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });

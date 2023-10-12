@@ -26,7 +26,11 @@ export default function MakeCommunityPost({ id }: { id: string }) {
   return (
     <form
       action={async (formData) => {
-        await CommunityPost(formData, post.image, post.video, id);
+        toast.promise(CommunityPost(formData, post.image, post.video, id), {
+          loading: "Posting...",
+          success: <p>Posted</p>,
+          error: <p>Could not Post</p>,
+        });
         formRef.current?.reset();
         setPost({
           text: "",
