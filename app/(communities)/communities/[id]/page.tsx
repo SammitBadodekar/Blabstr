@@ -1,13 +1,13 @@
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
-import MakeCommunityPost from "@/components/ui/communities/makeCommunityPost";
 import { prisma } from "@/lib/db";
 import DisplayCommunityPosts, {
   CommunityPost,
 } from "@/components/ui/communities/displayCommunityPosts";
 import Link from "next/link";
 import { BiArrowBack } from "react-icons/bi";
+import ProfileImage from "@/components/ui/profileImage";
 
 async function getData(id: string) {
   const data = await prisma.communityPost.findMany({
@@ -35,6 +35,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     where: {
       id: params.id,
     },
+    include: {
+      members: true,
+    },
   });
 
   if (!session) {
@@ -51,6 +54,18 @@ export default async function Page({ params }: { params: { id: string } }) {
           <BiArrowBack /> {Community?.name}
         </p>
       </Link>
+
+      <div className="my-4 flex flex-col items-center justify-center gap-2 border-b-2 pb-2">
+        {Community?.imageUrl && (
+          <ProfileImage size={100} src={Community?.imageUrl} />
+        )}
+
+        <p className=" text-lg font-bold">{Community?.name}</p>
+        <p className=" flex items-center font-medium">
+          Members: {Community?.members?.length}
+        </p>
+      </div>
+
       <DisplayCommunityPosts
         CommunityPosts={data as CommunityPost[]}
         id={params.id}
