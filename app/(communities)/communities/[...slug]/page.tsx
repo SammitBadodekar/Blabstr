@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
         )}
 
         <p className=" text-lg font-bold">{Community?.name}</p>
-        <p className=" text-sm text-darkGray dark:text-lightGray">
+        <p className=" px-4 text-center text-sm text-darkGray dark:text-lightGray sm:px-8">
           {Community?.description}
         </p>
       </div>
