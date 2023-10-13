@@ -2,14 +2,12 @@
 
 import { User } from "@/components/renderPages";
 import MultiplePostsSkeleton from "@/components/skeletons/multiplePostSkeleton";
-import { Button } from "@/components/ui/button";
 import ProfileImage from "@/components/ui/profileImage";
 import { communityState } from "@/state/atoms/communityState";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 
 const Page = () => {
@@ -52,16 +50,6 @@ const Page = () => {
                     </p>
                   </div>
                 </Link>
-
-                <Button
-                  className=" mt-2 w-full border-2 border-gray-500 sm:ml-auto sm:mt-0 sm:w-fit"
-                  variant="secondary"
-                  onClick={() => {
-                    toast("join feature is in development");
-                  }}
-                >
-                  Join
-                </Button>
               </div>
             );
           })}

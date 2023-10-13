@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import ReactPlayer from "react-player";
+import Mention from "../mention";
 
 export default function MakeCommunityPost({ id }: { id: string }) {
   const [post, setPost] = useState({
@@ -18,6 +19,7 @@ export default function MakeCommunityPost({ id }: { id: string }) {
     image: "",
     video: "",
   });
+  const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
 
@@ -26,12 +28,7 @@ export default function MakeCommunityPost({ id }: { id: string }) {
   return (
     <form
       action={async (formData) => {
-        toast.promise(CommunityPost(formData, post.image, post.video, id), {
-          loading: "Posting...",
-          success: <p>Posted</p>,
-          error: <p>Could not Post</p>,
-        });
-        formRef.current?.reset();
+        await CommunityPost(formData, post.image, post.video, id);
         setPost({
           text: "",
           image: "",
@@ -40,7 +37,7 @@ export default function MakeCommunityPost({ id }: { id: string }) {
         router.back();
       }}
       ref={formRef}
-      className=" w-full rounded-3xl bg-slate-200 p-2 dark:bg-gray-700 sm:p-8 "
+      className=" w-full rounded-3xl bg-slate-200 p-2 dark:bg-gray-800 sm:p-8 "
     >
       {post.image && (
         <Image
@@ -72,14 +69,31 @@ export default function MakeCommunityPost({ id }: { id: string }) {
           id=""
           cols={30}
           rows={1}
+          value={post.text}
+          onChange={(e) => {
+            if (e.target.value.slice(-1) === "@") {
+              setIsOpen(true);
+            }
+            setPost((prev) => ({ ...prev, text: e.target.value }));
+          }}
           placeholder="Write a post"
           className=" w-full rounded-3xl border-2 border-gray-500 bg-lightTheme p-2 dark:bg-darkTheme"
         ></textarea>
 
-        <Button type="submit" className=" rounded-3xl font-bold">
+        <Button
+          type="submit"
+          className=" rounded-3xl font-bold"
+          disabled={post.text || post.image || post.video ? false : true}
+        >
           Post
         </Button>
       </div>
+      <Mention
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        setPost={setPost}
+        text={post.text}
+      />
       <div className=" flex gap-4 p-4">
         {!post.video && (
           <UploadButton
