@@ -42,7 +42,7 @@ const Follow = ({ user }: { user: FeaturedAccountType }) => {
     <div className=" ml-auto ">
       {isFollowed ? (
         <Button
-          className="ml-auto rounded-xl border-2 border-lightGray px-2 dark:border-darkGray"
+          className="ml-auto rounded-xl border-2 border-lightGray px-1 text-xs dark:border-darkGray"
           size="sm"
           variant="secondary"
           onClick={handleFollow}
