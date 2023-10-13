@@ -11,6 +11,7 @@ import Post from "./posts/post";
 import Comment from "./posts/comment";
 import NothingHere from "./nothingHere";
 import { GetAdditionalUserInfo } from "@/app/actions";
+import axios from "axios";
 
 const AdditionalUserInfo = ({
   searchUser,
@@ -26,11 +27,8 @@ const AdditionalUserInfo = ({
 
   useEffect(() => {
     const getAdditionalUserInfo = async () => {
-      const data = await GetAdditionalUserInfo(tag);
-
-      if (data) {
-        SetAdditionalUserInfo(data);
-      }
+      const { data } = await axios.get(`/api/users/getPosts/${tag}`);
+      SetAdditionalUserInfo(data);
     };
     getAdditionalUserInfo();
   }, [searchUser]);
