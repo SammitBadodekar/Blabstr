@@ -12,7 +12,7 @@ model Users {
   id String @id @default(uuid())
   name String
   imageUrl String @db.Text
-  bgImage String @db.Text
+  bgImage String? @db.Text
   email String @unique
   password String?
   about String
