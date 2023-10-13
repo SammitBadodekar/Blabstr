@@ -14,6 +14,11 @@ export const POST = async (req: any) => {
             id: body.userId,
           },
         },
+        members: {
+          connect: {
+            id: body.userId,
+          },
+        },
       },
     });
     return new NextResponse(JSON.stringify(community));

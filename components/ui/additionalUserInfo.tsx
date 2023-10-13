@@ -9,8 +9,8 @@ import MultiplePostsSkeleton from "../skeletons/multiplePostSkeleton";
 import DisplayPost from "../displayPost";
 import Post from "./posts/post";
 import Comment from "./posts/comment";
-import axios from "axios";
 import NothingHere from "./nothingHere";
+import { GetAdditionalUserInfo } from "@/app/actions";
 
 const AdditionalUserInfo = ({
   searchUser,
@@ -26,8 +26,11 @@ const AdditionalUserInfo = ({
 
   useEffect(() => {
     const getAdditionalUserInfo = async () => {
-      const { data } = await axios.get(`/api/users/getPosts/${tag}`);
-      SetAdditionalUserInfo(data);
+      const data = await GetAdditionalUserInfo(tag);
+
+      if (data) {
+        SetAdditionalUserInfo(data);
+      }
     };
     getAdditionalUserInfo();
   }, [searchUser]);
@@ -124,10 +127,9 @@ const Tabs = ({
 };
 
 interface AdditionalUserInfo {
-  posts: [];
-  followers: [];
-  following: [];
-  savedPosts: [];
-  likedPosts: [];
-  comments: [];
+  posts: any[];
+  followers: any[];
+  following: any[];
+  likedPosts: any[];
+  comments: any[];
 }

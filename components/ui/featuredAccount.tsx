@@ -32,7 +32,7 @@ export interface FeaturedAccountType {
   id: string;
   name: string;
   imageUrl: string;
-  tag: string;
+  tag: string | null;
   about: string;
   email: string;
   isVerified: boolean;

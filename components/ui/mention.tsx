@@ -67,7 +67,7 @@ const Mention = ({
         <div className=" mt-4 grid w-full ">
           {searchUsers.map((user) => {
             return (
-              <div
+              <button
                 key={user?.id}
                 onClick={() => {
                   setPost((prev: any) => ({
@@ -93,7 +93,7 @@ const Mention = ({
                     @{user.tag}
                   </p>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>

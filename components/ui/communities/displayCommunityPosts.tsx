@@ -17,6 +17,7 @@ import { Button } from "../button";
 import { DeleteCommunityPosts } from "@/app/actions";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 export interface CommunityPost {
   id: string;
@@ -36,22 +37,23 @@ export default function DisplayCommunityPosts({
   id: string;
 }) {
   const [user, setUser] = useRecoilState(userState);
+  const [parent, enableAnimations] = useAutoAnimate();
   const router = useRouter();
 
   const [totalCommunityPosts, setTotalCommunityPosts] =
     useState(CommunityPosts);
-  const messageEndRef = useRef<HTMLInputElement>(null);
+  const messageTopRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     var pusher = new Pusher("fc45a802ecadfdc7433a", {
       cluster: "ap2",
     });
-    scrollTobottom();
+    scrollToTop();
 
     var channel = pusher.subscribe(id);
     channel.bind("CommunityPost", function (data: any) {
       console.log(data);
-      setTotalCommunityPosts((prev) => [...prev, data]);
+      setTotalCommunityPosts((prev) => [data, ...prev]);
     });
 
     return () => {
@@ -61,19 +63,21 @@ export default function DisplayCommunityPosts({
   }, []);
 
   useEffect(() => {
-    scrollTobottom();
+    scrollToTop();
   }, [totalCommunityPosts.length]);
 
-  const scrollTobottom = () => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToTop = () => {
+    messageTopRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-start gap-2">
+    <div className="flex h-full w-full flex-col items-start gap-4" ref={parent}>
       {totalCommunityPosts.map((communityPost: CommunityPost, index) => {
         let text;
         const date = new Date(communityPost?.createdAt);
         const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
+
+        const isAuthor = user.email === communityPost.user.email;
 
         if (communityPost.text) {
           text = highlightMentions(communityPost?.text);
@@ -82,11 +86,9 @@ export default function DisplayCommunityPosts({
         return (
           <div
             className={`${
-              user.email === communityPost.user.email ? " self-end" : ""
+              isAuthor ? " self-end" : ""
             }  flex w-full  max-w-sm gap-2 rounded-lg px-4 py-1`}
-            ref={
-              index === totalCommunityPosts.length - 1 ? messageEndRef : null
-            }
+            ref={index === 0 ? messageTopRef : null}
           >
             <Link href={`/${communityPost?.user?.tag}`} className=" h-fit">
               <ProfileImage src={communityPost?.user?.imageUrl} size={50} />
@@ -142,27 +144,30 @@ export default function DisplayCommunityPosts({
                   )}
                 </InView>
               )}
-              <Button
-                variant="secondary"
-                size="sm"
-                className=" absolute right-2 top-2 border-2 border-gray-500 p-2"
-                onClick={async () => {
-                  toast
-                    .promise(DeleteCommunityPosts(communityPost.id), {
-                      loading: "Deleting...",
-                      success: <p>Deleted</p>,
-                      error: <p>Could not delete</p>,
-                    })
-                    .then(() => {
-                      const updatedPosts = totalCommunityPosts.filter(
-                        (post) => post.id !== communityPost.id
-                      );
-                      setTotalCommunityPosts(updatedPosts);
-                    });
-                }}
-              >
-                Delete
-              </Button>
+              {isAuthor && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className=" absolute right-2 top-2 border-2 border-gray-500 p-2"
+                  onClick={async () => {
+                    toast
+                      .promise(DeleteCommunityPosts(communityPost.id), {
+                        loading: "Deleting...",
+                        success: <p>Deleted</p>,
+                        error: <p>Could not delete</p>,
+                      })
+                      .then(() => {
+                        const updatedPosts = totalCommunityPosts.filter(
+                          (post) => post.id !== communityPost.id
+                        );
+                        setTotalCommunityPosts(updatedPosts);
+                      });
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
+
               <p className=" pt-2 text-xs text-darkGray dark:text-lightGray">
                 {timeAgo}
               </p>

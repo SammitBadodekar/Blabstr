@@ -3,6 +3,7 @@
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/db";
 import { options } from "./api/auth/[...nextauth]/options";
+import { User } from "@/components/renderPages";
 
 export async function CommunityPost(
   post: FormData,
@@ -49,4 +50,48 @@ export const DeleteCommunityPosts = async (id: string) => {
       id: id,
     },
   });
+};
+
+export const GetAdditionalUserInfo = async (tag: string) => {
+  try {
+    const userByTag = await prisma.users.findFirst({
+      where: {
+        tag: tag,
+      },
+      select: {
+        posts: {
+          include: {
+            user: true,
+            likedBy: true,
+            savedby: true,
+          },
+        },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                likedBy: true,
+                savedby: true,
+              },
+            },
+            user: true,
+          },
+        },
+        replies: true,
+        followers: true,
+        following: true,
+        likedPosts: {
+          include: {
+            user: true,
+            likedBy: true,
+            savedby: true,
+          },
+        },
+      },
+    });
+    return userByTag;
+  } catch (error) {
+    throw new Error("error while retrieving user info");
+  }
 };

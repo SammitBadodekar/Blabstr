@@ -47,9 +47,7 @@ const CreateNewCommunity = () => {
         )
         .then((resp) => {
           if (resp.status === 200) {
-            if (resp.status === 200) {
-              setCommunities((prev) => [community, ...prev]);
-            }
+            setCommunities((prev) => [resp.data, ...prev]);
             router.back();
           }
         });

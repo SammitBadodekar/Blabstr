@@ -15,8 +15,8 @@ model Users {
   bgImage String? @db.Text
   email String @unique
   password String?
-  about String?
-  tag String? @unique
+  about String
+  tag String @unique
   posts Posts[] @relation("posts")
   communityPosts CommunityPost[] @relation("communityPosts")
   comments Comments[] @relation("comment")
