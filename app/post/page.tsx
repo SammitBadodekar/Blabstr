@@ -6,7 +6,7 @@ const Page = () => {
       <p className=" w-full bg-lightTransparent p-4 text-center font-bold dark:bg-darkTransparent">
         Post
       </p>
-      <MakePost />
+      <MakePost redirect={true} />
     </div>
   );
 };

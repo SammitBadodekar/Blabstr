@@ -18,15 +18,16 @@ import { DeleteCommunityPosts } from "@/app/actions";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { communityPostState } from "@/state/atoms/CommunityPostState";
 
 export interface CommunityPost {
   id: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
   user: User;
-  text?: string;
-  image?: string;
-  video?: string;
+  text: string | null;
+  image: string | null;
+  video: string | null;
 }
 
 export default function DisplayCommunityPosts({
@@ -41,10 +42,14 @@ export default function DisplayCommunityPosts({
   const router = useRouter();
 
   const [totalCommunityPosts, setTotalCommunityPosts] =
-    useState(CommunityPosts);
+    useRecoilState(communityPostState);
   const messageTopRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (totalCommunityPosts?.length === 0) {
+      setTotalCommunityPosts(CommunityPosts);
+    }
+
     var pusher = new Pusher("fc45a802ecadfdc7433a", {
       cluster: "ap2",
     });
@@ -53,18 +58,20 @@ export default function DisplayCommunityPosts({
     var channel = pusher.subscribe(id);
     channel.bind("CommunityPost", function (data: any) {
       console.log(data);
-      setTotalCommunityPosts((prev) => [data, ...prev]);
+      if (user.email && data.user.email !== user.email) {
+        setTotalCommunityPosts((prev) => [data, ...prev]);
+      }
     });
 
     return () => {
       channel.unbind("CommunityPost");
       pusher.unsubscribe("Community");
     };
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     scrollToTop();
-  }, [totalCommunityPosts.length]);
+  }, [totalCommunityPosts?.length]);
 
   const scrollToTop = () => {
     messageTopRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -72,7 +79,7 @@ export default function DisplayCommunityPosts({
 
   return (
     <div className="flex h-full w-full flex-col items-start gap-4" ref={parent}>
-      {totalCommunityPosts.map((communityPost: CommunityPost, index) => {
+      {totalCommunityPosts?.map((communityPost: CommunityPost, index) => {
         let text;
         const date = new Date(communityPost?.createdAt);
         const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
@@ -134,7 +141,7 @@ export default function DisplayCommunityPosts({
                   {({ inView, ref, entry }) => (
                     <div className=" flex justify-center rounded-xl" ref={ref}>
                       <ReactPlayer
-                        url={communityPost.video}
+                        url={communityPost.video as string}
                         playing={inView}
                         controls={true}
                         width="auto"

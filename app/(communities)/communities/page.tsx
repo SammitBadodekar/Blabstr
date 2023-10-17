@@ -8,11 +8,13 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { LiaSpinnerSolid } from "react-icons/lia";
 import { useRecoilState } from "recoil";
 
 const Page = () => {
   const [communities, setCommunities] = useRecoilState(communityState);
   const [parent, enableAnimations] = useAutoAnimate();
+  const [isLoading, setIsLoading] = useState<string>();
 
   useEffect(() => {
     const getCommunities = async () => {
@@ -41,6 +43,7 @@ const Page = () => {
                 <Link
                   href={`/communities/${community.id}`}
                   className=" flex gap-2"
+                  onClick={() => setIsLoading(community.id)}
                 >
                   <ProfileImage src={community.imageUrl} size={80} />
                   <div className=" w-full">
@@ -49,6 +52,14 @@ const Page = () => {
                       {community.description}
                     </p>
                   </div>
+
+                  {isLoading === community.id && (
+                    <div className=" flex h-full items-center justify-center text-3xl">
+                      <div className=" animate-spin">
+                        <LiaSpinnerSolid />
+                      </div>
+                    </div>
+                  )}
                 </Link>
               </div>
             );

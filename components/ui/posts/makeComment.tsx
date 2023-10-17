@@ -3,6 +3,7 @@ import { Button } from "../button";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Mention from "../mention";
+import EmojiSelector from "../emojiSeletor";
 
 const MakeComment = ({
   postId,
@@ -42,7 +43,7 @@ const MakeComment = ({
   return (
     <>
       <form
-        className=" flex items-center gap-4 p-4"
+        className=" flex items-center gap-2 p-4"
         onSubmit={(e) => {
           handleComment(e);
         }}
@@ -62,6 +63,8 @@ const MakeComment = ({
           placeholder="What's your though on this ?"
           className=" w-full rounded-3xl border-2 bg-lightTheme p-4  dark:bg-darkTheme"
         ></textarea>
+
+        <EmojiSelector setPost={setComment} />
 
         <Button type="submit" className=" rounded-full font-bold" size="sm">
           Post

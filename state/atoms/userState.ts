@@ -1,9 +1,10 @@
+import { User } from "@/components/renderPages";
 import { atom } from "recoil";
 
-export const userState = atom({
+export const userState = atom<User>({
   key: "user",
   default: {
-    createdAt: "",
+    createdAt: new Date(),
     email: "",
     id: "",
     imageUrl: "",
@@ -12,7 +13,7 @@ export const userState = atom({
     name: "",
     about: "",
     password: "",
-    updatedAt: "",
+    updatedAt: new Date(),
     posts: [],
     followers: [],
     following: [],

@@ -6,7 +6,7 @@ const Page = () => {
     <Modal>
       <div className=" rounded-3xl bg-slate-300 dark:bg-gray-800">
         <p className=" w-full p-4 text-center font-bold">Post</p>
-        <MakePost />
+        <MakePost redirect={true} />
       </div>
     </Modal>
   );

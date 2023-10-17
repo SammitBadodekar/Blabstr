@@ -68,10 +68,10 @@ export interface User {
   id: string;
   imageUrl: string;
   name: string;
-  password?: string;
+  password: string | null;
   updatedAt: Date;
   tag: string;
-  bgImage: string;
+  bgImage: string | null;
   about: string;
   posts?: [];
   followers?: [];

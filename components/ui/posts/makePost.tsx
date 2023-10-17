@@ -13,6 +13,8 @@ import Image from "next/image";
 import ReactPlayer from "react-player";
 import { postState } from "@/state/atoms/postState";
 import Mention from "../mention";
+import EmojiSelector from "../emojiSeletor";
+import { useRouter } from "next/navigation";
 
 import {
   AlertDialog,
@@ -26,11 +28,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-const MakePost = () => {
+const MakePost = ({ redirect }: { redirect: boolean }) => {
   const [post, setPost] = useState({ text: "", image: "", video: "" });
   const [user, setUser] = useRecoilState(userState);
   const [posts, setPosts] = useRecoilState(postState);
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,15 +55,15 @@ const MakePost = () => {
               ...prev,
             ]);
             setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
+            if (redirect) router.back();
           }
         });
-      setPost((prev) => ({ ...prev, text: "", image: "", video: "" }));
     }
   };
   return (
     <div>
       <form
-        className=" flex items-center gap-4 p-4"
+        className=" flex items-center gap-1 p-4 sm:gap-2"
         onSubmit={(e) => {
           handlePost(e);
         }}
@@ -72,7 +75,7 @@ const MakePost = () => {
           rows={1}
           placeholder="What's happening ?"
           value={post.text}
-          className=" w-full rounded-3xl border-2 bg-lightTheme p-4 dark:bg-darkTheme"
+          className=" w-full rounded-3xl border-2 bg-lightTheme p-2 dark:bg-darkTheme sm:p-4"
           onChange={(e) => {
             if (e.target.value.slice(-1) === "@") {
               setIsOpen(true);
@@ -80,10 +83,13 @@ const MakePost = () => {
             setPost((prev) => ({ ...prev, text: e.target.value }));
           }}
         ></textarea>
+
+        <EmojiSelector setPost={setPost} />
         <Button type="submit" className=" rounded-3xl font-bold">
           Post
         </Button>
       </form>
+
       <div className=" relative grid w-full items-center justify-center">
         <Mention
           isOpen={isOpen}
