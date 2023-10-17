@@ -1,52 +1,45 @@
-import { getServerSession } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
+"use client";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/db";
 import DisplayCommunityPosts, {
   CommunityPost,
 } from "@/components/ui/communities/displayCommunityPosts";
 import Link from "next/link";
 import { BiArrowBack } from "react-icons/bi";
 import ProfileImage from "@/components/ui/profileImage";
-import FeaturedAccount, {
-  FeaturedAccountType,
-} from "@/components/ui/featuredAccount";
+import FeaturedAccount from "@/components/ui/featuredAccount";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/atoms/userState";
+import { useEffect, useState } from "react";
+import { Community } from "@prisma/client";
 import { User } from "@/components/renderPages";
+import CommunitySkeleton from "@/components/skeletons/communitySkeleton";
 
-async function getData(id: string) {
-  const data = await prisma.communityPost.findMany({
-    where: {
-      communityId: id,
-    },
-    include: {
-      user: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  return data;
+interface community extends Community {
+  members: User[];
+  communityPosts: CommunityPost[];
+  admin: User[];
 }
 
-// Add
-export const dynamic = "force-dynamic";
-
 export default async function Page({ params }: { params: { slug: string[] } }) {
-  const session = await getServerSession(options);
-  const data = await getData(params.slug[0]);
-  const Community = await prisma.community.findUnique({
-    where: {
-      id: params.slug[0],
-    },
-    include: {
-      members: true,
-      admin: true,
-    },
-  });
+  const [user, setUser] = useRecoilState(userState);
+  const [Community, setCommunity] = useState<community>();
 
-  if (!session) {
+  useEffect(() => {
+    const getCommunity = async () => {
+      const { data } = await axios.get(`/api/communities/${params.slug[0]}`);
+      console.log(data);
+      setCommunity(data);
+    };
+    getCommunity();
+  }, []);
+
+  if (!user) {
     redirect("/");
+  }
+
+  if (!Community) {
+    return <CommunitySkeleton />;
   }
 
   return (
@@ -78,14 +71,14 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 
       {(params.slug[1] === "posts" || !params.slug[1]) && (
         <DisplayCommunityPosts
-          CommunityPosts={data as CommunityPost[]}
+          CommunityPosts={Community?.communityPosts as CommunityPost[]}
           id={params.slug[0]}
         />
       )}
 
       {params.slug[1] === "members" && (
         <div>
-          {Community?.members?.map((user) => {
+          {Community?.members?.map((user: any) => {
             return <FeaturedAccount user={user} />;
           })}
         </div>
@@ -93,7 +86,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 
       {params.slug[1] === "admins" && (
         <div>
-          {Community?.admin?.map((user) => {
+          {Community?.admin?.map((user: any) => {
             return <FeaturedAccount user={user} />;
           })}
         </div>

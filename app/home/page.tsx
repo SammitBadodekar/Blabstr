@@ -69,7 +69,7 @@ export default function Home() {
           } z-10  bg-darkTransparent backdrop-blur-md transition-opacity duration-300 ease-out`}
         ></div>
       </div>
-      <MakePost />
+      <MakePost redirect={false} />
       <div className=" line-height w-full bg-slate-200 dark:bg-slate-700"></div>
       <DisplayPost existingPosts={null} />
     </div>

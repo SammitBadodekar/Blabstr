@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { CommunityPost } from "@/app/actions";
 import { Button } from "../button";
 import { UploadButton } from "@/utils/uploadthing";
 import toast from "react-hot-toast";
@@ -12,8 +11,16 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ReactPlayer from "react-player";
 import Mention from "../mention";
+import EmojiSelector from "../emojiSeletor";
+import { useRecoilState } from "recoil";
+import { communityPostState } from "@/state/atoms/CommunityPostState";
+import { userState } from "@/state/atoms/userState";
+import axios from "axios";
 
 export default function MakeCommunityPost({ id }: { id: string }) {
+  const [totalCommunityPosts, setTotalCommunityPosts] =
+    useRecoilState(communityPostState);
+  const [user, setUser] = useRecoilState(userState);
   const [post, setPost] = useState({
     text: "",
     image: "",
@@ -28,13 +35,31 @@ export default function MakeCommunityPost({ id }: { id: string }) {
   return (
     <form
       action={async (formData) => {
-        await CommunityPost(formData, post.image, post.video, id);
+        toast
+          .promise(
+            axios.post("/api/communityPosts/create", {
+              ...post,
+              userEmail: user.email,
+              id: id,
+            }),
+            {
+              loading: "Posting...",
+              success: <b>Posted</b>,
+              error: <b>Could not Post.</b>,
+            }
+          )
+          .then((resp) => {
+            if (resp.status === 200) {
+              setTotalCommunityPosts((prev) => [resp.data, ...prev]);
+            }
+          });
+
+        router.back();
         setPost({
           text: "",
           image: "",
           video: "",
         });
-        router.back();
       }}
       ref={formRef}
       className=" w-full rounded-3xl bg-slate-200 p-2 dark:bg-gray-800 sm:p-8 "
@@ -79,6 +104,8 @@ export default function MakeCommunityPost({ id }: { id: string }) {
           placeholder="Write a post"
           className=" w-full rounded-3xl border-2 border-gray-500 bg-lightTheme p-2 dark:bg-darkTheme"
         ></textarea>
+
+        <EmojiSelector setPost={setPost} />
 
         <Button
           type="submit"

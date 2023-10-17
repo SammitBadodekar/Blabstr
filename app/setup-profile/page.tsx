@@ -11,12 +11,13 @@ import ThemeToggleButton from "@/components/ui/ThemeToggleButton";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 import { inputClassnames } from "@/components/inputClassNames";
+import { User } from "@/components/renderPages";
 
 const Page = () => {
   const { data: session } = useSession();
   const [user, setUser] = useRecoilState(userState);
-  const [updatedUser, setUpdatedUser] = useState({
-    createdAt: "",
+  const [updatedUser, setUpdatedUser] = useState<User>({
+    createdAt: new Date(),
     email: "",
     id: "",
     imageUrl: "",
@@ -25,7 +26,7 @@ const Page = () => {
     name: "",
     about: "",
     password: "",
-    updatedAt: "",
+    updatedAt: new Date(),
     posts: [],
     followers: [],
     following: [],

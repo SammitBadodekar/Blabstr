@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 import { options } from "./api/auth/[...nextauth]/options";
 import { User } from "@/components/renderPages";
 
-export async function CommunityPost(
+/* export async function CommunityPost(
   post: FormData,
   image: string,
   video: string,
@@ -19,30 +19,10 @@ export async function CommunityPost(
   const text = post.get("text");
 
   if (session?.user?.email && (text || image || video)) {
-    const data = await prisma.communityPost.create({
-      data: {
-        text: text as string,
-        image: image,
-        video: video,
-        UserEmail: session?.user?.email,
-        communityId: id,
-      },
-      include: {
-        user: true,
-      },
-    });
-
-    const pusher = new Pusher({
-      appId: process.env.PUSHER_APP_ID!,
-      key: process.env.PUSHER_APP_KEY!,
-      secret: process.env.PUSHER_APP_SECRET!,
-      cluster: "ap2",
-      useTLS: true,
-    });
-
-    await pusher.trigger(id, "CommunityPost", JSON.stringify(data));
+    
+    return data;
   }
-}
+} */
 
 export const DeleteCommunityPosts = async (id: string) => {
   await prisma.communityPost.delete({
@@ -52,7 +32,7 @@ export const DeleteCommunityPosts = async (id: string) => {
   });
 };
 
-export const GetAdditionalUserInfo = async (tag: string) => {
+/* export const GetAdditionalUserInfo = async (tag: string) => {
   try {
     const userByTag = await prisma.users.findFirst({
       where: {
@@ -95,3 +75,4 @@ export const GetAdditionalUserInfo = async (tag: string) => {
     throw new Error("error while retrieving user info");
   }
 };
+ */
