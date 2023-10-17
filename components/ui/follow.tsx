@@ -12,7 +12,7 @@ const Follow = ({ user }: { user: FeaturedAccountType }) => {
   const [following, setFollowing] = useState<any[]>([]);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser.following) {
       setFollowing(currentUser.following);
     }
   }, [currentUser]);

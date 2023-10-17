@@ -10,7 +10,6 @@ import DisplayPost from "../displayPost";
 import Post from "./posts/post";
 import Comment from "./posts/comment";
 import NothingHere from "./nothingHere";
-import { GetAdditionalUserInfo } from "@/app/actions";
 import axios from "axios";
 
 const AdditionalUserInfo = ({
