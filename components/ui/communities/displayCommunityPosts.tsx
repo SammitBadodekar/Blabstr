@@ -46,9 +46,7 @@ export default function DisplayCommunityPosts({
   const messageTopRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (totalCommunityPosts?.length === 0) {
-      setTotalCommunityPosts(CommunityPosts);
-    }
+    setTotalCommunityPosts(CommunityPosts);
 
     var pusher = new Pusher("fc45a802ecadfdc7433a", {
       cluster: "ap2",
