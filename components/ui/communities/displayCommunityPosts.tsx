@@ -33,9 +33,11 @@ export interface CommunityPost {
 export default function DisplayCommunityPosts({
   CommunityPosts,
   id,
+  admin,
 }: {
   CommunityPosts: CommunityPost[];
   id: string;
+  admin: User[];
 }) {
   const [user, setUser] = useRecoilState(userState);
   const [parent, enableAnimations] = useAutoAnimate();
@@ -55,14 +57,11 @@ export default function DisplayCommunityPosts({
 
     var channel = pusher.subscribe(id);
     channel.bind("CommunityPost", function (data: any) {
-      console.log(data);
       setTotalCommunityPosts((prev) => [data, ...prev]);
     });
 
     channel.bind("Delete-CommunityPost", function (data: any) {
       if (data.id) {
-        console.log(data);
-        console.log(totalCommunityPosts);
         setTotalCommunityPosts((prev) =>
           prev.filter((post) => post.id !== data.id)
         );
@@ -92,6 +91,7 @@ export default function DisplayCommunityPosts({
         const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
 
         const isAuthor = user.email === communityPost.user.email;
+        const isAdmin = admin.some((admin) => admin.email === user.email);
 
         if (communityPost.text) {
           text = highlightMentions(communityPost?.text);
@@ -158,7 +158,7 @@ export default function DisplayCommunityPosts({
                   )}
                 </InView>
               )}
-              {isAuthor && (
+              {(isAuthor || isAdmin) && (
                 <Button
                   variant="secondary"
                   size="sm"
@@ -175,14 +175,6 @@ export default function DisplayCommunityPosts({
                         error: <p>Could not delete</p>,
                       }
                     );
-                    /* .then((resp) => {
-                        if (resp.status == 200) {
-                          const updatedPosts = totalCommunityPosts.filter(
-                            (post) => post.id !== communityPost.id
-                          );
-                          setTotalCommunityPosts(updatedPosts);
-                        }
-                      }); */
                   }}
                 >
                   Delete

@@ -19,6 +19,7 @@ export const userState = atom<User>({
     following: [],
     savedPosts: [],
     likedPosts: [],
+    chatRooms: [],
     isVerified: false,
   },
 });
