@@ -47,22 +47,26 @@ export default function DisplayCommunityPosts({
 
   useEffect(() => {
     setTotalCommunityPosts(CommunityPosts);
+
     var pusher = new Pusher("fc45a802ecadfdc7433a", {
       cluster: "ap2",
     });
     scrollToTop();
 
     var channel = pusher.subscribe(id);
-
     channel.bind("CommunityPost", function (data: any) {
+      console.log(data);
       setTotalCommunityPosts((prev) => [data, ...prev]);
     });
 
     channel.bind("Delete-CommunityPost", function (data: any) {
-      const updatedPosts = totalCommunityPosts.filter(
-        (post) => post.id !== data.id
-      );
-      setTotalCommunityPosts(updatedPosts);
+      if (data.id) {
+        console.log(data);
+        console.log(totalCommunityPosts);
+        setTotalCommunityPosts((prev) =>
+          prev.filter((post) => post.id !== data.id)
+        );
+      }
     });
 
     return () => {
@@ -171,6 +175,14 @@ export default function DisplayCommunityPosts({
                         error: <p>Could not delete</p>,
                       }
                     );
+                    /* .then((resp) => {
+                        if (resp.status == 200) {
+                          const updatedPosts = totalCommunityPosts.filter(
+                            (post) => post.id !== communityPost.id
+                          );
+                          setTotalCommunityPosts(updatedPosts);
+                        }
+                      }); */
                   }}
                 >
                   Delete
