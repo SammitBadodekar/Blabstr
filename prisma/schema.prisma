@@ -30,6 +30,7 @@ model Users {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isVerified Boolean @default(false)
+  chatRooms ChatRoom[] @relation(name: "chat-room")
 }
 
 model Posts {
@@ -112,4 +113,21 @@ model CommunityPost{
   @@index([UserEmail], name: "communityPosts_index")
   @@index([communityId], name: "communityPosts_Id")
 
+}
+
+model ChatRoom{
+id String @id @default(uuid())
+members Users[] @relation(name: "chat-room")
+messages Messages[] @relation("messages")
+}
+
+model Messages{
+  id String @id @default(uuid())
+  text String?
+  image String? @db.Text
+  video String? @db.Text
+  createdAt DateTime @default(now())
+  chatRoom ChatRoom @relation("messages",fields: [chatRoomId], references: [id])
+  chatRoomId String
+   @@index([chatRoomId], name: "chatRoomId")
 }

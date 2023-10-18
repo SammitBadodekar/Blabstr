@@ -2,8 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
+
   return (
     <div className=" flex h-full w-full flex-col items-center justify-center gap-4 p-8 text-center">
       <p className=" text-3xl font-extrabold sm:text-4xl">
@@ -16,7 +19,7 @@ const Page = () => {
 
       <Button
         className=" rounded-full text-lg font-extrabold"
-        onClick={() => toast("Chats is in development")}
+        onClick={() => router.push("/create-chatRoom")}
       >
         Write a message
       </Button>

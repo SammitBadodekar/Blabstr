@@ -78,5 +78,6 @@ export interface User {
   following?: [];
   savedPosts?: [];
   likedPosts?: [];
+  chatRooms?: [];
   isVerified: boolean;
 }

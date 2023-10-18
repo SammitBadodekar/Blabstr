@@ -1,4 +1,5 @@
 "use client";
+
 import { redirect } from "next/navigation";
 import DisplayCommunityPosts, {
   CommunityPost,
@@ -21,7 +22,7 @@ interface community extends Community {
   admin: User[];
 }
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
+export default function Page({ params }: { params: { slug: string[] } }) {
   const [user, setUser] = useRecoilState(userState);
   const [Community, setCommunity] = useState<community>();
 
@@ -73,6 +74,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
         <DisplayCommunityPosts
           CommunityPosts={Community?.communityPosts as CommunityPost[]}
           id={params.slug[0]}
+          admin={Community.admin}
         />
       )}
 
