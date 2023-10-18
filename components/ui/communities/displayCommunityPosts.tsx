@@ -47,7 +47,6 @@ export default function DisplayCommunityPosts({
 
   useEffect(() => {
     setTotalCommunityPosts(CommunityPosts);
-
     var pusher = new Pusher("fc45a802ecadfdc7433a", {
       cluster: "ap2",
     });
