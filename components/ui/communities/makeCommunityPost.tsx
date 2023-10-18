@@ -35,25 +35,18 @@ export default function MakeCommunityPost({ id }: { id: string }) {
   return (
     <form
       action={async (formData) => {
-        toast
-          .promise(
-            axios.post("/api/communityPosts/create", {
-              ...post,
-              userEmail: user.email,
-              id: id,
-            }),
-            {
-              loading: "Posting...",
-              success: <b>Posted</b>,
-              error: <b>Could not Post.</b>,
-            }
-          )
-          .then((resp) => {
-            if (resp.status === 200) {
-              setTotalCommunityPosts((prev) => [resp.data, ...prev]);
-            }
-          });
-
+        toast.promise(
+          axios.post("/api/communityPosts/create", {
+            ...post,
+            userEmail: user.email,
+            id: id,
+          }),
+          {
+            loading: "Posting...",
+            success: <b>Posted</b>,
+            error: <b>Could not Post.</b>,
+          }
+        );
         router.back();
         setPost({
           text: "",

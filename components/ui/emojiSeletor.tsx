@@ -19,9 +19,11 @@ const EmojiSelector = ({ setPost }: { setPost: Function }) => {
       <PopoverTrigger className=" mx-0 p-0 text-2xl">
         <MdEmojiEmotions />
       </PopoverTrigger>
-      <PopoverContent className=" flex h-fit justify-center overflow-scroll p-0">
+      <PopoverContent className=" flex h-fit w-full justify-center overflow-visible p-0 dark:shadow-slate-800">
         <Picker
           data={data}
+          perLine={7}
+          maxFrequentRows={2}
           onEmojiSelect={(emoji: any) =>
             setPost((prev: any) => ({
               ...prev,

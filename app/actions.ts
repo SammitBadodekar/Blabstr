@@ -24,13 +24,18 @@ import { User } from "@/components/renderPages";
   }
 } */
 
-export const DeleteCommunityPosts = async (id: string) => {
-  await prisma.communityPost.delete({
-    where: {
-      id: id,
-    },
-  });
-};
+/* export const DeleteCommunityPosts = async (id: string) => {
+  try {
+    await prisma.communityPost.delete({
+      where: {
+        id: id,
+      },
+    });
+    return "deleted";
+  } catch (error) {
+    return new Error("could not delete");
+  }
+}; */
 
 /* export const GetAdditionalUserInfo = async (tag: string) => {
   try {

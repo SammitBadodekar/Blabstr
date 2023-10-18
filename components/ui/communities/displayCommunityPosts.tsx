@@ -14,11 +14,11 @@ import { userState } from "@/state/atoms/userState";
 import { useRecoilState } from "recoil";
 import { formatDistanceToNowStrict } from "date-fns";
 import { Button } from "../button";
-import { DeleteCommunityPosts } from "@/app/actions";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { communityPostState } from "@/state/atoms/CommunityPostState";
+import axios from "axios";
 
 export interface CommunityPost {
   id: string;
@@ -54,15 +54,21 @@ export default function DisplayCommunityPosts({
     scrollToTop();
 
     var channel = pusher.subscribe(id);
+
     channel.bind("CommunityPost", function (data: any) {
-      console.log(data);
-      if (user.email && data.user.email !== user.email) {
-        setTotalCommunityPosts((prev) => [data, ...prev]);
-      }
+      setTotalCommunityPosts((prev) => [data, ...prev]);
+    });
+
+    channel.bind("Delete-CommunityPost", function (data: any) {
+      const updatedPosts = totalCommunityPosts.filter(
+        (post) => post.id !== data.id
+      );
+      setTotalCommunityPosts(updatedPosts);
     });
 
     return () => {
       channel.unbind("CommunityPost");
+      channel.unbind("Delete-CommunityPost");
       pusher.unsubscribe("Community");
     };
   }, [user]);
@@ -155,18 +161,17 @@ export default function DisplayCommunityPosts({
                   size="sm"
                   className=" absolute right-2 top-2 border-2 border-gray-500 p-2"
                   onClick={async () => {
-                    toast
-                      .promise(DeleteCommunityPosts(communityPost.id), {
+                    toast.promise(
+                      axios.put("/api/communityPosts/delete", {
+                        id: communityPost.id,
+                        CommunityId: id,
+                      }),
+                      {
                         loading: "Deleting...",
                         success: <p>Deleted</p>,
                         error: <p>Could not delete</p>,
-                      })
-                      .then(() => {
-                        const updatedPosts = totalCommunityPosts.filter(
-                          (post) => post.id !== communityPost.id
-                        );
-                        setTotalCommunityPosts(updatedPosts);
-                      });
+                      }
+                    );
                   }}
                 >
                   Delete
