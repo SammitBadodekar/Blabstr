@@ -31,6 +31,7 @@ model Users {
   updatedAt DateTime @updatedAt
   isVerified Boolean @default(false)
   chatRooms ChatRoom[] @relation(name: "chat-room")
+  messages Messages[] @relation(name:"message")
 }
 
 model Posts {
@@ -129,5 +130,9 @@ model Messages{
   createdAt DateTime @default(now())
   chatRoom ChatRoom @relation("messages",fields: [chatRoomId], references: [id])
   chatRoomId String
+   user    Users    @relation("message",fields: [UserEmail], references: [email])
+  UserEmail   String
    @@index([chatRoomId], name: "chatRoomId")
+   @@index([UserEmail], name: "message-userId")
+   
 }

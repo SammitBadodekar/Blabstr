@@ -33,7 +33,7 @@ const Sidebar = () => {
       <NavLinks text="Communities" URL="/communities">
         <BsPeople />
       </NavLinks>
-      {user.savedPosts && (
+      {user?.savedPosts && (
         <NavLinks text="Saves" URL="/saves">
           <BsBookmark />
         </NavLinks>
