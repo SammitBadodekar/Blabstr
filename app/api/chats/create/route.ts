@@ -19,7 +19,6 @@ export const POST = async (req: any) => {
         },
       },
     });
-    console.log(existingChatRoom);
     if (!existingChatRoom) {
       const chatRoom = await prisma.chatRoom.create({
         data: {

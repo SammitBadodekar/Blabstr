@@ -29,7 +29,6 @@ export default function Page({ params }: { params: { slug: string[] } }) {
   useEffect(() => {
     const getCommunity = async () => {
       const { data } = await axios.get(`/api/communities/${params.slug[0]}`);
-      console.log(data);
       setCommunity(data);
     };
     getCommunity();

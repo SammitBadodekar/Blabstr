@@ -10,18 +10,6 @@ import { useRecoilState } from "recoil";
 import toast from "react-hot-toast";
 import Modal from "@/components/modal";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-
 const Page = () => {
   const [user, setUser] = useRecoilState(userState);
   const [isOpen, setIsOpen] = useState<boolean>(true);
