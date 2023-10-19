@@ -10,6 +10,7 @@ import { userState } from "@/state/atoms/userState";
 import { Messages } from "@prisma/client";
 import ProfileImage from "@/components/ui/profileImage";
 import Link from "next/link";
+import { truncateString } from "@/components/truncateString";
 
 interface chats {
   id: string;
@@ -87,12 +88,3 @@ const Page = () => {
 };
 
 export default Page;
-
-export function truncateString(name: string, maxWidth: number) {
-  if (name.length * 10 > maxWidth) {
-    // assume ~10px per char
-    const charCount = Math.floor(maxWidth / 10) - 1;
-    return `${name.substring(0, charCount)}...`;
-  }
-  return name;
-}
