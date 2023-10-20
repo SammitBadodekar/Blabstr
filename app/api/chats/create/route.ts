@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { redirect } from "next/navigation";
 
 export const POST = async (req: any) => {
   const body = await req.json();

@@ -19,7 +19,14 @@ const RenderPages = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const headerLessRoutes = ["/", "/signin", "/signup", "/setup-profile"];
-  const protectedRoutes = ["/home", "/editProfile", "/post", "/setup-profile"];
+  const protectedRoutes = [
+    "/home",
+    "/editProfile",
+    "/post",
+    "/setup-profile",
+    "/communities",
+    "/chats",
+  ];
 
   const footerLessRouteRegex = /\/(communities|chats)\/([\w-]+)$/;
   const isFooterLessRoute = pathname.match(footerLessRouteRegex);

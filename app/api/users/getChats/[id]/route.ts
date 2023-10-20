@@ -32,6 +32,9 @@ export const GET = async (
               },
             },
           },
+          orderBy: {
+            updatedAt: "desc",
+          },
         },
       },
     });
