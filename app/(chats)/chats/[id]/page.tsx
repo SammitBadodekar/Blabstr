@@ -7,6 +7,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
+import { LiaSpinnerSolid } from "react-icons/lia";
 
 export interface Messages {
   id: string;
@@ -19,8 +20,9 @@ export interface Messages {
 }
 
 const Page = ({ params }: { params: { id: string } }) => {
-  const [messages, setMessages] = useState<Messages[]>([]);
+  const [messages, setMessages] = useState<Messages[]>();
   const [chatInfo, setChatInfo] = useState<User>();
+  const [loadingMessage, setLoadingMessage] = useState<boolean>(false);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -30,6 +32,16 @@ const Page = ({ params }: { params: { id: string } }) => {
     };
     getMessages();
   }, []);
+
+  if (!messages) {
+    return (
+      <div className=" dvh flex w-full items-center justify-center">
+        <div className=" animate-spin text-3xl">
+          <LiaSpinnerSolid />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className=" dvh w-full">
@@ -50,8 +62,17 @@ const Page = ({ params }: { params: { id: string } }) => {
         )}
       </div>
 
-      <DisplayMessages messages={messages} />
-      <MakeMessage />
+      <DisplayMessages
+        messages={messages}
+        setMessages={setMessages}
+        chatRoomId={params.id}
+        setLoadingMessage={setLoadingMessage}
+        loadingMessage={loadingMessage}
+      />
+      <MakeMessage
+        chatRoomId={params.id}
+        setLoadingMessage={setLoadingMessage}
+      />
     </div>
   );
 };

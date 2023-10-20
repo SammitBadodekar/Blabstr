@@ -18,7 +18,7 @@ const Page = () => {
   return (
     <Modal>
       <div className=" h-96 overflow-y-scroll rounded-xl bg-slate-300 p-4  dark:bg-gray-800">
-        <p className=" pb-4 text-xl font-bold">Create a new chat</p>
+        <p className=" pb-4 text-xl font-extrabold">New chat</p>
         <DisplayAllUsers
           onClick={(person: User) => {
             if (user.id !== person.id) {

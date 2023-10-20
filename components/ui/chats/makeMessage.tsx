@@ -14,18 +14,69 @@ import {
 } from "@/components/ui/popover";
 import { BsImages } from "react-icons/bs";
 import { Button } from "../button";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/atoms/userState";
+import Image from "next/image";
+import ReactPlayer from "react-player";
 
-const MakeMessage = () => {
+const MakeMessage = ({
+  chatRoomId,
+  setLoadingMessage,
+}: {
+  chatRoomId: string;
+  setLoadingMessage: Function;
+}) => {
   const [post, setPost] = useState({
     text: "",
     image: "",
     video: "",
   });
+  const [user, setUser] = useRecoilState(userState);
+
+  const handleMessage = async () => {
+    setPost({
+      text: "",
+      image: "",
+      video: "",
+    });
+    setLoadingMessage(true);
+    await axios.post("/api/chats/messages/new", {
+      ...post,
+      email: user.email,
+      id: chatRoomId,
+    });
+  };
 
   return (
-    <div className="flex w-full flex-nowrap items-center gap-2 p-2">
+    <div className="relative flex w-full flex-nowrap items-center gap-2 p-2">
+      <div className=" absolute -top-40">
+        {post.image && (
+          <Image
+            src={post.image}
+            width={50}
+            height={50}
+            alt="image"
+            className=" h-40 w-full rounded-xl object-contain"
+          />
+        )}
+
+        {post.video && (
+          <div className=" flex h-10 w-fit justify-center">
+            <ReactPlayer
+              url={post.video}
+              controls={true}
+              width="10"
+              height="1"
+            />
+          </div>
+        )}
+      </div>
+
       <TextareaAutosize
         placeholder="Write a message"
+        value={post.text}
+        onChange={(e) => setPost((prev) => ({ ...prev, text: e.target.value }))}
         className="w-full rounded-3xl border-2 border-gray-500 bg-lightTheme p-2 dark:bg-darkTheme"
       />
       <Popover>
@@ -94,7 +145,8 @@ const MakeMessage = () => {
       <Button
         type="submit"
         className=" rounded-3xl font-bold"
-        onClick={() => toast("post feature is in development")}
+        onClick={handleMessage}
+        disabled={post.text || post.image || post.video ? false : true}
       >
         Post
       </Button>
