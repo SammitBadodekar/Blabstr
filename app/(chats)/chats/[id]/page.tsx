@@ -36,7 +36,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   if (!messages) {
     return (
       <div className=" dvh flex w-full items-center justify-center">
-        <div className=" animate-spin text-3xl">
+        <div className=" animate-spin text-5xl">
           <LiaSpinnerSolid />
         </div>
       </div>
@@ -49,17 +49,20 @@ const Page = ({ params }: { params: { id: string } }) => {
         <Link href="/chats">
           <BiArrowBack />
         </Link>
-        {chatInfo?.imageUrl && (
-          <div className=" flex gap-2">
-            <ProfileImage src={chatInfo?.imageUrl} size={50} />
-            <div>
-              <p>{chatInfo?.name}</p>
-              <p className=" text-xs font-light text-darkGray dark:text-lightGray">
-                @{chatInfo?.tag}
-              </p>
+
+        <Link href={`/${chatInfo?.tag}`}>
+          {chatInfo?.imageUrl && (
+            <div className=" flex gap-2">
+              <ProfileImage src={chatInfo?.imageUrl} size={50} />
+              <div>
+                <p>{chatInfo?.name}</p>
+                <p className=" text-xs font-light text-darkGray dark:text-lightGray">
+                  @{chatInfo?.tag}
+                </p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </Link>
       </div>
 
       <DisplayMessages

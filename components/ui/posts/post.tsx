@@ -160,7 +160,7 @@ const Post = ({
       {isAuthor && (
         <AlertDialog>
           <AlertDialogTrigger
-            className={`absolute right-8 top-4 flex items-center rounded-lg border-2 border-slate-500 bg-lightTheme p-2 dark:bg-darkTheme`}
+            className={`absolute right-8 top-4 flex items-center rounded-lg border-2 border-slate-500 bg-lightTheme p-2 text-xs dark:bg-darkTheme`}
           >
             <MdDeleteOutline /> <p className=" hidden sm:inline">Delete</p>
           </AlertDialogTrigger>

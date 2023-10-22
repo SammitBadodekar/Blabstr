@@ -12,10 +12,11 @@ import ProfileImage from "@/components/ui/profileImage";
 import Link from "next/link";
 import { truncateString } from "@/components/truncateString";
 import MultiplePostsSkeleton from "@/components/skeletons/multiplePostSkeleton";
-import { chatState } from "@/state/atoms/chatState";
+import { formatDistanceToNowStrict } from "date-fns";
 
 export interface chats {
   id: string;
+  updatedAt: Date;
   members: { id: string; name: string; imageUrl: string; tag: string }[];
   messages: Messages[];
 }
@@ -23,12 +24,12 @@ export interface chats {
 const Page = () => {
   const router = useRouter();
   const [user, setUser] = useRecoilState(userState);
-  const [chats, setChats] = useRecoilState(chatState);
+  const [chats, setChats] = useState<chats[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getChats = async () => {
-      const { data } = await axios.get(`/api/users/getChats/${user.id}`);
+      const { data } = await axios.get(`/api/users/getChats`);
       setChats(data.chatRooms);
       setIsLoading(false);
     };
@@ -74,18 +75,21 @@ const Page = () => {
       </div>
 
       {chats?.map((chat: chats) => {
+        const date = new Date(chat.updatedAt);
+        const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
+
         return (
           <Link
             href={`/chats/${chat.id}`}
-            className=" flex gap-2 p-3"
+            className=" flex w-full gap-2 p-3"
             key={chat.id}
           >
             {chat.members[0]?.imageUrl && (
               <>
                 <ProfileImage src={chat.members[0]?.imageUrl} size={60} />
-                <div>
+                <div className="">
                   <div className=" flex items-center justify-center gap-2 ">
-                    <p className=" text-lg font-extrabold">
+                    <p className=" font-extrabold">
                       {truncateString(chat.members[0]?.name, 150)}
                     </p>
                     <p className=" text-darkGray dark:text-lightGray">
@@ -97,7 +101,17 @@ const Page = () => {
                       {truncateString(chat.messages[0]?.text, 200)}
                     </p>
                   )}
+                  {chat.updatedAt && (
+                    <p className="pt-2 text-xs text-darkGray dark:text-lightGray sm:hidden">
+                      {timeAgo}
+                    </p>
+                  )}
                 </div>
+                {chat.updatedAt && (
+                  <p className=" ml-auto hidden  text-darkGray dark:text-lightGray sm:block">
+                    {timeAgo}
+                  </p>
+                )}
               </>
             )}
           </Link>

@@ -51,27 +51,3 @@ const Page = () => {
 };
 
 export default Page;
-{
-  /* <AlertDialog defaultOpen={true} open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger className={`${!isOpen ? " hidden" : ""}`}>
-        Open
-      </AlertDialogTrigger>
-      <AlertDialogContent className=" h-96 overflow-y-scroll rounded-xl bg-slate-300 p-4 dark:bg-gray-800">
-        <AlertDialogHeader className=" ">
-          <div className="flex w-full items-center gap-4 ">
-            <AlertDialogCancel
-              onClick={() => router.back()}
-              className=" rounded-full p-1 px-4 font-black"
-            >
-              X
-            </AlertDialogCancel>
-            <AlertDialogTitle className=" text-xl font-bold">
-              Create a new chat
-            </AlertDialogTitle>
-          </div>
-
-          
-        </AlertDialogHeader>
-      </AlertDialogContent>
-    </AlertDialog> */
-}
