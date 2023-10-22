@@ -103,6 +103,7 @@ const DisplayMessages = ({
 
           return (
             <div
+              key={message.id}
               className={`flex gap-2 ${
                 isAuthor ? " flex-row-reverse self-end" : ""
               } relative`}
