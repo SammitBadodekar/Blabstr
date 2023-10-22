@@ -36,6 +36,8 @@ const Page = () => {
     getChats();
   }, [user]);
 
+  console.log(chats, isLoading);
+
   if (isLoading) {
     return <MultiplePostsSkeleton />;
   }
@@ -74,49 +76,50 @@ const Page = () => {
         </Button>
       </div>
 
-      {chats?.map((chat: chats) => {
-        const date = new Date(chat.updatedAt);
-        const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
+      {chats &&
+        chats?.map((chat: chats) => {
+          const date = new Date(chat.updatedAt);
+          const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
 
-        return (
-          <Link
-            href={`/chats/${chat.id}`}
-            className=" flex w-full gap-2 p-3"
-            key={chat.id}
-          >
-            {chat.members[0]?.imageUrl && (
-              <>
-                <ProfileImage src={chat.members[0]?.imageUrl} size={60} />
-                <div className="">
-                  <div className=" flex items-center justify-center gap-2 ">
-                    <p className=" font-extrabold">
-                      {truncateString(chat.members[0]?.name, 150)}
-                    </p>
-                    <p className=" text-darkGray dark:text-lightGray">
-                      @{truncateString(chat.members[0]?.tag, 100)}
-                    </p>
+          return (
+            <Link
+              href={`/chats/${chat.id}`}
+              className=" flex w-full gap-2 p-3"
+              key={chat.id}
+            >
+              {chat.members[0]?.imageUrl && (
+                <>
+                  <ProfileImage src={chat.members[0]?.imageUrl} size={60} />
+                  <div className="">
+                    <div className=" flex items-center justify-center gap-2 ">
+                      <p className=" font-extrabold">
+                        {truncateString(chat.members[0]?.name, 150)}
+                      </p>
+                      <p className=" text-darkGray dark:text-lightGray">
+                        @{truncateString(chat.members[0]?.tag, 100)}
+                      </p>
+                    </div>
+                    {chat.messages[0]?.text && (
+                      <p className=" text-darkGray dark:text-lightGray">
+                        {truncateString(chat.messages[0]?.text, 200)}
+                      </p>
+                    )}
+                    {chat.updatedAt && (
+                      <p className="pt-2 text-xs text-darkGray dark:text-lightGray sm:hidden">
+                        {timeAgo}
+                      </p>
+                    )}
                   </div>
-                  {chat.messages[0]?.text && (
-                    <p className=" text-darkGray dark:text-lightGray">
-                      {truncateString(chat.messages[0]?.text, 200)}
-                    </p>
-                  )}
                   {chat.updatedAt && (
-                    <p className="pt-2 text-xs text-darkGray dark:text-lightGray sm:hidden">
+                    <p className=" ml-auto hidden  text-darkGray dark:text-lightGray sm:block">
                       {timeAgo}
                     </p>
                   )}
-                </div>
-                {chat.updatedAt && (
-                  <p className=" ml-auto hidden  text-darkGray dark:text-lightGray sm:block">
-                    {timeAgo}
-                  </p>
-                )}
-              </>
-            )}
-          </Link>
-        );
-      })}
+                </>
+              )}
+            </Link>
+          );
+        })}
     </div>
   );
 };
