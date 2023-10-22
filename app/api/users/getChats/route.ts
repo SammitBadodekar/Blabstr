@@ -1,28 +1,26 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { getServerSession } from "next-auth";
 
-export const GET = async (
-  req: Request,
-  { params }: { params: { id: string } }
-) => {
-  const { id } = params;
+export const GET = async (req: Request) => {
   try {
-    const chats = await prisma.users.findUnique({
+    const session = await getServerSession();
+    const chats = await prisma.users.findFirst({
       where: {
-        id: id,
+        email: session?.user?.email!,
       },
       select: {
         chatRooms: {
           include: {
             members: {
               where: {
-                id: { not: id },
+                email: { not: session?.user?.email! },
               },
               select: {
                 name: true,
                 imageUrl: true,
                 tag: true,
-                id: true,
+                email: true,
               },
             },
             messages: {

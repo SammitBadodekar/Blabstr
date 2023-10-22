@@ -10,7 +10,7 @@ const AllProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider enableSystem={true} attribute="class">
+        <ThemeProvider enableSystem={false} attribute="class">
           <RecoilRoot>{children}</RecoilRoot>
           <Toaster
             position="top-center"

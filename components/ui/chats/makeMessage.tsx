@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { AiOutlineVideoCamera } from "react-icons/ai";
 import { RiAttachment2 } from "react-icons/ri";
 import TextareaAutosize from "react-textarea-autosize";
+import { AiOutlineSend } from "react-icons/ai";
 
 import {
   Popover,
@@ -19,6 +20,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
 import Image from "next/image";
 import ReactPlayer from "react-player";
+import EmojiSelector from "../emojiSeletor";
 
 const MakeMessage = ({
   chatRoomId,
@@ -110,7 +112,7 @@ const MakeMessage = ({
               // Do something with the error.
               toast.error(`Failed to upload`);
             }}
-            className=" ut-button:w-fit ut-button:rounded-3xl ut-button:bg-lightTheme ut-button:p-4 ut-button:font-bold ut-button:text-darkTheme ut-allowed-content:hidden dark:ut-button:bg-darkTheme dark:ut-button:text-lightTheme"
+            className=" ut-button:w-fit ut-button:rounded-3xl ut-button:bg-slate-300 ut-button:p-4 ut-button:font-bold ut-allowed-content:hidden dark:ut-button:bg-slate-800 "
           />
           <UploadButton
             endpoint="videoUploader"
@@ -138,8 +140,12 @@ const MakeMessage = ({
               // Do something with the error.
               toast.error(`video size should be less than 64MB`);
             }}
-            className="ut-button:w-fit ut-button:rounded-3xl ut-button:bg-lightTheme ut-button:p-4 ut-button:font-bold ut-button:text-darkTheme ut-allowed-content:hidden dark:ut-button:bg-darkTheme dark:ut-button:text-lightTheme"
+            className="ut-button:w-fit ut-button:rounded-3xl ut-button:bg-slate-300 ut-button:p-4 ut-button:font-bold ut-allowed-content:hidden dark:ut-button:bg-slate-800 "
           />
+
+          <div className=" flex items-center justify-center gap-2 rounded-3xl bg-slate-300 p-2 dark:bg-slate-800">
+            <EmojiSelector setPost={setPost} />
+          </div>
         </PopoverContent>
       </Popover>
       <Button
@@ -148,7 +154,7 @@ const MakeMessage = ({
         onClick={handleMessage}
         disabled={post.text || post.image || post.video ? false : true}
       >
-        Post
+        <AiOutlineSend />
       </Button>
     </div>
   );

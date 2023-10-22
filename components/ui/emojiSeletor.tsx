@@ -12,7 +12,7 @@ import Picker from "@emoji-mart/react";
 import { useTheme } from "next-themes";
 
 const EmojiSelector = ({ setPost }: { setPost: Function }) => {
-  const { theme, setTheme, systemTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
     <Popover>
