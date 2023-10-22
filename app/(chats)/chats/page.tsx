@@ -29,7 +29,7 @@ const Page = () => {
 
   useEffect(() => {
     const getChats = async () => {
-      const { data } = await axios.get(`/api/users/getChats`);
+      const { data } = await axios.get(`/api/users/getChats/${user.id}`);
       setChats(data.chatRooms);
       setIsLoading(false);
     };
