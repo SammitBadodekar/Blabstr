@@ -36,8 +36,6 @@ const Page = () => {
     getChats();
   }, [user]);
 
-  console.log(chats, isLoading);
-
   if (isLoading) {
     return <MultiplePostsSkeleton />;
   }

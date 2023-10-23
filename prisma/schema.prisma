@@ -126,7 +126,7 @@ updatedAt DateTime @updatedAt
 
 model Messages{
   id String @id @default(uuid())
-  text String?
+  text String? @db.Text
   image String? @db.Text
   video String? @db.Text
   createdAt DateTime @default(now())

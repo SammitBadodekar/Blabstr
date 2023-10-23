@@ -1,19 +1,13 @@
 import { Messages } from "@/app/(chats)/chats/[id]/page";
 import React, { useEffect, useRef } from "react";
-import ProfileImage from "../profileImage";
 import Pusher from "pusher-js";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { formatDistanceToNowStrict } from "date-fns";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/atoms/userState";
-import Link from "next/link";
-import Image from "next/image";
-import { InView } from "react-intersection-observer";
-import ReactPlayer from "react-player";
 import { LiaSpinnerSolid } from "react-icons/lia";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { MdDeleteOutline } from "react-icons/md";
+import Message from "./message";
 
 const DisplayMessages = ({
   messages,
@@ -39,7 +33,6 @@ const DisplayMessages = ({
 
     var channel = pusher.subscribe(chatRoomId);
     channel.bind("Message", function (data: any) {
-      console.log(data);
       setLoadingMessage(false);
       setMessages((prev: Messages[]) => [data, ...prev]);
     });
@@ -83,7 +76,7 @@ const DisplayMessages = ({
 
   return (
     <div
-      className=" flex h-[calc(100dvh_-_7.5rem)] w-full flex-col-reverse gap-4 overflow-y-scroll px-2"
+      className=" flex h-[calc(100dvh_-_8rem)] w-full flex-col-reverse gap-4 overflow-y-scroll px-2 sm:h-[calc(100dvh_-_7.5rem)]"
       ref={parent}
     >
       {loadingMessage && (
@@ -95,72 +88,14 @@ const DisplayMessages = ({
       )}
 
       {messages &&
-        messages.map((message: Messages, index) => {
-          const date = new Date(message.createdAt);
-          const timeAgo = formatDistanceToNowStrict(date, { addSuffix: true });
-
-          const isAuthor = message.user.id === user.id;
-
+        messages.map((message: Messages) => {
           return (
-            <div
+            <Message
+              message={message}
+              user={user}
+              handleDelete={handleDelete}
               key={message.id}
-              className={`flex gap-2 ${
-                isAuthor ? " flex-row-reverse self-end" : ""
-              } relative`}
-            >
-              <ProfileImage src={message.user.imageUrl} size={40} />
-              <div
-                className={` ${
-                  isAuthor ? " rounded-tr-none" : "rounded-tl-none"
-                } w-fit rounded-xl  bg-slate-200 p-2 dark:bg-gray-800`}
-              >
-                <p className=" max-w-xs sm:max-w-sm">{message.text}</p>
-
-                {message?.image && (
-                  <Link href={`/preview?src=${message?.image}`}>
-                    <Image
-                      src={message?.image}
-                      width={200}
-                      height={200}
-                      alt=""
-                      className="w-full max-w-lg self-start rounded-xl border-2 object-contain"
-                    />
-                  </Link>
-                )}
-
-                {message?.video && (
-                  <InView>
-                    {({ inView, ref, entry }) => (
-                      <div
-                        className=" flex justify-center rounded-xl"
-                        ref={ref}
-                      >
-                        <ReactPlayer
-                          url={message?.video as string}
-                          playing={inView}
-                          controls={true}
-                          width="auto"
-                          height="auto"
-                        />
-                      </div>
-                    )}
-                  </InView>
-                )}
-
-                <p className=" pt-2 text-xs text-darkGray dark:text-lightGray">
-                  {timeAgo}
-                </p>
-
-                {isAuthor && (
-                  <button
-                    onClick={() => handleDelete(message.id)}
-                    className={`absolute right-0 top-10 flex items-center rounded-lg border-2 border-slate-500 bg-lightTheme p-2 text-xs dark:bg-darkTheme`}
-                  >
-                    <MdDeleteOutline />
-                  </button>
-                )}
-              </div>
-            </div>
+            />
           );
         })}
     </div>

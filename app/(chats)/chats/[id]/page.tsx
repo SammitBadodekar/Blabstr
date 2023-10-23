@@ -44,7 +44,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className=" dvh w-full">
+    <div className=" dvh w-full overflow-hidden">
       <div className=" sticky top-0 z-10 flex items-center gap-4 bg-slate-100 p-2 font-extrabold shadow-md backdrop-blur-sm dark:bg-gray-900">
         <Link href="/chats">
           <BiArrowBack />

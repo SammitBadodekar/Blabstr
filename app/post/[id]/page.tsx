@@ -102,6 +102,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                   comment={comment}
                   user={user}
                   setComments={setComments}
+                  key={comment.id}
                 />
               );
             })}

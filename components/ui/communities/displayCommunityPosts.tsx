@@ -103,6 +103,7 @@ export default function DisplayCommunityPosts({
               isAuthor ? " self-end" : ""
             }  flex w-full  max-w-sm gap-2 rounded-lg px-4 py-1`}
             ref={index === 0 ? messageTopRef : null}
+            key={communityPost.id}
           >
             <Link href={`/${communityPost?.user?.tag}`} className=" h-fit">
               <ProfileImage src={communityPost?.user?.imageUrl} size={50} />

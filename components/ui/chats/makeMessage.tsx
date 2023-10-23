@@ -64,23 +64,44 @@ const MakeMessage = ({
         )}
 
         {post.video && (
-          <div className=" flex h-10 w-fit justify-center">
+          <div className=" flex h-10  w-fit justify-center">
             <ReactPlayer
               url={post.video}
               controls={true}
               width="10"
-              height="1"
+              height={200}
             />
           </div>
         )}
       </div>
+      {(post.image || post.video) && (
+        <Button
+          className=" absolute -top-40 left-4 flex gap-1 rounded-full border-2 "
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            setPost((prev) => ({ ...prev, image: "", video: "" }));
+          }}
+        >
+          Cancel
+        </Button>
+      )}
 
-      <TextareaAutosize
-        placeholder="Write a message"
-        value={post.text}
-        onChange={(e) => setPost((prev) => ({ ...prev, text: e.target.value }))}
-        className="w-full rounded-3xl border-2 border-gray-500 bg-lightTheme p-2 dark:bg-darkTheme"
-      />
+      <div className=" relative flex w-full">
+        <div className=" absolute left-2 top-2">
+          <EmojiSelector setPost={setPost} />
+        </div>
+
+        <TextareaAutosize
+          placeholder="Write a message"
+          value={post.text}
+          onChange={(e) =>
+            setPost((prev) => ({ ...prev, text: e.target.value }))
+          }
+          className=" w-full rounded-3xl border-2 border-gray-500 bg-lightTheme p-2 pl-9 dark:bg-darkTheme"
+        />
+      </div>
+
       <Popover>
         <PopoverTrigger className=" text-2xl">
           <RiAttachment2 />
@@ -102,7 +123,6 @@ const MakeMessage = ({
               },
             }}
             onClientUploadComplete={(res) => {
-              toast.success("successfully uploaded image");
               setPost((prev) => ({
                 ...prev,
                 image: res ? res[0]?.url : prev.image,
@@ -112,7 +132,7 @@ const MakeMessage = ({
               // Do something with the error.
               toast.error(`Failed to upload`);
             }}
-            className=" ut-button:w-fit ut-button:rounded-3xl ut-button:bg-slate-300 ut-button:p-4 ut-button:font-bold ut-allowed-content:hidden dark:ut-button:bg-slate-800 "
+            className=" ut-button:w-fit ut-button:rounded-3xl ut-button:bg-lightTheme ut-button:p-4 ut-button:font-bold ut-button:text-darkTheme ut-allowed-content:hidden dark:ut-button:bg-slate-800 dark:ut-button:text-lightTheme "
           />
           <UploadButton
             endpoint="videoUploader"
@@ -130,7 +150,6 @@ const MakeMessage = ({
               },
             }}
             onClientUploadComplete={(res) => {
-              toast.success("successfully uploaded video");
               setPost((prev) => ({
                 ...prev,
                 video: res ? res[0]?.url : prev.video,
@@ -140,12 +159,8 @@ const MakeMessage = ({
               // Do something with the error.
               toast.error(`video size should be less than 64MB`);
             }}
-            className="ut-button:w-fit ut-button:rounded-3xl ut-button:bg-slate-300 ut-button:p-4 ut-button:font-bold ut-allowed-content:hidden dark:ut-button:bg-slate-800 "
+            className="ut-button:w-fit ut-button:rounded-3xl ut-button:bg-lightTheme ut-button:p-4 ut-button:font-bold ut-button:text-darkTheme ut-allowed-content:hidden dark:ut-button:bg-slate-800 dark:ut-button:text-lightTheme "
           />
-
-          <div className=" flex items-center justify-center gap-2 rounded-3xl bg-slate-300 p-2 dark:bg-slate-800">
-            <EmojiSelector setPost={setPost} />
-          </div>
         </PopoverContent>
       </Popover>
       <Button
