@@ -3,138 +3,132 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Users {
-  id String @id @default(uuid())
-  name String
-  imageUrl String @db.Text
-  bgImage String? @db.Text
-  email String @unique
-  password String?
-  about String
-  tag String @unique
-  posts Posts[] @relation("posts")
-  communityPosts CommunityPost[] @relation("communityPosts")
-  comments Comments[] @relation("comment")
-  replies Replies[] @relation("reply")
-  savedPosts Posts[]  @relation(name: "savedposts")
-  likedPosts Posts[] @relation(name: "LikedPosts")
-  followers Users[]  @relation("UserFollows")
-  following  Users[]  @relation("UserFollows")
-  communities Community[]  @relation("community")
-  communityAdmin Community[]  @relation("community-admin")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isVerified Boolean @default(false)
-  chatRooms ChatRoom[] @relation(name: "chat-room")
-  messages Messages[] @relation(name:"message")
+  id              String         @id @default(uuid())
+  name            String
+  imageUrl        String
+  bgImage         String?
+  email           String         @unique
+  password        String?
+  about           String
+  tag             String         @unique
+  posts           Posts[]        @relation("posts")
+  communityPosts  CommunityPost[] @relation("communityPosts")
+  comments        Comments[]     @relation("comment")
+  replies         Replies[]      @relation("reply")
+  savedPosts      Posts[]        @relation("savedposts")
+  likedPosts      Posts[]        @relation("LikedPosts")
+  followers       Users[]        @relation("UserFollows")
+  following       Users[]        @relation("UserFollows")
+  communities     Community[]    @relation("community")
+  communityAdmin  Community[]    @relation("community-admin")
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  isVerified      Boolean        @default(false)
+  chatRooms       ChatRoom[]     @relation("chat-room")
+  messages        Messages[]     @relation("message")
 }
 
 model Posts {
-  id String @id @default(uuid()) 
-  type String
-  text String?
-  image String? @db.Text
-  video String? @db.Text
-  user    Users    @relation("posts",fields: [UserEmail], references: [email])
-  UserEmail   String
-  savedby  Users[] @relation(name: "savedposts")
-  likedBy Users[] @relation(name: "LikedPosts")
-  comments Comments[]
-   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([ UserEmail], name: "post_id_index")
+  id         String     @id @default(uuid())
+  type       String
+  text       String?
+  image      String?
+  video      String?
+  user       Users      @relation("posts", fields: [UserEmail], references: [email])
+  UserEmail  String
+  savedby    Users[]    @relation("savedposts")
+  likedBy    Users[]    @relation("LikedPosts")
+  comments   Comments[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
-model Comments{
-  id String @id @default(uuid())
-  text String
-  post Posts  @relation(fields: [postId], references: [id],onDelete: Cascade)
-  postId String 
-  user    Users    @relation("comment",fields: [UserEmail], references: [email])
-  UserEmail   String
-  replies Replies[]
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([postId], name: "post_id_index")
-  @@index([UserEmail], name: "Comment_id_index")
+model Comments {
+  id         String    @id @default(uuid())
+  text       String
+  post       Posts     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId     String
+  user       Users     @relation("comment", fields: [UserEmail], references: [email])
+  UserEmail  String
+  replies    Replies[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
-model Replies{
-  id String @id @default(uuid())
-  text String
-  comment Comments  @relation(fields: [commentId], references: [id])
-  commentId String
-  user    Users    @relation("reply",fields: [UserEmail], references: [email])
-  UserEmail   String 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- @@index([commentId], name: "post_id_index")
+model Replies {
+  id         String   @id @default(uuid())
+  text       String
+  comment    Comments @relation(fields: [commentId], references: [id])
+  commentId  String
+  user       Users    @relation("reply", fields: [UserEmail], references: [email])
+  UserEmail  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([commentId], name: "post_id_index")
   @@index([UserEmail], name: "Reply_id_index")
 }
 
-
-
 model FeaturedUsers {
-  id String @id @unique
-  name String
-  email String @unique
-  imageUrl String @db.Text
-  about String?
-  tag String? @unique
+  id         String  @id @unique
+  name       String
+  email      String  @unique
+  imageUrl   String
+  about      String?
+  tag        String? @unique
   isVerified Boolean @default(false)
 }
 
-model Community{
- id String @id @default(uuid()) 
-  name String @unique
-  members Users[] @relation(name: "community")
-  description String
-  imageUrl String @db.Text
-  admin Users[] @relation(name: "community-admin")
-  communityPosts CommunityPost[] @relation(name: "communityPost")
+model Community {
+  id             String          @id @default(uuid())
+  name           String          @unique
+  members        Users[]         @relation("community")
+  description    String
+  imageUrl       String
+  admin          Users[]         @relation("community-admin")
+  communityPosts CommunityPost[] @relation("communityPost")
 }
 
-model CommunityPost{
-  id String @id @default(uuid()) 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user    Users    @relation("communityPosts",fields: [UserEmail], references: [email])
+model CommunityPost {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        Users     @relation("communityPosts", fields: [UserEmail], references: [email])
   UserEmail   String
-  text String?
-  image String? @db.Text
-  video String? @db.Text
-  community Community @relation(name: "communityPost", fields: [communityId], references: [id],onDelete: Cascade)
+  text        String?
+  image       String?
+  video       String?
+  community   Community @relation("communityPost", fields: [communityId], references: [id], onDelete: Cascade)
   communityId String
+
   @@index([UserEmail], name: "communityPosts_index")
   @@index([communityId], name: "communityPosts_Id")
-
 }
 
-model ChatRoom{
-id String @id @default(uuid())
-members Users[] @relation(name: "chat-room")
-messages Messages[] @relation("messages")
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
+model ChatRoom {
+  id        String     @id @default(uuid())
+  members   Users[]    @relation("chat-room")
+  messages  Messages[] @relation("messages")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
-model Messages{
-  id String @id @default(uuid())
-  text String? @db.Text
-  image String? @db.Text
-  video String? @db.Text
-  createdAt DateTime @default(now())
-  chatRoom ChatRoom @relation("messages",fields: [chatRoomId], references: [id])
+model Messages {
+  id         String   @id @default(uuid())
+  text       String?
+  image      String?
+  video      String?
+  createdAt  DateTime @default(now())
+  chatRoom   ChatRoom @relation("messages", fields: [chatRoomId], references: [id])
   chatRoomId String
-   user    Users    @relation("message",fields: [UserEmail], references: [email])
-  UserEmail   String
-   @@index([chatRoomId], name: "chatRoomId")
-   @@index([UserEmail], name: "message-userId")
-   
+  user       Users    @relation("message", fields: [UserEmail], references: [email])
+  UserEmail  String
+
+  @@index([chatRoomId], name: "chatRoomId")
+  @@index([UserEmail], name: "message-userId")
 }
